@@ -1,0 +1,21 @@
+// components/ui/Input.jsx
+export default function Input({ label, error, className = "", ...props }) {
+  return (
+    <div className="w-full">
+      {label && (
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          {label}
+        </label>
+      )}
+      <input
+        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:scale-[1.01] outline-none transition-all duration-200 ${
+          error ? 'border-red-300 bg-red-50' : 'border-gray-300'
+        } ${className}`}
+        {...props}
+      />
+      {error && (
+        <p className="mt-1 text-sm text-red-600">{error}</p>
+      )}
+    </div>
+  );
+}

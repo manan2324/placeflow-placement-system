@@ -1,0 +1,58 @@
+import connectDB from "@/lib/mongodb";
+
+import {
+    aggregateApplicationStatusCounts,
+    aggregateCompanyApplicationStats,
+    aggregateBranchWiseStats,
+    countApplications,
+    countCompanies,
+    countStudents,
+    countPlacedStudents,
+} from "@/repositories/adminDashboard.repo";
+
+export const getAdminDashboard = async () => {
+    await connectDB();
+
+    const totalStudents = await countStudents();
+    const totalCompanies = await countCompanies();
+    const totalApplications = await countApplications();
+    const placedStudents = await countPlacedStudents();
+
+    // status distribution
+    const statusAgg = await aggregateApplicationStatusCounts();
+
+    const statusCounts = {
+        APPLIED: 0,
+        SHORTLISTED: 0,
+        REJECTED: 0,
+        SELECTED: 0
+    };
+
+    statusAgg.forEach((s) => {
+        if (Object.prototype.hasOwnProperty.call(statusCounts, s._id)) {
+            statusCounts[s._id] = s.count;
+        }
+    });
+
+    // company-wise stats
+    const companyStats = await aggregateCompanyApplicationStats();
+
+    // branch-wise stats
+    const branchWiseStats = await aggregateBranchWiseStats();
+
+    // selection rate
+    const selectionRate = totalApplications === 0
+        ? 0
+        : ((statusCounts.SELECTED / totalApplications) * 100).toFixed(2);
+
+    return {
+        totalStudents,
+        totalCompanies,
+        totalApplications,
+        placedStudents,
+        statusCounts,
+        companyStats,
+        branchWiseStats,
+        selectionRate: Number(selectionRate)
+    };
+};
