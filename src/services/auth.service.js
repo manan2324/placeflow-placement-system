@@ -49,7 +49,7 @@ export async function registerStudent(payload) {
     enrollmentNumber: payload.enrollmentNumber,
     branch: payload.branch,
     cgpa: payload.cgpa,
-    hasBacklog: payload.hasBacklog,
+    backlogCount: payload.backlogCount,
   });
 
   return { userId: user._id };

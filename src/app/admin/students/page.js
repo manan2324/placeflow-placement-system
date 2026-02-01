@@ -73,9 +73,9 @@ export default function AdminStudentsPage() {
 		{ key: "enrollmentNumber", label: "Enrollment" },
 		{ key: "branch", label: "Branch" },
 		{ key: "cgpa", label: "CGPA", render: (row) => typeof row.cgpa === "number" ? row.cgpa.toFixed(2) : "—" },
-		{ key: "hasBacklog", label: "Backlog", render: (row) => (
-			<Badge variant={row.hasBacklog ? "danger" : "success"}>
-				{row.hasBacklog ? "Yes" : "No"}
+		{ key: "backlogCount", label: "Backlog Count", render: (row) => (
+			<Badge variant={row.backlogCount > 0 ? "danger" : "success"}>
+				{row.backlogCount ?? 0}
 			</Badge>
 		) },
 		{ key: "resume", label: "Resume", render: (row) => (
@@ -138,8 +138,8 @@ export default function AdminStudentsPage() {
 											<h3 className="font-semibold text-gray-900 text-sm">{s.user?.name || "—"}</h3>
 											<p className="text-xs text-gray-600 mt-0.5">{s.user?.email || "—"}</p>
 										</div>
-										<Badge variant={s.hasBacklog ? "danger" : "success"}>
-											{s.hasBacklog ? "Backlog" : "Clear"}
+									<Badge variant={s.backlogCount > 0 ? "danger" : "success"}>
+										{s.backlogCount > 0 ? `${s.backlogCount} Backlog(s)` : "Clear"}
 										</Badge>
 									</div>
 									<div className="grid grid-cols-2 gap-2 text-xs text-gray-700">

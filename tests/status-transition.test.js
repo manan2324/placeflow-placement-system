@@ -47,7 +47,7 @@ async function seedActors() {
     enrollmentNumber: 'ENR001',
     branch: 'CSE',
     cgpa: 8.0,
-    hasBacklog: false,
+    backlogCount: 0,
   });
 
   return { admin, studentUser, studentProfile };
@@ -63,7 +63,7 @@ async function seedCompanyAndApplication({ admin, studentProfile, initialStatus 
     ctc: 10,
     eligibleBranches: ['CSE'],
     minCgpa: 7.0,
-    backlogAllowed: true,
+    backlogCount: 10,
     applicationDeadline: new Date(Date.now() + 24 * 60 * 60 * 1000),
     status: 'OPEN',
     createdBy: admin._id,
@@ -76,7 +76,7 @@ async function seedCompanyAndApplication({ admin, studentProfile, initialStatus 
     snapshot: {
       branch: studentProfile.branch,
       cgpa: studentProfile.cgpa,
-      hasBacklog: studentProfile.hasBacklog,
+      backlogCount: studentProfile.backlogCount,
     },
     appliedAt: new Date(),
   });

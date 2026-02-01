@@ -29,9 +29,11 @@ const StudentProfileSchema = new mongoose.Schema({
         max: 10
     },
 
-    hasBacklog: {
-        type: Boolean,
-        default: false
+    backlogCount: {
+        type: Number,
+        min: 0,
+        max: 10,
+        default: 0
     },
 
     resumeUrl: {

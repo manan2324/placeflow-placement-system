@@ -71,10 +71,7 @@ export default function ProfilePage() {
               <Input label="Enrollment Number" value={profile?.enrollmentNumber || ''} disabled />
               <Input label="Branch" value={profile?.branch || ''} disabled />
               <Input label="CGPA" value={profile?.cgpa || 'N/A'} disabled />
-              <div className="flex items-center">
-                <input type="checkbox" checked={profile?.hasBacklog} disabled className="mr-2 h-4 w-4" />
-                <label className="text-xs sm:text-sm text-gray-700">Has Active Backlogs</label>
-              </div>
+              <Input label="Number of Backlogs" value={profile?.backlogCount ?? 0} disabled />
             </div>
           </Card>
 

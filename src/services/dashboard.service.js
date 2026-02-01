@@ -31,9 +31,9 @@ export const getStudentDashboard = async (userId) => {
         minCgpa: { $lte: student.cgpa },
     };
 
-    // if student has backlog, only companies allowing backlog are eligible. Otherwise, backlogAllowed can be either true/false.
-    if (student.hasBacklog) {
-        eligibleFilter.backlogAllowed = true;
+    // filter companies that allow at least the number of backlogs the student has
+    if (student.backlogCount > 0) {
+        eligibleFilter.backlogCount = { $gte: student.backlogCount };
     }
     const eligibleCompanies = await countCompanies(eligibleFilter);
 

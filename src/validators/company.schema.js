@@ -6,6 +6,6 @@ export const createCompanySchema = z.object({
   ctc: z.number().min(0),
   eligibleBranches: z.array(z.enum(["CSE", "ECE", "ME", "CE", "EE", "IT", "CHE"])).min(1),
   minCgpa: z.number().min(0).max(10),
-  backlogAllowed: z.boolean().optional(),
+  backlogCount: z.number().min(0).max(10).optional(),
   applicationDeadline: z.union([z.string(), z.date()]),
 });

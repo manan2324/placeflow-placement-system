@@ -18,7 +18,7 @@ export default function StudentFiltersPanel({
     status: "",
     branch: "",
     minCgpa: "",
-    hasBacklog: "ALL",
+    maxBacklogCount: "",
     enrollmentSearch: "",
   });
 
@@ -51,12 +51,14 @@ export default function StudentFiltersPanel({
       }
     }
 
-    if (filters.hasBacklog !== "ALL") {
-      const hasBacklog = filters.hasBacklog === "YES";
-      data = data.filter((app) => {
-        const flag = app.studentId?.hasBacklog ?? app.snapshot?.hasBacklog;
-        return Boolean(flag) === hasBacklog;
-      });
+    if (filters.maxBacklogCount !== "") {
+      const max = Number(filters.maxBacklogCount);
+      if (!Number.isNaN(max)) {
+        data = data.filter((app) => {
+          const count = app.studentId?.backlogCount ?? app.snapshot?.backlogCount ?? 0;
+          return count <= max;
+        });
+      }
     }
 
     if (filters.enrollmentSearch) {
@@ -75,7 +77,7 @@ export default function StudentFiltersPanel({
       status: "",
       branch: "",
       minCgpa: "",
-      hasBacklog: "ALL",
+      maxBacklogCount: "",
       enrollmentSearch: "",
     });
   };

@@ -5,7 +5,7 @@ import StudentProfile from "@/models/StudentProfile";
 export async function findApplicationById(applicationId, { session, populateCompany = false, populateStudent = false } = {}) {
   let q = Application.findById(applicationId);
   if (populateCompany) q = q.populate("companyId", "name role");
-  if (populateStudent) q = q.populate({ path: "studentId", model: StudentProfile, select: "enrollmentNumber branch cgpa hasBacklog userId" });
+  if (populateStudent) q = q.populate({ path: "studentId", model: StudentProfile, select: "enrollmentNumber branch cgpa backlogCount userId" });
   if (session) q.session(session);
   return q;
 }
@@ -41,7 +41,7 @@ export async function listApplicationsByCompany(filter, { session } = {}) {
     .populate({
       path: "studentId",
       model: StudentProfile,
-      select: "enrollmentNumber branch cgpa hasBacklog userId",
+      select: "enrollmentNumber branch cgpa backlogCount userId",
       populate: {
         path: "userId",
         select: "name email",
@@ -62,7 +62,7 @@ export async function listApplicationsByCompanyForExport(companyId, { session } 
     .populate({
       path: "studentId",
       model: StudentProfile,
-      select: "enrollmentNumber branch cgpa hasBacklog userId",
+      select: "enrollmentNumber branch cgpa backlogCount userId",
     })
     .sort({ appliedAt: 1 });
   if (session) q.session(session);

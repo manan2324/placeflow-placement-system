@@ -74,16 +74,17 @@ export default function StudentFiltersForm({
         />
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Has Backlog</label>
-          <select
-            value={filters.hasBacklog}
-            onChange={(e) => onChange("hasBacklog", e.target.value)}
+          <label className="block text-sm font-medium text-gray-700 mb-2">Max Backlog Count</label>
+          <input
+            type="number"
+            min="0"
+            max="10"
+            value={filters.maxBacklogCount}
+            onChange={(e) => onChange("maxBacklogCount", e.target.value)}
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition border-gray-300"
-          >
-            <option value="ALL">All</option>
-            <option value="YES">Yes</option>
-            <option value="NO">No</option>
-          </select>
+            placeholder="Filter by backlog count"
+          />
+          <p className="mt-1 text-xs text-gray-500">Shows students with backlogs ≤ this value</p>
         </div>
 
         <Input

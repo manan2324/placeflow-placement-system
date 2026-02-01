@@ -21,7 +21,7 @@ export default function CreateCompanyForm({ onCreated, showCard = true }) {
     ctc: "",
     eligibleBranches: [],
     minCgpa: "",
-    backlogAllowed: false,
+    backlogCount: 0,
     applicationDeadline: "",
   });
 
@@ -88,7 +88,7 @@ export default function CreateCompanyForm({ onCreated, showCard = true }) {
         ctc: Number(createData.ctc),
         eligibleBranches: createData.eligibleBranches,
         minCgpa: Number(createData.minCgpa),
-        backlogAllowed: Boolean(createData.backlogAllowed),
+        backlogCount: Number(createData.backlogCount),
         applicationDeadline: createData.applicationDeadline,
       };
 
@@ -100,7 +100,7 @@ export default function CreateCompanyForm({ onCreated, showCard = true }) {
         ctc: "",
         eligibleBranches: [],
         minCgpa: "",
-        backlogAllowed: false,
+        backlogCount: 0,
         applicationDeadline: "",
       });
       setCreateErrors({});
@@ -143,13 +143,13 @@ export default function CreateCompanyForm({ onCreated, showCard = true }) {
 
       <DeadlineBacklogFields
         applicationDeadline={createData.applicationDeadline}
-        backlogAllowed={createData.backlogAllowed}
+        backlogCount={createData.backlogCount}
         error={createErrors.applicationDeadline}
         onDeadlineChange={(value) =>
           setCreateData((prev) => ({ ...prev, applicationDeadline: value }))
         }
-        onBacklogChange={(checked) =>
-          setCreateData((prev) => ({ ...prev, backlogAllowed: checked }))
+        onBacklogChange={(value) =>
+          setCreateData((prev) => ({ ...prev, backlogCount: value }))
         }
       />
 

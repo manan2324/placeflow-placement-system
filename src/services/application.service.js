@@ -53,8 +53,8 @@ export async function applyToCompany({ userId, companyId }) {
   if (studentProfile.cgpa === null || studentProfile.cgpa === undefined) {
     throw badRequest("Please complete your profile: CGPA is required", "PROFILE_INCOMPLETE");
   }
-  if (studentProfile.hasBacklog === null || studentProfile.hasBacklog === undefined) {
-    throw badRequest("Please complete your profile: Backlog status is required", "PROFILE_INCOMPLETE");
+  if (studentProfile.backlogCount === null || studentProfile.backlogCount === undefined) {
+    throw badRequest("Please complete your profile: Backlog count is required", "PROFILE_INCOMPLETE");
   }
 
   const existing = await findExistingApplication(
@@ -75,9 +75,9 @@ export async function applyToCompany({ userId, companyId }) {
     );
   }
 
-  if (!company.backlogAllowed && studentProfile.hasBacklog) {
+  if (studentProfile.backlogCount > company.backlogCount) {
     throw forbidden(
-      "Backlog not allowed for this company",
+      `Student has ${studentProfile.backlogCount} backlog(s) but company allows only ${company.backlogCount}`,
       "NOT_ELIGIBLE_BACKLOG"
     );
   }
@@ -90,7 +90,7 @@ export async function applyToCompany({ userId, companyId }) {
       snapshot: {
         branch: studentProfile.branch,
         cgpa: studentProfile.cgpa,
-        hasBacklog: studentProfile.hasBacklog,
+        backlogCount: studentProfile.backlogCount,
       },
       appliedAt: new Date(),
     });
@@ -226,7 +226,7 @@ export async function exportCompanyApplicationsCsv({ companyId }) {
     "Enrollment Number",
     "Branch",
     "CGPA",
-    "Has Backlog",
+    "Backlog Count",
     "Application Status",
     "Applied At",
   ];
@@ -235,7 +235,7 @@ export async function exportCompanyApplicationsCsv({ companyId }) {
     csvEscape(app.studentId?.enrollmentNumber, true),
     csvEscape(app.snapshot.branch),
     csvEscape(app.snapshot.cgpa),
-    csvEscape(app.snapshot.hasBacklog ? "YES" : "NO"),
+    csvEscape(app.snapshot.backlogCount),
     csvEscape(app.status),
     csvEscape(app.appliedAt.toISOString()),
   ]);

@@ -12,5 +12,5 @@ export const registerStudentSchema = z.object({
   enrollmentNumber: z.string().min(1),
   branch: z.enum(["CSE", "ECE", "ME", "CE", "EE", "IT", "CHE"]),
   cgpa: z.number().min(0).max(10).optional(),
-  hasBacklog: z.boolean().optional(),
+  backlogCount: z.number().min(0).max(10).optional(),
 });

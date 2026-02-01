@@ -43,7 +43,7 @@ async function seedUsers() {
     enrollmentNumber: 'ENR001',
     branch: 'CSE',
     cgpa: 7.0,
-    hasBacklog: true,
+    backlogCount: 1,
   });
 
   const student2Profile = await StudentProfile.create({
@@ -51,7 +51,7 @@ async function seedUsers() {
     enrollmentNumber: 'ENR002',
     branch: 'ECE',
     cgpa: 8.5,
-    hasBacklog: false,
+    backlogCount: 0,
   });
 
   return { admin, studentUser, studentProfile, student2User, student2Profile };
@@ -66,7 +66,7 @@ async function createCompany({ createdBy, overrides = {} }) {
     ctc: 10,
     eligibleBranches: ['CSE'],
     minCgpa: 7.0,
-    backlogAllowed: true,
+    backlogCount: 10,
     applicationDeadline: new Date(Date.now() + 24 * 60 * 60 * 1000),
     status: 'OPEN',
     createdBy,
@@ -100,7 +100,7 @@ async function createApplication({ studentProfileId, companyId, status, appliedA
     snapshot: {
       branch: student.branch,
       cgpa: student.cgpa,
-      hasBacklog: student.hasBacklog,
+      backlogCount: student.backlogCount,
     },
     appliedAt,
   });
@@ -132,7 +132,7 @@ describe('Dashboard Validation', () => {
     const { admin, studentUser, studentProfile } = await seedUsers();
 
     // Create some OPEN but NOT eligible companies (to enforce eligible < open)
-    await createCompany({ createdBy: admin._id, overrides: { backlogAllowed: false } }); // not eligible: backlog
+    await createCompany({ createdBy: admin._id, overrides: { backlogCount: 0 } }); // not eligible: backlog
     await createCompany({ createdBy: admin._id, overrides: { eligibleBranches: ['ECE'] } }); // not eligible: branch
     await createCompany({ createdBy: admin._id, overrides: { minCgpa: 9.0 } }); // not eligible: cgpa
 
@@ -144,7 +144,7 @@ describe('Dashboard Validation', () => {
       companies.push(
         await createCompany({
           createdBy: admin._id,
-          overrides: { name: `Eligible-${i}-${Date.now()}`, backlogAllowed: true, eligibleBranches: ['CSE'], minCgpa: 7.0 },
+          overrides: { name: `Eligible-${i}-${Date.now()}`, backlogCount: 10, eligibleBranches: ['CSE'], minCgpa: 7.0 },
         })
       );
     }
@@ -233,9 +233,9 @@ describe('Dashboard Validation', () => {
     const { admin, studentProfile, student2Profile } = await seedUsers();
 
     // Create 3 companies
-    const c1 = await createCompany({ createdBy: admin._id, overrides: { name: `C1-${Date.now()}`, eligibleBranches: ['CSE', 'ECE'], backlogAllowed: true } });
-    const c2 = await createCompany({ createdBy: admin._id, overrides: { name: `C2-${Date.now()}`, eligibleBranches: ['CSE', 'ECE'], backlogAllowed: true } });
-    const c3 = await createCompany({ createdBy: admin._id, overrides: { name: `C3-${Date.now()}`, eligibleBranches: ['CSE', 'ECE'], backlogAllowed: true } });
+    const c1 = await createCompany({ createdBy: admin._id, overrides: { name: `C1-${Date.now()}`, eligibleBranches: ['CSE', 'ECE'], backlogCount: 10 } });
+    const c2 = await createCompany({ createdBy: admin._id, overrides: { name: `C2-${Date.now()}`, eligibleBranches: ['CSE', 'ECE'], backlogCount: 10 } });
+    const c3 = await createCompany({ createdBy: admin._id, overrides: { name: `C3-${Date.now()}`, eligibleBranches: ['CSE', 'ECE'], backlogCount: 10 } });
 
     // 5 applications with controlled statuses
     await createApplication({ studentProfileId: studentProfile._id, companyId: c1._id, status: 'APPLIED', appliedAt: new Date(Date.now() - 10000) });

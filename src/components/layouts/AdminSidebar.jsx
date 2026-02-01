@@ -88,7 +88,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
         <div className="p-3 sm:p-4 border-t border-gray-200">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center min-w-0">
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold flex-shrink-0 text-sm sm:text-base">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold shrink-0 text-sm sm:text-base">
                 {user?.name?.[0] || 'A'}
               </div>
               <div className="ml-2 sm:ml-3 min-w-0 flex-1">

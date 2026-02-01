@@ -48,7 +48,7 @@ async function seedTwoStudentsAndAdmin() {
     enrollmentNumber: 'ENRA',
     branch: 'CSE',
     cgpa: 8.1,
-    hasBacklog: false,
+    backlogCount: 0,
   });
 
   const studentBProfile = await StudentProfile.create({
@@ -56,7 +56,7 @@ async function seedTwoStudentsAndAdmin() {
     enrollmentNumber: 'ENRB',
     branch: 'CSE',
     cgpa: 8.2,
-    hasBacklog: false,
+    backlogCount: 0,
   });
 
   return { admin, studentAUser, studentBUser, studentAProfile, studentBProfile };
@@ -72,7 +72,7 @@ async function seedCompaniesAndApplications({ admin, studentAProfile, studentBPr
     ctc: 10,
     eligibleBranches: ['CSE'],
     minCgpa: 7.0,
-    backlogAllowed: true,
+    backlogCount: 10,
     applicationDeadline: new Date(Date.now() + 24 * 60 * 60 * 1000),
     status: 'OPEN',
     createdBy: admin._id,
@@ -84,7 +84,7 @@ async function seedCompaniesAndApplications({ admin, studentAProfile, studentBPr
     ctc: 12,
     eligibleBranches: ['CSE'],
     minCgpa: 7.0,
-    backlogAllowed: true,
+    backlogCount: 10,
     applicationDeadline: new Date(Date.now() + 24 * 60 * 60 * 1000),
     status: 'OPEN',
     createdBy: admin._id,
@@ -97,7 +97,7 @@ async function seedCompaniesAndApplications({ admin, studentAProfile, studentBPr
     snapshot: {
       branch: studentAProfile.branch,
       cgpa: studentAProfile.cgpa,
-      hasBacklog: studentAProfile.hasBacklog,
+      backlogCount: studentAProfile.backlogCount,
     },
     appliedAt: new Date(),
   });
@@ -109,7 +109,7 @@ async function seedCompaniesAndApplications({ admin, studentAProfile, studentBPr
     snapshot: {
       branch: studentBProfile.branch,
       cgpa: studentBProfile.cgpa,
-      hasBacklog: studentBProfile.hasBacklog,
+      backlogCount: studentBProfile.backlogCount,
     },
     appliedAt: new Date(),
   });

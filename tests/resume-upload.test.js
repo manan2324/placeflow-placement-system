@@ -69,6 +69,7 @@ describe('Resume Upload Tests (file security)', () => {
 
   test('PDF < limit -> pass', async () => {
     const { default: User } = await import('@/models/User');
+    const { default: StudentProfile } = await import('@/models/StudentProfile');
     const { generateToken } = await import('@/lib/jwt');
     const { POST } = await import('@/app/api/student/resume/route');
 
@@ -80,6 +81,14 @@ describe('Resume Upload Tests (file security)', () => {
       passwordHash,
       role: 'STUDENT',
       isActive: true,
+    });
+
+    await StudentProfile.create({
+      userId: student._id,
+      enrollmentNumber: 'ENR-RESUME',
+      branch: 'CSE',
+      cgpa: 8.0,
+      backlogCount: 0,
     });
 
     const token = generateToken(student);
@@ -115,6 +124,7 @@ describe('Resume Upload Tests (file security)', () => {
 
   test('PNG -> reject', async () => {
     const { default: User } = await import('@/models/User');
+    const { default: StudentProfile } = await import('@/models/StudentProfile');
     const { generateToken } = await import('@/lib/jwt');
     const { POST } = await import('@/app/api/student/resume/route');
 
@@ -126,6 +136,14 @@ describe('Resume Upload Tests (file security)', () => {
       passwordHash,
       role: 'STUDENT',
       isActive: true,
+    });
+
+    await StudentProfile.create({
+      userId: student._id,
+      enrollmentNumber: 'ENR-PNG',
+      branch: 'CSE',
+      cgpa: 8.0,
+      backlogCount: 0,
     });
 
     const token = generateToken(student);
@@ -156,6 +174,7 @@ describe('Resume Upload Tests (file security)', () => {
 
   test('PDF > limit -> reject', async () => {
     const { default: User } = await import('@/models/User');
+    const { default: StudentProfile } = await import('@/models/StudentProfile');
     const { generateToken } = await import('@/lib/jwt');
     const { POST } = await import('@/app/api/student/resume/route');
 
@@ -167,6 +186,14 @@ describe('Resume Upload Tests (file security)', () => {
       passwordHash,
       role: 'STUDENT',
       isActive: true,
+    });
+
+    await StudentProfile.create({
+      userId: student._id,
+      enrollmentNumber: 'ENR-LARGE',
+      branch: 'CSE',
+      cgpa: 8.0,
+      backlogCount: 0,
     });
 
     const token = generateToken(student);
@@ -198,6 +225,7 @@ describe('Resume Upload Tests (file security)', () => {
 
   test('No file -> reject', async () => {
     const { default: User } = await import('@/models/User');
+    const { default: StudentProfile } = await import('@/models/StudentProfile');
     const { generateToken } = await import('@/lib/jwt');
     const { POST } = await import('@/app/api/student/resume/route');
 
@@ -209,6 +237,14 @@ describe('Resume Upload Tests (file security)', () => {
       passwordHash,
       role: 'STUDENT',
       isActive: true,
+    });
+
+    await StudentProfile.create({
+      userId: student._id,
+      enrollmentNumber: 'ENR-NOFILE',
+      branch: 'CSE',
+      cgpa: 8.0,
+      backlogCount: 0,
     });
 
     const token = generateToken(student);

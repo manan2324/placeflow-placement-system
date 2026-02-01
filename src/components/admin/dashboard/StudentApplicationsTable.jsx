@@ -27,10 +27,10 @@ export default function StudentApplicationsTable({ data, loading }) {
         },
         {
           key: "backlog",
-          label: "Backlog",
+          label: "Backlog Count",
           render: (row) => {
-            const flag = row.studentId?.hasBacklog ?? row.snapshot?.hasBacklog;
-            return flag ? "Yes" : "No";
+            const count = row.studentId?.backlogCount ?? row.snapshot?.backlogCount ?? 0;
+            return count;
           },
         },
         {

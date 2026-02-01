@@ -74,7 +74,7 @@ export async function createCompanyAsAdmin(adminUserId, body) {
     ctc: payload.ctc,
     eligibleBranches: payload.eligibleBranches,
     minCgpa: payload.minCgpa,
-    backlogAllowed: payload.backlogAllowed ?? false,
+    backlogCount: payload.backlogCount ?? 0,
     applicationDeadline: deadline,
     createdBy: adminUserId,
   });

@@ -33,9 +33,11 @@ const ApplicationSchema = new mongoose.Schema({
             min: 0,
             max: 10,
         },
-        hasBacklog: {
-            type: Boolean,
+        backlogCount: {
+            type: Number,
             required: true,
+            min: 0,
+            max: 10,
         },
     },
 

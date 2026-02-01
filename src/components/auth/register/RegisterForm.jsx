@@ -16,7 +16,7 @@ export default function RegisterForm() {
     enrollmentNumber: "",
     branch: "",
     cgpa: "",
-    hasBacklog: false,
+    backlogCount: 0,
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -89,7 +89,7 @@ export default function RegisterForm() {
         password: formData.password,
         enrollmentNumber: formData.enrollmentNumber,
         branch: formData.branch,
-        hasBacklog: formData.hasBacklog,
+        backlogCount: parseInt(formData.backlogCount, 10) || 0,
       };
 
       if (formData.cgpa) {
@@ -327,18 +327,22 @@ export default function RegisterForm() {
             {errors.cgpa && <p className="mt-1 text-sm text-red-600">{errors.cgpa}</p>}
           </div>
 
-          <div className="flex items-center">
-            <input
-              id="hasBacklog"
-              name="hasBacklog"
-              type="checkbox"
-              checked={formData.hasBacklog}
-              onChange={handleChange}
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label htmlFor="hasBacklog" className="ml-2 block text-sm text-gray-700">
-              I have active backlogs
+          <div>
+            <label htmlFor="backlogCount" className="block text-sm font-medium text-gray-700 mb-2">
+              Number of Backlogs (Optional)
             </label>
+            <input
+              id="backlogCount"
+              name="backlogCount"
+              type="number"
+              min="0"
+              max="10"
+              value={formData.backlogCount}
+              onChange={handleChange}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
+              placeholder="0"
+            />
+            <p className="mt-1 text-xs text-gray-500">Enter 0 if you have no backlogs</p>
           </div>
         </div>
 

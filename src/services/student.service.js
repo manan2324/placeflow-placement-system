@@ -2,7 +2,7 @@ import connectDB from "@/lib/mongodb";
 import { notFound, badRequest, forbidden } from "@/utils/errors";
 import { findStudentProfileByUserId, updateStudentResumeByUserId } from "@/repositories/student.repo";
 
-const FORBIDDEN_FIELDS = ["cgpa", "branch", "hasBacklog", "enrollmentNumber"];
+const FORBIDDEN_FIELDS = ["cgpa", "branch", "backlogCount", "enrollmentNumber"];
 
 export async function getStudentProfile(userId) {
   await connectDB();

@@ -47,7 +47,7 @@ async function seedAdminAndStudent() {
     enrollmentNumber: 'ENR001',
     branch: 'CSE',
     cgpa: 7.5,
-    hasBacklog: false,
+    backlogCount: 0,
   });
 
   return { admin, studentUser, studentProfile };
@@ -62,7 +62,7 @@ async function createCompany({ createdBy, overrides = {} }) {
     ctc: 10,
     eligibleBranches: ['CSE'],
     minCgpa: 7.0,
-    backlogAllowed: true,
+    backlogCount: 10,
     applicationDeadline: new Date(Date.now() + 24 * 60 * 60 * 1000),
     status: 'OPEN',
     createdBy,
@@ -120,7 +120,7 @@ describe('Eligibility & Apply Flow Tests', () => {
       expect.objectContaining({
         branch: studentProfile.branch,
         cgpa: studentProfile.cgpa,
-        hasBacklog: studentProfile.hasBacklog,
+        backlogCount: studentProfile.backlogCount,
       })
     );
   });
@@ -229,18 +229,18 @@ describe('Eligibility & Apply Flow Tests', () => {
     expect(body.code || body.errorCode).toBe('BRANCH_NOT_ELIGIBLE');
   });
 
-  test('Backlog Rule: backlogAllowed=false and student.hasBacklog=true -> reject', async () => {
+  test('Backlog Rule: backlogCount=0 and student.backlogCount=1 -> reject', async () => {
     const { default: StudentProfile } = await import('@/models/StudentProfile');
     const { generateToken } = await import('@/lib/jwt');
     const { POST } = await import('@/app/api/student/apply/[companyId]/route');
 
     const { admin, studentUser, studentProfile } = await seedAdminAndStudent();
 
-    await StudentProfile.updateOne({ _id: studentProfile._id }, { hasBacklog: true });
+    await StudentProfile.updateOne({ _id: studentProfile._id }, { backlogCount: 1 });
 
     const company = await createCompany({
       createdBy: admin._id,
-      overrides: { backlogAllowed: false },
+      overrides: { backlogCount: 0 },
     });
 
     const token = generateToken(studentUser);

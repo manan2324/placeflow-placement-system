@@ -104,10 +104,10 @@ export default function CompaniesPage() {
                     
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-gray-700 min-w-22.5">Backlogs:</span>
-                      {company.backlogAllowed ? (
-                        <Badge variant="success" className="text-xs">Allowed</Badge>
-                      ) : (
+                      {company.backlogCount === 0 ? (
                         <Badge variant="danger" className="text-xs">Not Allowed</Badge>
+                      ) : (
+                        <Badge variant="success" className="text-xs">Max {company.backlogCount} Allowed</Badge>
                       )}
                     </div>
 
