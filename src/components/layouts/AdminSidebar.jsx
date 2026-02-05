@@ -14,6 +14,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
     { name: 'Students', href: '/admin/students', icon: '🎓' },
     { name: 'Companies', href: '/admin/companies', icon: '🏢' },
     { name: 'Applications', href: '/admin/applications', icon: '📝' },
+    { name: 'Student Requests', href: '/admin/student-requests', icon: '✏️' },
     { name: 'Logs', href: '/admin/application-logs', icon: '📋' },
   ]
 

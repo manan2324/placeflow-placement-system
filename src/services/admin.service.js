@@ -29,3 +29,17 @@ export const deleteStudent = (id, password) =>
 
 // Admin: List all application logs
 export const getApplicationLogs = () => api.get("/admin/application-logs");
+
+// Admin: Get student profile update requests
+export const getStudentRequests = (status) => {
+  const params = status && status !== 'all' ? { status } : {};
+  return api.get("/admin/student-requests", { params });
+};
+
+// Admin: Approve student profile update request
+export const approveStudentRequest = (requestId) =>
+  api.put(`/admin/student-requests/${requestId}`, { action: 'approve' });
+
+// Admin: Reject student profile update request
+export const rejectStudentRequest = (requestId, rejectionReason) =>
+  api.put(`/admin/student-requests/${requestId}`, { action: 'reject', rejectionReason });

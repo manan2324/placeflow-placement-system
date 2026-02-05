@@ -7,6 +7,14 @@ export function json(data, { status = 200, headers } = {}) {
   return NextResponse.json(data, { status, headers });
 }
 
+export function successResponse(data, message = 'Success') {
+  return {
+    success: true,
+    message,
+    data
+  };
+}
+
 export function errorResponse(message, { status = 500, errorCode = "SERVER_ERROR" } = {}) {
   return NextResponse.json(
     {
