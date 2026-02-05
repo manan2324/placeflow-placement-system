@@ -20,6 +20,28 @@ export const exportApplications = (companyId) =>
     responseType: "blob",
   });
 
+export const exportFilteredApplications = (filters) => {
+  const params = new URLSearchParams();
+  
+  // Handle array filters
+  if (filters.companyId && filters.companyId.length > 0) {
+    filters.companyId.forEach(id => params.append("companyId", id));
+  }
+  if (filters.branch && filters.branch.length > 0) {
+    filters.branch.forEach(branch => params.append("branch", branch));
+  }
+  
+  // Handle single value filters
+  if (filters.status) params.append("status", filters.status);
+  if (filters.minCgpa) params.append("minCgpa", filters.minCgpa);
+  if (filters.maxBacklogCount !== "") params.append("maxBacklogCount", filters.maxBacklogCount);
+  if (filters.enrollmentSearch) params.append("enrollmentSearch", filters.enrollmentSearch);
+  
+  return api.get(`/admin/export/applications?${params.toString()}`, {
+    responseType: "blob",
+  });
+};
+
 // Admin: List all students
 export const getStudents = () => api.get("/admin/students");
 

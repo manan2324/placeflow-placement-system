@@ -12,11 +12,12 @@ export default function StudentFiltersPanel({
   branches,
   loading,
   onExport,
+  onFilteredExport,
 }) {
   const [filters, setFilters] = useState({
-    companyId: "",
+    companyId: [],
     status: "",
-    branch: "",
+    branch: [],
     minCgpa: "",
     maxBacklogCount: "",
     enrollmentSearch: "",
@@ -25,9 +26,9 @@ export default function StudentFiltersPanel({
   const filteredApplications = useMemo(() => {
     let data = applications || [];
 
-    if (filters.companyId) {
-      data = data.filter(
-        (app) => String(app.companyId?._id || app.companyId) === filters.companyId
+    if (filters.companyId.length > 0) {
+      data = data.filter((app) =>
+        filters.companyId.includes(String(app.companyId?._id || app.companyId))
       );
     }
 
@@ -35,9 +36,9 @@ export default function StudentFiltersPanel({
       data = data.filter((app) => app.status === filters.status);
     }
 
-    if (filters.branch) {
-      data = data.filter(
-        (app) => (app.studentId?.branch || app.snapshot?.branch) === filters.branch
+    if (filters.branch.length > 0) {
+      data = data.filter((app) =>
+        filters.branch.includes(app.studentId?.branch || app.snapshot?.branch)
       );
     }
 
@@ -73,9 +74,9 @@ export default function StudentFiltersPanel({
 
   const resetFilters = () => {
     setFilters({
-      companyId: "",
+      companyId: [],
       status: "",
-      branch: "",
+      branch: [],
       minCgpa: "",
       maxBacklogCount: "",
       enrollmentSearch: "",
@@ -86,6 +87,16 @@ export default function StudentFiltersPanel({
     setFilters((prev) => ({ ...prev, [field]: value }));
   };
 
+  const toggleFilterItem = (field, value) => {
+    setFilters((prev) => {
+      const currentArray = prev[field];
+      const newArray = currentArray.includes(value)
+        ? currentArray.filter((item) => item !== value)
+        : [...currentArray, value];
+      return { ...prev, [field]: newArray };
+    });
+  };
+
   return (
     <Card title="Student Filters" subtitle="Filter applications by student and company">
       <StudentFiltersForm
@@ -94,8 +105,9 @@ export default function StudentFiltersPanel({
         branches={branches}
         totalCount={filteredApplications.length}
         onChange={updateFilter}
+        onToggle={toggleFilterItem}
         onReset={resetFilters}
-        onExport={() => onExport?.(filters.companyId)}
+        onExport={() => onFilteredExport?.(filters)}
       />
 
       <div className="mt-4">

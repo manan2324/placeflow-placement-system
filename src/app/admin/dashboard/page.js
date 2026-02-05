@@ -6,7 +6,7 @@ import BranchWiseStats from '@/components/admin/dashboard/BranchWiseStats'
 import StatusOverview from '@/components/admin/dashboard/StatusOverview'
 import CompanyApplicantsTable from '@/components/admin/dashboard/CompanyApplicantsTable'
 import StudentFiltersPanel from '@/components/admin/dashboard/StudentFiltersPanel'
-import { exportApplications, getAdminDashboard, getApplications, getCompanies } from '@/services/admin.service'
+import { exportApplications, exportFilteredApplications, getAdminDashboard, getApplications, getCompanies } from '@/services/admin.service'
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
@@ -72,6 +72,39 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleFilteredExport = async (filters) => {
+    try {
+      const res = await exportFilteredApplications(filters)
+      const blob = new Blob([res.data], { type: 'text/csv' })
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      
+      // Generate filename based on filters
+      let filenameParts = []
+      if (filters.branch && filters.branch.length > 0) {
+        filenameParts.push(filters.branch.join('-'))
+      }
+      if (filters.status) {
+        filenameParts.push(filters.status)
+      }
+      if (filters.companyId && filters.companyId.length > 0) {
+        filenameParts.push(filters.companyId.length === 1 ? 'company' : `${filters.companyId.length}companies`)
+      }
+      const filename = filenameParts.length > 0 
+        ? `${filenameParts.join('_')}_applications.csv`
+        : 'filtered_applications.csv'
+      
+      link.download = filename
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (error) {
+      console.error('Failed to export filtered CSV:', error)
+    }
+  }
+
   if (loading) {
     return (
       <AdminLayout>
@@ -104,6 +137,7 @@ export default function AdminDashboard() {
           branches={branches}
           loading={appsLoading}
           onExport={handleExport}
+          onFilteredExport={handleFilteredExport}
         />
       </div>
     </AdminLayout>

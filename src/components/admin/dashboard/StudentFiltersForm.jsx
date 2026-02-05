@@ -9,28 +9,37 @@ export default function StudentFiltersForm({
   branches,
   totalCount,
   onChange,
+  onToggle,
   onReset,
   onExport,
 }) {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Company Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Company</label>
-          <select
-            value={filters.companyId}
-            onChange={(e) => onChange("companyId", e.target.value)}
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition border-gray-300"
-          >
-            <option value="">All Companies</option>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Company {filters.companyId.length > 0 && `(${filters.companyId.length})`}
+          </label>
+          <div className="max-h-48 overflow-y-auto border rounded-lg p-3 space-y-2 bg-white">
             {(companies || []).map((c) => (
-              <option key={c._id} value={c._id}>
-                {c.name}
-              </option>
+              <label key={c._id} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                <input
+                  type="checkbox"
+                  checked={filters.companyId.includes(c._id)}
+                  onChange={() => onToggle("companyId", c._id)}
+                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                />
+                <span className="text-sm text-gray-700">{c.name}</span>
+              </label>
             ))}
-          </select>
+            {(!companies || companies.length === 0) && (
+              <p className="text-sm text-gray-500">No companies available</p>
+            )}
+          </div>
         </div>
 
+        {/* Status Filter */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
           <select
@@ -46,20 +55,24 @@ export default function StudentFiltersForm({
           </select>
         </div>
 
+        {/* Branch Filter */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Branch</label>
-          <select
-            value={filters.branch}
-            onChange={(e) => onChange("branch", e.target.value)}
-            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition border-gray-300"
-          >
-            <option value="">All Branches</option>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Branch {filters.branch.length > 0 && `(${filters.branch.length})`}
+          </label>
+          <div className="max-h-48 overflow-y-auto border rounded-lg p-3 space-y-2 bg-white">
             {(branches || []).map((b) => (
-              <option key={b} value={b}>
-                {b}
-              </option>
+              <label key={b} className="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                <input
+                  type="checkbox"
+                  checked={filters.branch.includes(b)}
+                  onChange={() => onToggle("branch", b)}
+                  className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
+                />
+                <span className="text-sm text-gray-700">{b}</span>
+              </label>
             ))}
-          </select>
+          </div>
         </div>
 
         <Input
@@ -101,7 +114,7 @@ export default function StudentFiltersForm({
           <Button variant="secondary" onClick={onReset}>
             Reset Filters
           </Button>
-          <Button variant="primary" onClick={onExport} disabled={!filters.companyId}>
+          <Button variant="primary" onClick={onExport} disabled={totalCount === 0}>
             Export CSV
           </Button>
         </div>

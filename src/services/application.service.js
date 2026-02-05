@@ -13,6 +13,7 @@ import {
   listApplicationsByCompany,
   listApplicationsByCompanyForExport,
   listApplicationsByStudent,
+  listFilteredApplicationsForExport,
   saveApplication,
 } from "@/repositories/application.repo";
 import { createApplicationLog } from "@/repositories/applicationLog.repo";
@@ -233,15 +234,106 @@ export async function exportCompanyApplicationsCsv({ companyId }) {
 
   const rows = applications.map((app) => [
     csvEscape(app.studentId?.enrollmentNumber, true),
-    csvEscape(app.snapshot.branch),
-    csvEscape(app.snapshot.cgpa),
-    csvEscape(app.snapshot.backlogCount),
+    csvEscape(app.snapshot?.branch || app.studentId?.branch || "N/A"),
+    csvEscape(app.snapshot?.cgpa || app.studentId?.cgpa || "N/A"),
+    csvEscape(app.snapshot?.backlogCount ?? app.studentId?.backlogCount ?? "N/A"),
     csvEscape(app.status),
-    csvEscape(app.appliedAt.toISOString()),
+    csvEscape(app.appliedAt?.toISOString() || "N/A"),
   ]);
 
   const csvContent = buildCsv(headers, rows);
   const fileName = `${company.name}_applications.csv`;
+
+  return { csvContent, fileName };
+}
+
+export async function exportFilteredApplicationsCsv(filters) {
+  await connectDB();
+
+  // Validate companyIds if provided
+  if (filters.companyId && filters.companyId.length > 0) {
+    filters.companyId.forEach((id) => 
+      assertObjectId(id, { name: "companyId", code: "BAD_ID" })
+    );
+  }
+
+  const applications = await listFilteredApplicationsForExport(filters);
+
+  // Apply client-side filters for fields not supported at DB level
+  let filteredApplications = applications;
+
+  if (filters.branch && filters.branch.length > 0) {
+    filteredApplications = filteredApplications.filter((app) =>
+      filters.branch.includes(app.studentId?.branch || app.snapshot?.branch)
+    );
+  }
+
+  if (filters.minCgpa) {
+    const minCgpa = Number(filters.minCgpa);
+    if (!Number.isNaN(minCgpa)) {
+      filteredApplications = filteredApplications.filter((app) => {
+        const cgpa = app.studentId?.cgpa ?? app.snapshot?.cgpa;
+        return typeof cgpa === "number" && cgpa >= minCgpa;
+      });
+    }
+  }
+
+  if (filters.maxBacklogCount !== undefined && filters.maxBacklogCount !== "") {
+    const maxBacklogs = Number(filters.maxBacklogCount);
+    if (!Number.isNaN(maxBacklogs)) {
+      filteredApplications = filteredApplications.filter((app) => {
+        const count = app.studentId?.backlogCount ?? app.snapshot?.backlogCount ?? 0;
+        return count <= maxBacklogs;
+      });
+    }
+  }
+
+  if (filters.enrollmentSearch) {
+    const searchTerm = filters.enrollmentSearch.toLowerCase();
+    filteredApplications = filteredApplications.filter((app) =>
+      (app.studentId?.enrollmentNumber || "").toLowerCase().includes(searchTerm)
+    );
+  }
+
+  const headers = [
+    "Enrollment Number",
+    "Company",
+    "Branch",
+    "CGPA",
+    "Backlog Count",
+    "Application Status",
+    "Applied At",
+  ];
+
+  const rows = filteredApplications.map((app) => [
+    csvEscape(app.studentId?.enrollmentNumber, true),
+    csvEscape(app.companyId?.name || "N/A"),
+    csvEscape(app.snapshot?.branch || app.studentId?.branch || "N/A"),
+    csvEscape(app.snapshot?.cgpa || app.studentId?.cgpa || "N/A"),
+    csvEscape(app.snapshot?.backlogCount ?? app.studentId?.backlogCount ?? "N/A"),
+    csvEscape(app.status),
+    csvEscape(app.appliedAt?.toISOString() || "N/A"),
+  ]);
+
+  const csvContent = buildCsv(headers, rows);
+  
+  // Generate dynamic filename based on filters
+  let filenameParts = [];
+  if (filters.branch && filters.branch.length > 0) {
+    filenameParts.push(filters.branch.join("-"));
+  }
+  if (filters.status) {
+    filenameParts.push(filters.status);
+  }
+  if (filters.companyId && filters.companyId.length === 1 && filteredApplications.length > 0) {
+    filenameParts.push(filteredApplications[0]?.companyId?.name);
+  } else if (filters.companyId && filters.companyId.length > 1) {
+    filenameParts.push(`${filters.companyId.length}companies`);
+  }
+  
+  const fileName = filenameParts.length > 0 
+    ? `${filenameParts.join("_")}_applications.csv`
+    : "filtered_applications.csv";
 
   return { csvContent, fileName };
 }

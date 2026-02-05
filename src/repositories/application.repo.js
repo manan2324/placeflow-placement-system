@@ -69,6 +69,33 @@ export async function listApplicationsByCompanyForExport(companyId, { session } 
   return q;
 }
 
+export async function listFilteredApplicationsForExport(filters, { session } = {}) {
+  const query = {};
+  
+  if (filters.companyId && filters.companyId.length > 0) {
+    query.companyId = { $in: filters.companyId };
+  }
+  
+  if (filters.status) {
+    query.status = filters.status;
+  }
+  
+  const q = Application.find(query)
+    .populate({
+      path: "studentId",
+      model: StudentProfile,
+      select: "enrollmentNumber branch cgpa backlogCount userId",
+    })
+    .populate({
+      path: "companyId",
+      model: Company,
+      select: "name",
+    })
+    .sort({ appliedAt: 1 });
+  if (session) q.session(session);
+  return q;
+}
+
 export async function saveApplication(applicationDoc, { session } = {}) {
   return applicationDoc.save({ session });
 }
