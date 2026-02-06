@@ -1,13 +1,45 @@
 "use client"
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/authStore'
+import axios from '@/lib/axios'
 
 export default function StudentSidebar({ mobileOpen, setMobileOpen }) {
   const pathname = usePathname()
   const router = useRouter()
-  const { user, logout } = useAuthStore()
+  const { user, setAuth, logout } = useAuthStore()
+  const isLoggingOut = useRef(false)
+
+  useEffect(() => {
+    // Fetch user data if not available and not logging out
+    if (!user && !isLoggingOut.current) {
+      fetchUserData()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('/auth/me')
+      if (response.data && response.data.user) {
+        setAuth({ 
+          user: response.data.user, 
+          role: response.data.user.role 
+        })
+      }
+    } catch (error) {
+      // Only handle errors if we're not already logging out
+      if (!isLoggingOut.current) {
+        console.error('Failed to fetch user data:', error)
+        // If unauthorized, redirect to login
+        if (error.response?.status === 401) {
+          logout()
+          router.push('/auth/login')
+        }
+      }
+    }
+  }
 
   const navigation = [
     { name: 'Dashboard', href: '/student/dashboard', icon: '📊' },
@@ -17,12 +49,14 @@ export default function StudentSidebar({ mobileOpen, setMobileOpen }) {
   ]
 
   const handleLogout = async () => {
+    isLoggingOut.current = true
     try {
       await fetch('/api/auth/logout', { method: 'POST' })
-      logout()
-      router.push('/auth/login')
     } catch (error) {
       console.error('Logout failed:', error)
+    } finally {
+      logout()
+      router.push('/auth/login')
     }
   }
 
@@ -87,7 +121,7 @@ export default function StudentSidebar({ mobileOpen, setMobileOpen }) {
         <div className="p-3 sm:p-4 border-t border-gray-200">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center min-w-0">
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold flex-shrink-0 text-sm sm:text-base">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white font-semibold shrink-0 text-sm sm:text-base">
                 {user?.name?.[0] || 'S'}
               </div>
               <div className="ml-2 sm:ml-3 min-w-0 flex-1">
