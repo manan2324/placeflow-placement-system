@@ -138,6 +138,48 @@ export async function listStudentApplications({ userId }) {
   }));
 }
 
+export async function getStudentApplicationDetails({ userId, applicationId }) {
+  await connectDB();
+
+  assertObjectId(applicationId, { name: "applicationId", code: "BAD_ID" });
+
+  const studentProfile = await findStudentProfileByUserId(userId);
+  if (!studentProfile)
+    throw notFound("Student profile not found", "PROFILE_NOT_FOUND");
+
+  const application = await findApplicationById(applicationId, { 
+    populateCompany: true 
+  });
+  
+  if (!application)
+    throw notFound("Application not found", "APPLICATION_NOT_FOUND");
+
+  // Verify ownership
+  if (application.studentId.toString() !== studentProfile._id.toString()) {
+    throw forbidden("Access denied", "ACCESS_DENIED");
+  }
+
+  return {
+    _id: application._id,
+    applicationId: application._id,
+    status: application.status,
+    appliedAt: application.appliedAt,
+    lastUpdatedAt: application.lastUpdatedAt,
+    snapshot: application.snapshot,
+    company: {
+      _id: application.companyId._id,
+      name: application.companyId.name,
+      role: application.companyId.role,
+      ctc: application.companyId.ctc,
+      minCgpa: application.companyId.minCgpa,
+      backlogCount: application.companyId.backlogCount,
+      eligibleBranches: application.companyId.eligibleBranches,
+      applicationDeadline: application.companyId.applicationDeadline,
+      status: application.companyId.status,
+    },
+  };
+}
+
 export async function listCompanyApplications({ companyId, status }) {
   await connectDB();
 

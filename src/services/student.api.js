@@ -3,6 +3,8 @@ import api from "@/lib/axios";
 
 export const getStudentApplications = () => api.get("/student/applications");
 
+export const getStudentApplicationById = (id) => api.get(`/student/applications/${id}`);
+
 export const getStudentDashboard = () => api.get("/student/dashboard");
 
 export const getStudentProfile = () => api.get("/student/profile");

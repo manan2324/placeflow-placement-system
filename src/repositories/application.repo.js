@@ -4,7 +4,7 @@ import StudentProfile from "@/models/StudentProfile";
 
 export async function findApplicationById(applicationId, { session, populateCompany = false, populateStudent = false } = {}) {
   let q = Application.findById(applicationId);
-  if (populateCompany) q = q.populate("companyId", "name role");
+  if (populateCompany) q = q.populate("companyId");
   if (populateStudent) q = q.populate({ path: "studentId", model: StudentProfile, select: "enrollmentNumber branch cgpa backlogCount userId" });
   if (session) q.session(session);
   return q;
