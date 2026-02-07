@@ -5,6 +5,7 @@ import StudentLayout from '@/components/layouts/StudentLayout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
+import ResumeViewer from '@/components/student/ResumeViewer'
 import { getStudentProfile, uploadResume } from '@/services/student.api'
 
 export default function ProfilePage() {
@@ -37,11 +38,15 @@ export default function ProfilePage() {
 
     setUploading(true)
     try {
-      await uploadResume(formData)
-      alert('Resume uploaded successfully!')
+      const response = await uploadResume(formData)
+      alert(response.data?.message || 'Resume uploaded successfully!')
       fetchProfile()
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to upload resume')
+      const errorMsg = error.response?.data?.message || error.message || 'Failed to upload resume'
+      alert(errorMsg)
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Upload error:', error.response?.data || error)
+      }
     } finally {
       setUploading(false)
     }
@@ -241,18 +246,10 @@ export default function ProfilePage() {
                         </p>
                       </div>
                     </div>
-                    <a
-                      href={profile.resumeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-white text-green-700 text-sm font-medium rounded-lg border border-green-300 hover:bg-green-50 transition-all hover:shadow-md"
-                    >
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      View Resume
-                    </a>
+                    <ResumeViewer 
+                      resumeId={profile.resumeUrl} 
+                      className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-lg bg-white text-green-700 border border-green-300 hover:bg-green-50 transition-all hover:shadow-md"
+                    />
                   </div>
 
                   {/* Upload New Resume */}
@@ -264,7 +261,7 @@ export default function ProfilePage() {
                         </svg>
                       </div>
                       <h4 className="text-sm font-semibold text-gray-900 mb-1">Update Resume</h4>
-                      <p className="text-xs text-gray-600 mb-3">PDF only • Max 2MB</p>
+                      <p className="text-xs text-gray-600 mb-3">PDF only • Max 5MB</p>
                       <label className="relative cursor-pointer">
                         <input
                           type="file"
@@ -325,7 +322,7 @@ export default function ProfilePage() {
                         </svg>
                       </div>
                       <h4 className="text-base font-semibold text-gray-900 mb-2">Upload Your Resume</h4>
-                      <p className="text-sm text-gray-600 mb-4">PDF files only • Maximum size: 2MB</p>
+                      <p className="text-sm text-gray-600 mb-4">PDF files only • Maximum size: 5MB</p>
                       <label className="relative cursor-pointer">
                         <input
                           type="file"

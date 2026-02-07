@@ -37,11 +37,15 @@ export async function updateStudentResume(userId, body) {
     throw badRequest("resumeUrl is invalid", "INVALID_RESUME_URL");
   }
 
-  // Store URL (public path) and only accept URLs issued by this server.
-  // Never accept arbitrary external URLs or file system paths.
+  // Store URL or Cloudinary public_id
   const url = body.resumeUrl.trim();
-  if (!url.startsWith("/uploads/resumes/") || !url.toLowerCase().endsWith(".pdf") || url.includes("..")) {
-    throw badRequest("resumeUrl is invalid", "INVALID_RESUME_URL");
+  
+  // Allow local paths OR Cloudinary public IDs
+  const isLocalPath = url.startsWith("/uploads/resumes/") && url.toLowerCase().endsWith(".pdf");
+  const isCloudinaryId = url.startsWith("resumes/") && !url.includes("..");
+  
+  if (!isLocalPath && !isCloudinaryId) {
+    throw badRequest("resumeUrl must be a valid local path or Cloudinary ID", "INVALID_RESUME_URL");
   }
 
   const updated = await updateStudentResumeByUserId(

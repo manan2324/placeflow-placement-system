@@ -7,7 +7,7 @@ export const generateToken = (user) => {
             role: user.role
         },
         process.env.JWT_SECRET,
-        { expiresIn: '7d' }
+        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
     )
 }
 
@@ -15,7 +15,9 @@ export const verifyToken = (token) => {
     try {
         return jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
-        console.error('Token verification failed:', error);
+        if (process.env.NODE_ENV !== 'production') {
+            console.error('Token verification failed:', error);
+        }
         return null;
     }   
 }

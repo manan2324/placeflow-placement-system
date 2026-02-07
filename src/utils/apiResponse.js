@@ -56,7 +56,10 @@ export function fromError(err) {
     return errorResponse("Invalid JSON body", { status: 400, errorCode: "INVALID_JSON" });
   }
 
-  console.error(err);
+  // Log errors in development only
+  if (process.env.NODE_ENV !== "production") {
+    console.error(err);
+  }
   return errorResponse("Server error", { status: 500, errorCode: "SERVER_ERROR" });
 }
 

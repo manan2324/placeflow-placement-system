@@ -57,7 +57,7 @@ npm install
 
 ### 3. Environment Configuration
 
-Create a `.env` file in the root directory:
+Create a `.env.local` file in the root directory:
 
 ```env
 # MongoDB Configuration
@@ -67,14 +67,23 @@ MONGODB_URI=mongodb://localhost:27017/placement-monitoring-system
 JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 JWT_EXPIRES_IN=7d
 
+# File Upload
+RESUME_UPLOAD_PATH=./public/uploads/resumes
+MAX_FILE_SIZE=5242880
+
+# Cloudinary (Optional - for production cloud storage)
+# Leave empty to use local storage in development
+CLOUDINARY_CLOUD_NAME=
+CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+
 # Environment
 NODE_ENV=development
-
-# Application
-NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
-**Important:** Replace `JWT_SECRET` with a strong, random string in production.
+**Important:** 
+- Replace `JWT_SECRET` with a strong, random string in production
+- For production deployment with cloud storage, see [CLOUDINARY_SETUP.md](CLOUDINARY_SETUP.md)
 
 ### 4. Start MongoDB
 

@@ -19,7 +19,6 @@ export default function AdminApplicationsPage() {
   const fetchApplications = async () => {
     try {
       const res = await getApplications()
-      console.log(res.data);
       setApplications(res.data)
     } catch (error) {
       console.error('Failed to fetch applications:', error)

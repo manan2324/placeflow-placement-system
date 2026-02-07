@@ -75,7 +75,9 @@ export async function requireAuth(req) {
         return { user };
 
     } catch (err) {
-        console.error("Auth middleware error:", err);
+        if (process.env.NODE_ENV !== 'production') {
+            console.error("Auth middleware error:", err);
+        }
         return {
             error: errorResponse("Authentication failed", {
                 status: 500,

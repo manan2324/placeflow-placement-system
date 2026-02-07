@@ -44,7 +44,9 @@ export async function POST(request) {
       successResponse(updateRequest, 'Profile update request submitted successfully. Please wait for admin approval.')
     );
   } catch (error) {
-    console.error('Error creating profile update request:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error creating profile update request:', error);
+    }
     return errorResponse(error.message || 'Failed to create profile update request', { status: 500 });
   }
 }
@@ -71,7 +73,9 @@ export async function GET(request) {
       successResponse(requests, 'Profile update requests retrieved successfully')
     );
   } catch (error) {
-    console.error('Error fetching profile update requests:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error fetching profile update requests:', error);
+    }
     return errorResponse(error.message || 'Failed to fetch profile update requests', { status: 500 });
   }
 }

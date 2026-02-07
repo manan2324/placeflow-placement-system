@@ -7,6 +7,7 @@ import Badge from "@/components/ui/Badge"
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import Link from "next/link"
+import ResumeViewer from "@/components/student/ResumeViewer"
 import { getStudents, deleteStudent } from "@/services/admin.service"
 
 export default function AdminStudentsPage() {
@@ -80,7 +81,7 @@ export default function AdminStudentsPage() {
 		) },
 		{ key: "resume", label: "Resume", render: (row) => (
 			row.resumeUrl ? (
-				<Link href={row.resumeUrl} target="_blank" className="text-indigo-600 hover:underline">View</Link>
+				<ResumeViewer resumeId={row.resumeUrl} className="text-sm px-3 py-1" />
 			) : (
 				"—"
 			)
@@ -150,7 +151,7 @@ export default function AdminStudentsPage() {
 									</div>
 									<div className="pt-1 flex items-center justify-between">
 										{s.resumeUrl ? (
-											<Link href={s.resumeUrl} target="_blank" className="text-indigo-600 text-xs hover:underline">View Resume</Link>
+										<ResumeViewer resumeId={s.resumeUrl} className="text-xs px-2 py-1" />
 										) : (
 											<span className="text-xs text-gray-500">No resume</span>
 										)}

@@ -16,6 +16,8 @@ export const uploadResume = (formData) =>
     headers: { "Content-Type": "multipart/form-data" },
   });
 
+export const getResumeUrl = (publicId) => api.get(`/student/resume/view?id=${encodeURIComponent(publicId)}`);
+
 export const applyToCompany = (companyId) =>
   api.post(`/student/apply/${companyId}`);
 
