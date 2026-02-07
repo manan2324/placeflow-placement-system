@@ -83,7 +83,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
         {/* Logo */}
         <div className="p-4 sm:p-6 border-b border-gray-200 flex items-center justify-between">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-indigo-600">PMS</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-indigo-600">PlaceFlow</h1>
             <p className="text-xs sm:text-sm text-gray-600 mt-1">Admin Portal</p>
           </div>
           {/* Mobile Close Button */}

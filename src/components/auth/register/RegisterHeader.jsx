@@ -9,7 +9,7 @@ export default function RegisterHeader() {
         </svg>
       </div>
       <h2 className="mt-6 text-3xl font-bold text-gray-900">Create Account</h2>
-      <p className="mt-2 text-sm text-gray-600">Join the placement monitoring system</p>
+      <p className="mt-2 text-sm text-gray-600">Join PlaceFlow - Your placement management platform</p>
     </div>
   );
 }

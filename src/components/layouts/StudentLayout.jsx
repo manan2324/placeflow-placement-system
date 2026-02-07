@@ -16,9 +16,9 @@ export default function StudentLayout({ children }) {
         <header className="hidden lg:flex bg-white border-b border-gray-200 px-6 py-4 items-center justify-between sticky top-0 z-30">
           <div className="flex items-center space-x-3">
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">P</span>
+              <span className="text-white font-bold text-sm">PF</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">Placement Monitoring System</span>
+            <span className="text-xl font-bold text-gray-900">PlaceFlow</span>
           </div>
           <div className="flex items-center space-x-2">
             <NotificationDropdown />
@@ -37,9 +37,9 @@ export default function StudentLayout({ children }) {
           </button>
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">P</span>
+              <span className="text-white font-bold text-sm">PF</span>
             </div>
-            <span className="text-lg font-bold text-gray-900">PMS</span>
+            <span className="text-lg font-bold text-gray-900">PlaceFlow</span>
           </div>
           <NotificationDropdown />
         </header>

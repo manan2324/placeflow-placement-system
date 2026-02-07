@@ -9,7 +9,7 @@ export default function HeroSection() {
     <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 text-center animate-fade-in">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-slide-up">
         <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-indigo-100 text-indigo-700 rounded-full text-xs sm:text-sm font-medium mb-2 sm:mb-4 animate-bounce-soft">
-          🎓 Welcome to Placement Portal
+          🎓 Welcome to PlaceFlow
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight px-4 sm:px-0">

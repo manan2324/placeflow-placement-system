@@ -9,7 +9,7 @@ export default function LoginHeader() {
         </svg>
       </div>
       <h2 className="mt-6 text-3xl font-bold text-gray-900 animate-fade-in-delay-1">Welcome Back</h2>
-      <p className="mt-2 text-sm text-gray-600 animate-fade-in-delay-2">Sign in to your placement portal</p>
+      <p className="mt-2 text-sm text-gray-600 animate-fade-in-delay-2">Sign in to PlaceFlow</p>
     </div>
   );
 }

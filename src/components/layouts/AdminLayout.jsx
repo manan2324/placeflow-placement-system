@@ -23,9 +23,9 @@ export default function AdminLayout({ children }) {
           </button>
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">P</span>
+              <span className="text-white font-bold text-sm">PF</span>
             </div>
-            <span className="text-lg font-bold text-gray-900">PMS</span>
+            <span className="text-lg font-bold text-gray-900">PlaceFlow</span>
           </div>
           <div className="w-10" /> {/* Spacer for centering */}
         </header>
