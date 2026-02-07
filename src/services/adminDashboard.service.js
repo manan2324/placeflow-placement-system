@@ -14,7 +14,7 @@ export const getAdminDashboard = async () => {
     await connectDB();
 
     const totalStudents = await countStudents();
-    const totalCompanies = await countCompanies();
+    const openCompanies = await countCompanies();
     const totalApplications = await countApplications();
     const placedStudents = await countPlacedStudents();
 
@@ -47,7 +47,7 @@ export const getAdminDashboard = async () => {
 
     return {
         totalStudents,
-        totalCompanies,
+        openCompanies,
         totalApplications,
         placedStudents,
         statusCounts,

@@ -22,9 +22,9 @@ export default function StatsGrid({ stats }) {
       <Card className="hover:scale-105 transition-transform duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm font-medium text-gray-600">Total Companies</p>
+            <p className="text-xs sm:text-sm font-medium text-gray-600">Open Companies</p>
             <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
-              {stats?.totalCompanies || 0}
+              {stats?.openCompanies || 0}
             </p>
           </div>
           <div className="h-10 w-10 sm:h-12 sm:w-12 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0 ml-2">

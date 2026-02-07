@@ -9,7 +9,7 @@ export async function countStudents({ session } = {}) {
 }
 
 export async function countCompanies({ session } = {}) {
-    const q = Company.countDocuments();
+    const q = Company.countDocuments({ status: "OPEN" });
     if (session) q.session(session);
     return q;
 }
