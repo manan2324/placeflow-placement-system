@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react'
 import StudentSidebar from '@/components/layouts/StudentSidebar'
+import NotificationDropdown from '@/components/student/NotificationDropdown'
 
 export default function StudentLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -11,6 +12,19 @@ export default function StudentLayout({ children }) {
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Desktop Header */}
+        <header className="hidden lg:flex bg-white border-b border-gray-200 px-6 py-4 items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center space-x-3">
+            <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">P</span>
+            </div>
+            <span className="text-xl font-bold text-gray-900">Placement Monitoring System</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <NotificationDropdown />
+          </div>
+        </header>
+
         {/* Mobile Header */}
         <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
           <button
@@ -27,7 +41,7 @@ export default function StudentLayout({ children }) {
             </div>
             <span className="text-lg font-bold text-gray-900">PMS</span>
           </div>
-          <div className="w-10" /> {/* Spacer for centering */}
+          <NotificationDropdown />
         </header>
 
         {/* Scrollable Content */}

@@ -3,6 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import { verifyToken } from '@/lib/jwt';
 import profileUpdateRequestService from '@/services/profileUpdateRequest.service';
 import { successResponse, errorResponse } from '@/utils/apiResponse';
+import { notifyProfileUpdate } from '@/utils/notification';
 
 export async function PUT(request, { params }) {
   try {
@@ -30,11 +31,24 @@ export async function PUT(request, { params }) {
     let updatedRequest;
     if (action === 'approve') {
       updatedRequest = await profileUpdateRequestService.approveRequest(id, decoded.userId);
+      
+      // Send approval notification to student
+      await notifyProfileUpdate(
+        updatedRequest.studentId._id || updatedRequest.studentId,
+        'approved'
+      );
     } else {
       if (!rejectionReason) {
         return errorResponse('Rejection reason is required', { status: 400 });
       }
       updatedRequest = await profileUpdateRequestService.rejectRequest(id, decoded.userId, rejectionReason);
+      
+      // Send rejection notification to student with reason
+      await notifyProfileUpdate(
+        updatedRequest.studentId._id || updatedRequest.studentId,
+        'rejected',
+        rejectionReason
+      );
     }
 
     return NextResponse.json(

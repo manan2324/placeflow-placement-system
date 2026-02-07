@@ -3,6 +3,7 @@ import dbConnect from '@/lib/mongodb';
 import { verifyToken } from '@/lib/jwt';
 import profileUpdateRequestService from '@/services/profileUpdateRequest.service';
 import { successResponse, errorResponse } from '@/utils/apiResponse';
+import { createUserNotification } from '@/utils/notification';
 
 export async function POST(request) {
   try {
@@ -30,6 +31,13 @@ export async function POST(request) {
     const updateRequest = await profileUpdateRequestService.createProfileUpdateRequest(
       decoded.userId,
       requestedChanges
+    );
+
+    // Send notification to student
+    await createUserNotification(
+      decoded.userId,
+      'Profile Update Request Submitted',
+      'Your profile update request has been submitted successfully. You will be notified once it is reviewed by the admin.'
     );
 
     return NextResponse.json(
