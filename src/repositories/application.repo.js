@@ -72,8 +72,8 @@ export async function listApplicationsByCompanyForExport(companyId, { session } 
 export async function listFilteredApplicationsForExport(filters, { session } = {}) {
   const query = {};
   
-  if (filters.companyId && filters.companyId.length > 0) {
-    query.companyId = { $in: filters.companyId };
+  if (filters.companyId) {
+    query.companyId = filters.companyId;
   }
   
   if (filters.status) {
@@ -85,6 +85,10 @@ export async function listFilteredApplicationsForExport(filters, { session } = {
       path: "studentId",
       model: StudentProfile,
       select: "enrollmentNumber branch cgpa backlogCount userId",
+      populate: {
+        path: "userId",
+        select: "name email",
+      },
     })
     .populate({
       path: "companyId",

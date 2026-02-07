@@ -8,8 +8,13 @@ export default function StudentApplicationsTable({ data, loading }) {
     <Table
       columns={[
         {
+          key: "name",
+          label: "Name",
+          render: (row) => row.studentId?.userId?.name || "—",
+        },
+        {
           key: "student",
-          label: "Student",
+          label: "Enrollment No.",
           render: (row) => row.studentId?.enrollmentNumber || "—",
         },
         {

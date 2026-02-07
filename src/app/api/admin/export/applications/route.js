@@ -21,13 +21,15 @@ export const GET = withErrorHandling(async (req) => {
   };
   
   const filters = {
-    companyId: getArrayParam("companyId"),
+    companyId: searchParams.get("companyId") || undefined,
     status: searchParams.get("status") || undefined,
     branch: getArrayParam("branch"),
     minCgpa: searchParams.get("minCgpa") || undefined,
     maxBacklogCount: searchParams.get("maxBacklogCount") || undefined,
     enrollmentSearch: searchParams.get("enrollmentSearch") || undefined,
+    yearOfSelection: searchParams.get("yearOfSelection") || undefined,
   };
+
 
   const { csvContent, fileName } = await exportFilteredApplicationsCsv(filters);
 

@@ -292,11 +292,9 @@ export async function exportCompanyApplicationsCsv({ companyId }) {
 export async function exportFilteredApplicationsCsv(filters) {
   await connectDB();
 
-  // Validate companyIds if provided
-  if (filters.companyId && filters.companyId.length > 0) {
-    filters.companyId.forEach((id) => 
-      assertObjectId(id, { name: "companyId", code: "BAD_ID" })
-    );
+  // Validate companyId if provided
+  if (filters.companyId) {
+    assertObjectId(filters.companyId, { name: "companyId", code: "BAD_ID" });
   }
 
   const applications = await listFilteredApplicationsForExport(filters);
@@ -337,7 +335,20 @@ export async function exportFilteredApplicationsCsv(filters) {
     );
   }
 
+  if (filters.yearOfSelection) {
+    const selectedYear = Number(filters.yearOfSelection);
+    if (!Number.isNaN(selectedYear)) {
+      filteredApplications = filteredApplications.filter((app) => {
+        const appliedDate = app.appliedAt;
+        if (!appliedDate) return false;
+        const year = new Date(appliedDate).getFullYear();
+        return year === selectedYear;
+      });
+    }
+  }
+
   const headers = [
+    "Student Name",
     "Enrollment Number",
     "Company",
     "Branch",
@@ -348,6 +359,7 @@ export async function exportFilteredApplicationsCsv(filters) {
   ];
 
   const rows = filteredApplications.map((app) => [
+    csvEscape(app.studentId?.userId?.name || "N/A"),
     csvEscape(app.studentId?.enrollmentNumber, true),
     csvEscape(app.companyId?.name || "N/A"),
     csvEscape(app.snapshot?.branch || app.studentId?.branch || "N/A"),
@@ -367,10 +379,11 @@ export async function exportFilteredApplicationsCsv(filters) {
   if (filters.status) {
     filenameParts.push(filters.status);
   }
-  if (filters.companyId && filters.companyId.length === 1 && filteredApplications.length > 0) {
+  if (filters.yearOfSelection) {
+    filenameParts.push(`year${filters.yearOfSelection}`);
+  }
+  if (filters.companyId && filteredApplications.length > 0) {
     filenameParts.push(filteredApplications[0]?.companyId?.name);
-  } else if (filters.companyId && filters.companyId.length > 1) {
-    filenameParts.push(`${filters.companyId.length}companies`);
   }
   
   const fileName = filenameParts.length > 0 

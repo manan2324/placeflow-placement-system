@@ -88,8 +88,11 @@ export default function AdminDashboard() {
       if (filters.status) {
         filenameParts.push(filters.status)
       }
-      if (filters.companyId && filters.companyId.length > 0) {
-        filenameParts.push(filters.companyId.length === 1 ? 'company' : `${filters.companyId.length}companies`)
+      if (filters.yearOfSelection) {
+        filenameParts.push(`year${filters.yearOfSelection}`)
+      }
+      if (filters.companyId) {
+        filenameParts.push('company')
       }
       const filename = filenameParts.length > 0 
         ? `${filenameParts.join('_')}_applications.csv`

@@ -23,19 +23,18 @@ export const exportApplications = (companyId) =>
 export const exportFilteredApplications = (filters) => {
   const params = new URLSearchParams();
   
-  // Handle array filters
-  if (filters.companyId && filters.companyId.length > 0) {
-    filters.companyId.forEach(id => params.append("companyId", id));
-  }
-  if (filters.branch && filters.branch.length > 0) {
-    filters.branch.forEach(branch => params.append("branch", branch));
-  }
-  
   // Handle single value filters
+  if (filters.companyId) params.append("companyId", filters.companyId);
   if (filters.status) params.append("status", filters.status);
   if (filters.minCgpa) params.append("minCgpa", filters.minCgpa);
   if (filters.maxBacklogCount !== "") params.append("maxBacklogCount", filters.maxBacklogCount);
   if (filters.enrollmentSearch) params.append("enrollmentSearch", filters.enrollmentSearch);
+  if (filters.yearOfSelection) params.append("yearOfSelection", filters.yearOfSelection);
+  
+  // Handle array filters
+  if (filters.branch && filters.branch.length > 0) {
+    filters.branch.forEach(branch => params.append("branch", branch));
+  }
   
   return api.get(`/admin/export/applications?${params.toString()}`, {
     responseType: "blob",

@@ -15,20 +15,21 @@ export default function StudentFiltersPanel({
   onFilteredExport,
 }) {
   const [filters, setFilters] = useState({
-    companyId: [],
+    companyId: "",
     status: "",
     branch: [],
     minCgpa: "",
     maxBacklogCount: "",
     enrollmentSearch: "",
+    yearOfSelection: "",
   });
 
   const filteredApplications = useMemo(() => {
     let data = applications || [];
 
-    if (filters.companyId.length > 0) {
+    if (filters.companyId) {
       data = data.filter((app) =>
-        filters.companyId.includes(String(app.companyId?._id || app.companyId))
+        String(app.companyId?._id || app.companyId) === filters.companyId
       );
     }
 
@@ -69,17 +70,28 @@ export default function StudentFiltersPanel({
       );
     }
 
+    if (filters.yearOfSelection) {
+      const selectedYear = Number(filters.yearOfSelection);
+      data = data.filter((app) => {
+        const appliedDate = app.appliedAt;
+        if (!appliedDate) return false;
+        const year = new Date(appliedDate).getFullYear();
+        return year === selectedYear;
+      });
+    }
+
     return data;
   }, [applications, filters]);
 
   const resetFilters = () => {
     setFilters({
-      companyId: [],
+      companyId: "",
       status: "",
       branch: [],
       minCgpa: "",
       maxBacklogCount: "",
       enrollmentSearch: "",
+      yearOfSelection: "",
     });
   };
 
