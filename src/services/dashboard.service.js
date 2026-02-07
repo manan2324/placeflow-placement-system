@@ -27,7 +27,7 @@ export const getStudentDashboard = async (userId) => {
     const eligibleFilter = {
         status: "OPEN",
         applicationDeadline: { $gt: now },
-        eligibleBranches: student.branch,
+        eligibleBranches: { $in: [student.branch] },
         minCgpa: { $lte: student.cgpa },
     };
 
