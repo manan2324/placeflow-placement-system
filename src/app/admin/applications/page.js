@@ -11,6 +11,9 @@ export default function AdminApplicationsPage() {
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(null)
+  const [branchFilter, setBranchFilter] = useState('ALL')
+  
+  const branches = ['CSE', 'ECE', 'ME', 'CE', 'EE', 'IT', 'CHE']
 
   useEffect(() => {
     fetchApplications()
@@ -49,6 +52,11 @@ export default function AdminApplicationsPage() {
     }
     return colors[status] || 'default'
   }
+
+  // Filter applications by branch
+  const filteredApplications = branchFilter === 'ALL' 
+    ? applications 
+    : applications.filter(app => app.studentId?.branch === branchFilter)
 
   const renderActionButtons = (row) => {
     const isUpdating = updating === row._id
@@ -117,10 +125,41 @@ export default function AdminApplicationsPage() {
   return (
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
-        <div className="animate-slide-up flex justify-between items-start sm:items-center">
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Applications</h1>
-            <p className="text-sm sm:text-base text-gray-600 mt-1">Manage student applications</p>
+        <div className="animate-slide-up">
+          <div className="flex justify-between items-start sm:items-center mb-4">
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Applications</h1>
+              <p className="text-sm sm:text-base text-gray-600 mt-1">Manage student applications</p>
+            </div>
+          </div>
+          
+          {/* Branch Filter */}
+          <div className="flex items-center gap-3 bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm">
+            <label htmlFor="branchFilter" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+              Filter by Branch:
+            </label>
+            <select
+              id="branchFilter"
+              value={branchFilter}
+              onChange={(e) => setBranchFilter(e.target.value)}
+              className="flex-1 sm:flex-initial sm:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-white"
+            >
+              <option value="ALL">All Branches</option>
+              {branches.map((branch) => (
+                <option key={branch} value={branch}>{branch}</option>
+              ))}
+            </select>
+            {branchFilter !== 'ALL' && (
+              <button
+                onClick={() => setBranchFilter('ALL')}
+                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap"
+              >
+                Clear Filter
+              </button>
+            )}
+            <div className="ml-auto text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+              {filteredApplications.length} application{filteredApplications.length !== 1 ? 's' : ''}
+            </div>
           </div>
         </div>
 
@@ -131,12 +170,14 @@ export default function AdminApplicationsPage() {
               <div className="flex justify-center py-8">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
               </div>
-            ) : applications.length === 0 ? (
+            ) : filteredApplications.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-sm">No applications found</p>
+                <p className="text-gray-500 text-sm">
+                  {branchFilter === 'ALL' ? 'No applications found' : `No applications found for ${branchFilter} branch`}
+                </p>
               </div>
             ) : (
-              applications.map((app) => (
+              filteredApplications.map((app) => (
                 <div key={app._id} className="border border-gray-200 rounded-lg p-3 sm:p-4 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
@@ -200,7 +241,7 @@ export default function AdminApplicationsPage() {
 
           {/* Desktop view - Table */}
           <div className="hidden lg:block overflow-x-auto">
-            <Table columns={columns} data={applications} loading={loading} />
+            <Table columns={columns} data={filteredApplications} loading={loading} />
           </div>
         </Card>
       </div>

@@ -76,7 +76,26 @@ export default function LoginForm() {
         localStorage.setItem("token", data.token);
       }
 
-      setAuth({ user: { name: data.name, email: formData.email }, role: data.role });
+      // Fetch complete user data after successful login
+      try {
+        const userResponse = await fetch("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${data.token}`,
+          },
+        });
+        
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setAuth({ user: userData.user, role: data.role });
+        } else {
+          // Fallback if fetching user data fails
+          setAuth({ user: { email: formData.email }, role: data.role });
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data:", error);
+        // Fallback if fetching user data fails
+        setAuth({ user: { email: formData.email }, role: data.role });
+      }
 
       if (data.role === "ADMIN") {
         router.push("/admin/dashboard");

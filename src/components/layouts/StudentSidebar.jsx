@@ -12,11 +12,10 @@ export default function StudentSidebar({ mobileOpen, setMobileOpen }) {
   const isLoggingOut = useRef(false)
 
   useEffect(() => {
-    // Fetch user data if not available and not logging out
-    if (!user && !isLoggingOut.current) {
+    // Fetch user data if not available or incomplete and not logging out
+    if ((!user || !user.name) && !isLoggingOut.current) {
       fetchUserData()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   const fetchUserData = async () => {
