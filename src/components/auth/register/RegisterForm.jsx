@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import { useAuthStore } from "@/store/authStore";
 
 export default function RegisterForm() {
@@ -135,6 +136,7 @@ export default function RegisterForm() {
         role: loginData.role,
       });
 
+      toast.success("Login successful");
       router.push("/student/dashboard");
     } catch (error) {
       setErrors({ general: "Network error. Please try again." });

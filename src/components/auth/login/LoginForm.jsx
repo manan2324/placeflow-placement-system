@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 import { useAuthStore } from "@/store/authStore";
 
 export default function LoginForm() {
@@ -96,6 +97,8 @@ export default function LoginForm() {
         // Fallback if fetching user data fails
         setAuth({ user: { email: formData.email }, role: data.role });
       }
+
+      toast.success("Login successful");
 
       if (data.role === "ADMIN") {
         router.push("/admin/dashboard");

@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 import { useAuthStore } from '@/store/authStore'
 import axios from '@/lib/axios'
 
@@ -56,8 +57,10 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
       await fetch('/api/auth/logout', { method: 'POST' })
     } catch (error) {
       console.error('Logout failed:', error)
+      toast.error('Logout request failed')
     } finally {
       logout()
+      toast.success('Logged out successfully')
       router.push('/auth/login')
     }
   }
