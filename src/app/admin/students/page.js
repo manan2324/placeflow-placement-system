@@ -1,5 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 import AdminLayout from "@/components/layouts/AdminLayout"
 import Card from "@/components/ui/Card"
 import Table from "@/components/ui/Table"
@@ -50,7 +51,7 @@ export default function AdminStudentsPage() {
 
 		try {
 			await deleteStudent(deleteModal.student._id, password)
-			alert("Student deleted successfully!")
+			toast.success("Student deleted successfully!")
 			setDeleteModal({ open: false, student: null })
 			setPassword("")
 			fetchStudents() // Refresh the list

@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import AdminLayout from '@/components/layouts/AdminLayout'
 import Card from '@/components/ui/Card'
 import Table from '@/components/ui/Table'
@@ -34,10 +35,10 @@ export default function AdminApplicationsPage() {
     setUpdating(id)
     try {
       await updateApplicationStatus(id, newStatus)
-      alert('Status updated successfully!')
+      toast.success('Status updated successfully!')
       fetchApplications()
     } catch (error) {
-      alert('Failed to update status')
+      toast.error('Failed to update status')
     } finally {
       setUpdating(null)
     }

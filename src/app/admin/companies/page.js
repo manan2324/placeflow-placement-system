@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import AdminLayout from '@/components/layouts/AdminLayout'
 import Card from '@/components/ui/Card'
 import Table from '@/components/ui/Table'
@@ -32,10 +33,10 @@ export default function AdminCompaniesPage() {
     setUpdating(id)
     try {
       await updateCompanyStatus(id)
-      alert('Company closed successfully!')
+      toast.success('Company closed successfully!')
       fetchCompanies()
     } catch (error) {
-      alert('Failed to close company')
+      toast.error('Failed to close company')
     } finally {
       setUpdating(null)
     }

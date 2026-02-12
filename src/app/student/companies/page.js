@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 import StudentLayout from '@/components/layouts/StudentLayout'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
@@ -32,12 +33,12 @@ export default function CompaniesPage() {
     setApplying(companyId)
     try {
       await applyToCompany(companyId)
-      alert('Application submitted successfully!')
+      toast.success('Application submitted successfully!')
       fetchCompanies() // Refresh to update applied status
     } catch (error) {
       const errorMsg = error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to apply'
       const errorCode = error.response?.data?.code || ''
-      alert(`${errorMsg}${errorCode ? ` (${errorCode})` : ''}`)
+      toast.error(`${errorMsg}${errorCode ? ` (${errorCode})` : ''}`)
     } finally {
       setApplying(null)
     }
