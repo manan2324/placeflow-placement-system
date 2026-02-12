@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 import StudentLayout from '@/components/layouts/StudentLayout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
@@ -39,11 +40,11 @@ export default function ProfilePage() {
     setUploading(true)
     try {
       const response = await uploadResume(formData)
-      alert(response.data?.message || 'Resume uploaded successfully!')
+      toast.success(response.data?.message || 'Resume uploaded successfully!')
       fetchProfile()
     } catch (error) {
       const errorMsg = error.response?.data?.message || error.message || 'Failed to upload resume'
-      alert(errorMsg)
+      toast.error(errorMsg)
       if (process.env.NODE_ENV !== 'production') {
         console.error('Upload error:', error.response?.data || error)
       }
@@ -370,7 +371,7 @@ export default function ProfilePage() {
           <div>
             <p className="text-sm font-medium text-blue-900">Need to update your information?</p>
             <p className="text-sm text-blue-700 mt-1">
-              Click the "Edit Profile" button above to request changes to your enrollment number, branch, CGPA, or backlog count. All changes require admin approval.
+              Click the &quot;Edit Profile&quot; button above to request changes to your enrollment number, branch, CGPA, or backlog count. All changes require admin approval.
             </p>
           </div>
         </div>

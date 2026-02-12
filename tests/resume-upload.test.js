@@ -6,7 +6,7 @@ const { startInMemoryMongo, stopInMemoryMongo, clearDatabase, resetMongooseConne
 
 jest.setTimeout(30000);
 
-const MAX_PDF_BYTES = 2 * 1024 * 1024; // Keep in sync with src/app/api/student/resume/route.js
+const MAX_PDF_BYTES = 5 * 1024 * 1024; // Keep in sync with src/app/api/student/resume/route.js
 
 function getFetchClasses() {
   // Jest runs in node env; File/FormData should exist on modern Node.

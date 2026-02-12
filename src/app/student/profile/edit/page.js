@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'react-toastify'
 import StudentLayout from '@/components/layouts/StudentLayout'
 import Card from '@/components/ui/Card'
 import Input from '@/components/ui/Input'
@@ -36,7 +37,7 @@ export default function EditProfilePage() {
       })
     } catch (error) {
       console.error('Failed to fetch profile:', error)
-      alert('Failed to load profile')
+      toast.error('Failed to load profile')
     } finally {
       setLoading(false)
     }
@@ -69,30 +70,30 @@ export default function EditProfilePage() {
     }
 
     if (Object.keys(requestedChanges).length === 0) {
-      alert('No changes detected')
+      toast.info('No changes detected')
       return
     }
 
     // Validate CGPA range
     if (requestedChanges.cgpa !== undefined && (requestedChanges.cgpa < 0 || requestedChanges.cgpa > 10)) {
-      alert('CGPA must be between 0 and 10')
+      toast.warn('CGPA must be between 0 and 10')
       return
     }
 
     // Validate backlog count
     if (requestedChanges.backlogCount !== undefined && requestedChanges.backlogCount < 0) {
-      alert('Backlog count cannot be negative')
+      toast.warn('Backlog count cannot be negative')
       return
     }
 
     setSubmitting(true)
     try {
       const response = await api.post('/student/profile/request', { requestedChanges })
-      alert(response.data.message || 'Your profile update request has been submitted successfully. Please wait for admin approval.')
+      toast.success(response.data.message || 'Your profile update request has been submitted successfully. Please wait for admin approval.')
       router.push('/student/profile')
     } catch (error) {
       console.error('Failed to submit request:', error)
-      alert(error.response?.data?.message || 'Failed to submit profile update request')
+      toast.error(error.response?.data?.message || 'Failed to submit profile update request')
     } finally {
       setSubmitting(false)
     }

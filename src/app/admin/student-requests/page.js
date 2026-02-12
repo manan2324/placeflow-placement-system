@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import AdminLayout from '@/components/layouts/AdminLayout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
@@ -29,7 +30,7 @@ export default function StudentRequestsPage() {
       setRequests(response.data.data)
     } catch (error) {
       console.error('Failed to fetch requests:', error)
-      alert('Failed to load student requests')
+      toast.error('Failed to load student requests')
     } finally {
       setLoading(false)
     }
@@ -43,11 +44,11 @@ export default function StudentRequestsPage() {
     setProcessingId(requestId)
     try {
       await api.put(`/admin/student-requests/${requestId}`, { action: 'approve' })
-      alert('Profile update request approved successfully')
+      toast.success('Profile update request approved successfully')
       fetchRequests()
     } catch (error) {
       console.error('Failed to approve request:', error)
-      alert(error.response?.data?.message || 'Failed to approve request')
+      toast.error(error.response?.data?.message || 'Failed to approve request')
     } finally {
       setProcessingId(null)
     }
@@ -61,7 +62,7 @@ export default function StudentRequestsPage() {
 
   const handleRejectSubmit = async () => {
     if (!rejectionReason.trim()) {
-      alert('Please provide a reason for rejection')
+      toast.warn('Please provide a reason for rejection')
       return
     }
 
@@ -71,14 +72,14 @@ export default function StudentRequestsPage() {
         action: 'reject',
         rejectionReason: rejectionReason.trim()
       })
-      alert('Profile update request rejected successfully')
+      toast.success('Profile update request rejected successfully')
       setShowRejectModal(false)
       setSelectedRequest(null)
       setRejectionReason('')
       fetchRequests()
     } catch (error) {
       console.error('Failed to reject request:', error)
-      alert(error.response?.data?.message || 'Failed to reject request')
+      toast.error(error.response?.data?.message || 'Failed to reject request')
     } finally {
       setProcessingId(null)
     }
