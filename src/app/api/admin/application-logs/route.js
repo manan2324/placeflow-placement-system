@@ -49,6 +49,7 @@ export const GET = withErrorHandling(async (req) => {
       status: log.applicationId.status,
       student: log.applicationId.studentId ? {
         enrollmentNumber: log.applicationId.studentId.enrollmentNumber,
+        mobileNumber: log.applicationId.studentId.mobileNumber,
         branch: log.applicationId.studentId.branch,
         user: log.applicationId.studentId.userId ? {
           name: log.applicationId.studentId.userId.name,

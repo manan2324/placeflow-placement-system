@@ -101,7 +101,8 @@ export default function StudentRequestsPage() {
       enrollmentNumber: 'Enrollment Number',
       branch: 'Branch',
       cgpa: 'CGPA',
-      backlogCount: 'Backlogs'
+      backlogCount: 'Backlogs',
+      mobileNumber: 'Mobile Number'
     }
 
     Object.keys(requestedChanges).forEach(key => {

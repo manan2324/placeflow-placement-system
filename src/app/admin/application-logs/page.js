@@ -58,6 +58,9 @@ export default function ApplicationLogsPage() {
           <div className="text-xs text-gray-500">
             {row.application?.student?.enrollmentNumber || "—"}
           </div>
+          <div className="text-xs text-gray-500">
+            {row.application?.student?.mobileNumber || "—"}
+          </div>
         </div>
       )
     },
@@ -153,6 +156,9 @@ export default function ApplicationLogsPage() {
                       </h3>
                       <p className="text-xs text-gray-600 mt-0.5">
                         {log.application?.student?.enrollmentNumber || "—"}
+                      </p>
+                      <p className="text-xs text-gray-600 mt-0.5">
+                        {log.application?.student?.mobileNumber || "—"}
                       </p>
                     </div>
                     <span className="text-xs text-gray-500 whitespace-nowrap">
