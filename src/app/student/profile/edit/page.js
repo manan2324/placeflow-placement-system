@@ -18,7 +18,8 @@ export default function EditProfilePage() {
     enrollmentNumber: '',
     branch: '',
     cgpa: '',
-    backlogCount: ''
+    backlogCount: '',
+    mobileNumber: ''
   })
 
   useEffect(() => {
@@ -33,7 +34,8 @@ export default function EditProfilePage() {
         enrollmentNumber: res.data?.enrollmentNumber || '',
         branch: res.data?.branch || '',
         cgpa: res.data?.cgpa || '',
-        backlogCount: res.data?.backlogCount ?? 0
+        backlogCount: res.data?.backlogCount ?? 0,
+        mobileNumber: res.data?.mobileNumber || ''
       })
     } catch (error) {
       console.error('Failed to fetch profile:', error)
@@ -68,6 +70,9 @@ export default function EditProfilePage() {
     if (parseInt(formData.backlogCount) !== profile.backlogCount) {
       requestedChanges.backlogCount = parseInt(formData.backlogCount)
     }
+    if (formData.mobileNumber !== profile.mobileNumber) {
+      requestedChanges.mobileNumber = formData.mobileNumber
+    }
 
     if (Object.keys(requestedChanges).length === 0) {
       toast.info('No changes detected')
@@ -83,6 +88,12 @@ export default function EditProfilePage() {
     // Validate backlog count
     if (requestedChanges.backlogCount !== undefined && requestedChanges.backlogCount < 0) {
       toast.warn('Backlog count cannot be negative')
+      return
+    }
+
+    // Validate mobile number
+    if (requestedChanges.mobileNumber !== undefined && requestedChanges.mobileNumber && !/^[0-9]{10}$/.test(requestedChanges.mobileNumber)) {
+      toast.warn('Mobile number must be 10 digits')
       return
     }
 
@@ -194,6 +205,17 @@ export default function EditProfilePage() {
                 required
                 placeholder="Enter backlog count"
               />
+
+              <Input
+                label="Mobile Number (Optional)"
+                name="mobileNumber"
+                type="tel"
+                value={formData.mobileNumber}
+                onChange={handleChange}
+                placeholder="9876543210"
+                maxLength="10"
+              />
+              <p className="text-xs text-gray-500 -mt-2">Enter 10-digit mobile number</p>
             </div>
 
             {/* Warning Message */}

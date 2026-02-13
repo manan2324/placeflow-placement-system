@@ -20,7 +20,8 @@ class ProfileUpdateRequestService {
       enrollmentNumber: profile.enrollmentNumber,
       branch: profile.branch,
       cgpa: profile.cgpa,
-      backlogCount: profile.backlogCount
+      backlogCount: profile.backlogCount,
+      mobileNumber: profile.mobileNumber
     };
 
     // Create the request

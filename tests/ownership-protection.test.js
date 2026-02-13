@@ -49,6 +49,7 @@ async function seedTwoStudentsAndAdmin() {
     branch: 'CSE',
     cgpa: 8.1,
     backlogCount: 0,
+    mobileNumber: '9876543215',
   });
 
   const studentBProfile = await StudentProfile.create({
@@ -57,6 +58,7 @@ async function seedTwoStudentsAndAdmin() {
     branch: 'CSE',
     cgpa: 8.2,
     backlogCount: 0,
+    mobileNumber: '9876543216',
   });
 
   return { admin, studentAUser, studentBUser, studentAProfile, studentBProfile };

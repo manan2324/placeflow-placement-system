@@ -18,6 +18,7 @@ export default function RegisterForm() {
     branch: "",
     cgpa: "",
     backlogCount: 0,
+    mobileNumber: "",
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
@@ -72,6 +73,12 @@ export default function RegisterForm() {
       newErrors.cgpa = "CGPA must be between 0 and 10";
     }
 
+    if (!formData.mobileNumber) {
+      newErrors.mobileNumber = "Mobile number is required";
+    } else if (!/^[0-9]{10}$/.test(formData.mobileNumber)) {
+      newErrors.mobileNumber = "Mobile number must be 10 digits";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -96,6 +103,8 @@ export default function RegisterForm() {
       if (formData.cgpa) {
         payload.cgpa = parseFloat(formData.cgpa);
       }
+
+      payload.mobileNumber = formData.mobileNumber;
 
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -345,6 +354,27 @@ export default function RegisterForm() {
               placeholder="0"
             />
             <p className="mt-1 text-xs text-gray-500">Enter 0 if you have no backlogs</p>
+          </div>
+
+          <div>
+            <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700 mb-2">
+              Mobile Number *
+            </label>
+            <input
+              id="mobileNumber"
+              name="mobileNumber"
+              type="tel"
+              value={formData.mobileNumber}
+              onChange={handleChange}
+              required
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition ${
+                errors.mobileNumber ? "border-red-300 bg-red-50" : "border-gray-300"
+              }`}
+              placeholder="9876543210"
+              maxLength="10"
+            />
+            {errors.mobileNumber && <p className="mt-1 text-sm text-red-600">{errors.mobileNumber}</p>}
+            <p className="mt-1 text-xs text-gray-500">Enter 10-digit mobile number</p>
           </div>
         </div>
 

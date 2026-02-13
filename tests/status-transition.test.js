@@ -48,6 +48,7 @@ async function seedActors() {
     branch: 'CSE',
     cgpa: 8.0,
     backlogCount: 0,
+    mobileNumber: '9876543210',
   });
 
   return { admin, studentUser, studentProfile };

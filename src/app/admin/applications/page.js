@@ -113,6 +113,7 @@ export default function AdminApplicationsPage() {
 
   const columns = [
     { key: 'studentName', label: 'Student', render: (row) => row.studentId?.userId?.name || 'N/A' },
+    { key: 'mobileNumber', label: 'Mobile Number', render: (row) => row.studentId?.mobileNumber || 'N/A' },
     { key: 'companyName', label: 'Company', render: (row) => row.companyId?.name || 'N/A' },
     { key: 'status', label: 'Status', render: (row) => <Badge variant={getStatusColor(row.status)}>{row.status}</Badge> },
     { key: 'appliedAt', label: 'Applied Date', render: (row) => new Date(row.appliedAt).toLocaleDateString() },
@@ -183,6 +184,7 @@ export default function AdminApplicationsPage() {
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
                       <h3 className="font-semibold text-gray-900 text-sm">{app.studentId?.userId?.name || 'N/A'}</h3>
+                      <p className="text-xs text-gray-600 mt-0.5">{app.studentId?.mobileNumber || 'N/A'}</p>
                       <p className="text-xs text-gray-600 mt-0.5">{app.companyId?.name || 'N/A'}</p>
                     </div>
                     <Badge variant={getStatusColor(app.status)}>{app.status}</Badge>

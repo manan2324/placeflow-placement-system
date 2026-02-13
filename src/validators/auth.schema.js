@@ -13,4 +13,5 @@ export const registerStudentSchema = z.object({
   branch: z.enum(["CSE", "ECE", "ME", "CE", "EE", "IT", "CHE"]),
   cgpa: z.number().min(0).max(10).optional(),
   backlogCount: z.number().min(0).max(10).optional(),
+  mobileNumber: z.string().regex(/^[0-9]{10}$/, "Mobile number must be 10 digits"),
 });

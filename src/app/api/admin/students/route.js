@@ -22,6 +22,7 @@ export const GET = withErrorHandling(async (req) => {
   const data = students.map((s) => ({
     _id: s._id,
     enrollmentNumber: s.enrollmentNumber,
+    mobileNumber: s.mobileNumber,
     branch: s.branch,
     cgpa: s.cgpa,
     hasBacklog: !!s.hasBacklog,

@@ -89,6 +89,7 @@ describe('Resume Upload Tests (file security)', () => {
       branch: 'CSE',
       cgpa: 8.0,
       backlogCount: 0,
+      mobileNumber: '9876543210',
     });
 
     const token = generateToken(student);
@@ -144,6 +145,7 @@ describe('Resume Upload Tests (file security)', () => {
       branch: 'CSE',
       cgpa: 8.0,
       backlogCount: 0,
+      mobileNumber: '9876543211',
     });
 
     const token = generateToken(student);
@@ -194,6 +196,7 @@ describe('Resume Upload Tests (file security)', () => {
       branch: 'CSE',
       cgpa: 8.0,
       backlogCount: 0,
+      mobileNumber: '9876543212',
     });
 
     const token = generateToken(student);
@@ -245,6 +248,7 @@ describe('Resume Upload Tests (file security)', () => {
       branch: 'CSE',
       cgpa: 8.0,
       backlogCount: 0,
+      mobileNumber: '9876543213',
     });
 
     const token = generateToken(student);

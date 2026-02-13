@@ -5,7 +5,7 @@ import connectDB from "@/lib/mongodb";
 import { generateToken } from "@/lib/jwt";
 
 import { findUserByEmail, createUser } from "@/repositories/user.repo";
-import { findStudentByEnrollmentNumber, createStudentProfile } from "@/repositories/student.repo";
+import { findStudentByEnrollmentNumber, findStudentByMobileNumber, createStudentProfile } from "@/repositories/student.repo";
 import { badRequest, conflict, forbidden, unauthorized } from "@/utils/errors";
 
 export async function login({ email, password }) {
@@ -33,24 +33,43 @@ export async function registerStudent(payload) {
   const enrollmentExists = await findStudentByEnrollmentNumber(payload.enrollmentNumber);
   if (enrollmentExists) throw conflict("This Enrollment Number is already registered.", "ENROLLMENT_EXISTS");
 
+  const mobileExists = await findStudentByMobileNumber(payload.mobileNumber);
+  if (mobileExists) throw conflict("This Mobile Number is already registered.", "MOBILE_EXISTS");
+
   if (!payload.password) throw badRequest("Missing required fields", "MISSING_FIELDS");
 
   const passwordHash = await bcrypt.hash(payload.password, 12);
 
-  const user = await createUser({
-    name: payload.name,
-    email: payload.email,
-    passwordHash,
-    role: "STUDENT",
-  });
+  let user = null;
 
-  await createStudentProfile({
-    userId: user._id,
-    enrollmentNumber: payload.enrollmentNumber,
-    branch: payload.branch,
-    cgpa: payload.cgpa,
-    backlogCount: payload.backlogCount,
-  });
+  try {
+    // Create user first
+    user = await createUser({
+      name: payload.name,
+      email: payload.email,
+      passwordHash,
+      role: "STUDENT",
+    });
 
-  return { userId: user._id };
+    // Then create student profile
+    await createStudentProfile({
+      userId: user._id,
+      enrollmentNumber: payload.enrollmentNumber,
+      branch: payload.branch,
+      cgpa: payload.cgpa,
+      backlogCount: payload.backlogCount,
+      mobileNumber: payload.mobileNumber,
+    });
+
+    return { userId: user._id };
+  } catch (error) {
+    // If student profile creation fails, delete the user to maintain consistency
+    if (user && user._id) {
+      const User = mongoose.model('User');
+      await User.findByIdAndDelete(user._id).catch(() => {
+        // Ignore cleanup errors
+      });
+    }
+    throw error;
+  }
 }

@@ -74,6 +74,7 @@ export default function AdminStudentsPage() {
 		{ key: "email", label: "Email", render: (row) => row.user?.email || "—" },
 		{ key: "enrollmentNumber", label: "Enrollment" },
 		{ key: "branch", label: "Branch" },
+		{ key: "mobileNumber", label: "Mobile Number", render: (row) => row.mobileNumber || "—" },
 		{ key: "cgpa", label: "CGPA", render: (row) => typeof row.cgpa === "number" ? row.cgpa.toFixed(2) : "—" },
 		{ key: "backlogCount", label: "Backlog Count", render: (row) => (
 			<Badge variant={row.backlogCount > 0 ? "danger" : "success"}>
@@ -147,6 +148,7 @@ export default function AdminStudentsPage() {
 									<div className="grid grid-cols-2 gap-2 text-xs text-gray-700">
 										<p>Enroll: {s.enrollmentNumber}</p>
 										<p>Branch: {s.branch}</p>
+										<p>Mobile: {s.mobileNumber || "—"}</p>
 										<p>CGPA: {typeof s.cgpa === "number" ? s.cgpa.toFixed(2) : "—"}</p>
 										<p>Created: {s.createdAt ? new Date(s.createdAt).toLocaleDateString() : "—"}</p>
 									</div>
