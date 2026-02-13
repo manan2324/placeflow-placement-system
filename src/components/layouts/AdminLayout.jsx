@@ -1,5 +1,6 @@
 "use client"
 import { useState } from 'react'
+import { Menu } from 'lucide-react'
 import AdminSidebar from '@/components/layouts/AdminSidebar'
 
 export default function AdminLayout({ children }) {
@@ -17,9 +18,7 @@ export default function AdminLayout({ children }) {
             onClick={() => setMobileOpen(true)}
             className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
           >
-            <svg className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <Menu className="h-6 w-6 text-gray-700" />
           </button>
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">

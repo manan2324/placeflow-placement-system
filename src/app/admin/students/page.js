@@ -10,6 +10,7 @@ import Input from "@/components/ui/Input"
 import Link from "next/link"
 import ResumeViewer from "@/components/student/ResumeViewer"
 import { getStudents, deleteStudent } from "@/services/admin.service"
+import { TriangleAlert } from "lucide-react"
 
 export default function AdminStudentsPage() {
 	const [students, setStudents] = useState([])
@@ -190,8 +191,9 @@ export default function AdminStudentsPage() {
 									{deleteModal.student?.user?.name || "Unknown"}
 								</span>
 							</p>
-							<p className="text-sm text-red-600 mt-2 font-medium">
-								⚠️ This will permanently delete the student profile, user account, and all associated applications.
+							<p className="text-sm text-red-600 mt-2 font-medium inline-flex items-start gap-2">
+								<TriangleAlert className="w-4 h-4 shrink-0 mt-0.5" />
+								<span>This will permanently delete the student profile, user account, and all associated applications.</span>
 							</p>
 						</div>
 

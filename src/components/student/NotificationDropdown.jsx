@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { notificationService } from "@/services/notification.service";
-import Badge from "@/components/ui/Badge";
+import { Bell, Loader2, BellOff } from 'lucide-react';
 
 export default function NotificationDropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -106,19 +106,7 @@ export default function NotificationDropdown() {
         className="relative p-2 text-gray-600 hover:text-indigo-600 hover:bg-gray-100 rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
         aria-label="Notifications"
       >
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-          />
-        </svg>
+        <Bell className="h-6 w-6" />
         {/* Unread Badge */}
         {unreadCount > 0 && (
           <span className="absolute top-0.5 right-0.5 h-5 w-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center ring-2 ring-white">
@@ -149,45 +137,15 @@ export default function NotificationDropdown() {
           <div className="overflow-y-auto flex-1">
             {loading && notifications.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
-                <svg
-                  className="animate-spin h-8 w-8 mx-auto mb-2 text-indigo-600"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  />
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  />
-                </svg>
+                <Loader2 className="h-8 w-8 mx-auto mb-2 text-indigo-600 animate-spin" />
                 Loading notifications...
               </div>
             ) : notifications.length === 0 ? (
               <div className="p-8 text-center text-gray-500">
-                <svg
-                  className="h-16 w-16 mx-auto mb-3 text-gray-300"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-                  />
-                </svg>
+                <BellOff className="h-16 w-16 mx-auto mb-3 text-gray-300" />
                 <p className="text-sm font-medium">No notifications yet</p>
                 <p className="text-xs mt-1">
-                  We'll notify you when something happens
+                  We&apos;ll notify you when something happens
                 </p>
               </div>
             ) : (

@@ -2,6 +2,7 @@
 
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
+import { Inbox } from 'lucide-react';
 
 export default function RecentApplicationsCard({ applications, onBrowseCompanies, onOpenApplication, onViewAll }) {
   const getStatusColor = (status) => {
@@ -18,7 +19,7 @@ export default function RecentApplicationsCard({ applications, onBrowseCompanies
     <Card title="Recent Applications" subtitle="Your latest application submissions">
       {!applications || applications.length === 0 ? (
         <div className="text-center py-8 sm:py-12">
-          <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">📭</div>
+          <Inbox className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-3 sm:mb-4 text-gray-400" />
           <p className="text-gray-500 text-base sm:text-lg mb-3 sm:mb-4">No applications yet</p>
           <button
             onClick={onBrowseCompanies}

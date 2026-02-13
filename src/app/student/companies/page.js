@@ -7,6 +7,7 @@ import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { getCompanies, applyToCompany } from '@/services/student.api'
+import { Building2, CheckCircle2, ArrowRight } from 'lucide-react'
 
 export default function CompaniesPage() {
   const router = useRouter()
@@ -65,7 +66,7 @@ export default function CompaniesPage() {
         {companies.length === 0 ? (
           <Card>
             <div className="text-center py-8 sm:py-12">
-              <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🏢</div>
+              <Building2 className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-3 sm:mb-4 text-gray-400" />
               <p className="text-gray-500 text-base sm:text-lg">No companies available</p>
             </div>
           </Card>
@@ -147,9 +148,15 @@ export default function CompaniesPage() {
                         Applying...
                       </span>
                     ) : company.hasApplied ? (
-                      '✓ Already Applied'
+                      <span className="flex items-center justify-center gap-2">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Already Applied
+                      </span>
                     ) : (
-                      'Apply Now →'
+                      <span className="flex items-center justify-center gap-2">
+                        Apply Now
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
                     )}
                   </Button>
                 </div>

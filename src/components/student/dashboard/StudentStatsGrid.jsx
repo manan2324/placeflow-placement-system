@@ -1,6 +1,7 @@
 "use client";
 
 import Card from "@/components/ui/Card";
+import { FileText, Clock3, Target, CheckCircle2 } from 'lucide-react';
 
 export default function StudentStatsGrid({ stats }) {
   return (
@@ -13,8 +14,8 @@ export default function StudentStatsGrid({ stats }) {
               {stats?.totalApplications || 0}
             </p>
           </div>
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-indigo-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">📝</span>
+          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
+            <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-700" />
           </div>
         </div>
       </Card>
@@ -27,8 +28,8 @@ export default function StudentStatsGrid({ stats }) {
               {stats?.pendingCount || 0}
             </p>
           </div>
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">⏳</span>
+          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-yellow-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
+            <Clock3 className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-700" />
           </div>
         </div>
       </Card>
@@ -41,8 +42,8 @@ export default function StudentStatsGrid({ stats }) {
               {stats?.shortlistedCount || 0}
             </p>
           </div>
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">🎯</span>
+          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
+            <Target className="h-5 w-5 sm:h-6 sm:w-6 text-blue-700" />
           </div>
         </div>
       </Card>
@@ -55,8 +56,8 @@ export default function StudentStatsGrid({ stats }) {
               {stats?.selectedCount || 0}
             </p>
           </div>
-          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">✅</span>
+          <div className="h-10 w-10 sm:h-12 sm:w-12 bg-green-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
+            <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-green-700" />
           </div>
         </div>
       </Card>

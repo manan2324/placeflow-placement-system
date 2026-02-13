@@ -1,8 +1,9 @@
 "use client";
+import { GraduationCap, Building2, BarChart3, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
 
 const FEATURES = [
   {
-    icon: "👨‍🎓",
+    Icon: GraduationCap,
     title: "For Students",
     description:
       "Browse companies, apply for positions, track applications, and manage your profile all in one place.",
@@ -10,7 +11,7 @@ const FEATURES = [
     delay: "0s",
   },
   {
-    icon: "🏢",
+    Icon: Building2,
     title: "Company Management",
     description:
       "Manage company listings, set eligibility criteria, and streamline the recruitment process.",
@@ -18,7 +19,7 @@ const FEATURES = [
     delay: "0.1s",
   },
   {
-    icon: "📊",
+    Icon: BarChart3,
     title: "Analytics Dashboard",
     description:
       "Real-time insights into placement statistics, application status, and branch-wise data.",
@@ -26,7 +27,7 @@ const FEATURES = [
     delay: "0.2s",
   },
   {
-    icon: "✅",
+    Icon: CheckCircle2,
     title: "Application Tracking",
     description:
       "Monitor application status from submission to selection with detailed logs and updates.",
@@ -34,7 +35,7 @@ const FEATURES = [
     delay: "0.3s",
   },
   {
-    icon: "🔒",
+    Icon: ShieldCheck,
     title: "Secure & Reliable",
     description:
       "Role-based access control, secure authentication, and data protection built-in.",
@@ -42,7 +43,7 @@ const FEATURES = [
     delay: "0.4s",
   },
   {
-    icon: "⚡",
+    Icon: Zap,
     title: "Fast & Modern",
     description:
       "Built with Next.js for lightning-fast performance and seamless user experience.",
@@ -64,19 +65,22 @@ export default function FeaturesSection() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
-        {FEATURES.map((feature) => (
-          <div
-            key={feature.title}
-            className="bg-white p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-scale-in"
-            style={{ animationDelay: feature.delay }}
-          >
-            <div className={`h-12 w-12 sm:h-14 sm:w-14 ${feature.color} rounded-lg flex items-center justify-center mb-4 sm:mb-6`}>
-              <span className="text-2xl sm:text-3xl">{feature.icon}</span>
+        {FEATURES.map((feature) => {
+          const Icon = feature.Icon;
+          return (
+            <div
+              key={feature.title}
+              className="bg-white p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-scale-in"
+              style={{ animationDelay: feature.delay }}
+            >
+              <div className={`h-12 w-12 sm:h-14 sm:w-14 ${feature.color} rounded-lg flex items-center justify-center mb-4 sm:mb-6`}>
+                <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-gray-800" />
+              </div>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
+              <p className="text-sm sm:text-base text-gray-600">{feature.description}</p>
             </div>
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3">{feature.title}</h3>
-            <p className="text-sm sm:text-base text-gray-600">{feature.description}</p>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

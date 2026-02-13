@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
+import { Check } from 'lucide-react';
 
 export default function StudentFiltersForm({
   filters,
@@ -85,7 +86,7 @@ export default function StudentFiltersForm({
                     `}
                   >
                     {isSelected && (
-                      <span className="inline-block mr-1">✓</span>
+                      <Check className="inline-block mr-1 w-4 h-4" />
                     )}
                     {b}
                   </button>
