@@ -15,13 +15,15 @@ const profileUpdateRequestSchema = new mongoose.Schema({
     enrollmentNumber: String,
     branch: String,
     cgpa: Number,
-    backlogCount: Number
+    backlogCount: Number,
+    mobileNumber: String
   },
   currentValues: {
     enrollmentNumber: String,
     branch: String,
     cgpa: Number,
-    backlogCount: Number
+    backlogCount: Number,
+    mobileNumber: String
   },
   status: {
     type: String,

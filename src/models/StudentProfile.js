@@ -36,6 +36,15 @@ const StudentProfileSchema = new mongoose.Schema({
         default: 0
     },
 
+    mobileNumber: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true,
+        match: /^[0-9]{10}$/,
+        index: true
+    },
+
     resumeUrl: {
         type: String
     },

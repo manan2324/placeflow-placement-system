@@ -19,6 +19,12 @@ export async function findStudentByEnrollmentNumber(enrollmentNumber, { session 
   return q;
 }
 
+export async function findStudentByMobileNumber(mobileNumber, { session } = {}) {
+  const q = StudentProfile.findOne({ mobileNumber });
+  if (session) q.session(session);
+  return q;
+}
+
 export async function createStudentProfile(profileData, { session } = {}) {
   if (session) {
     const [created] = await StudentProfile.create([profileData], { session });
