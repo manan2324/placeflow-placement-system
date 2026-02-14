@@ -6,7 +6,7 @@ import { FileText, Clock3, Target, CheckCircle2 } from 'lucide-react';
 export default function StudentStatsGrid({ stats }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 animate-scale-in">
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Total Applications</p>
@@ -20,7 +20,7 @@ export default function StudentStatsGrid({ stats }) {
         </div>
       </Card>
 
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Pending</p>
@@ -34,7 +34,7 @@ export default function StudentStatsGrid({ stats }) {
         </div>
       </Card>
 
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Shortlisted</p>
@@ -48,7 +48,7 @@ export default function StudentStatsGrid({ stats }) {
         </div>
       </Card>
 
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Selected</p>

@@ -29,13 +29,13 @@ export default function HeroSection() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-4 px-4 sm:px-0">
           <button
             onClick={() => router.push("/auth/register")}
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-all hover:scale-105 hover:shadow-xl text-sm sm:text-base"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition-all hover:scale-[1.02] hover:shadow-xl text-sm sm:text-base"
           >
             Register as Student
           </button>
           <button
             onClick={() => router.push("/auth/login")}
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-indigo-600 border-2 border-indigo-600 rounded-lg font-semibold hover:bg-indigo-50 transition-all hover:scale-105 text-sm sm:text-base"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-indigo-600 border-2 border-indigo-600 rounded-lg font-semibold hover:bg-indigo-50 transition-all hover:scale-[1.02] text-sm sm:text-base"
           >
             Admin Login
           </button>

@@ -106,7 +106,7 @@ export default function StudentSidebar({ mobileOpen, setMobileOpen }) {
                 key={item.name}
                 href={item.href}
                 onClick={handleNavClick}
-                className={`flex items-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 ${
+                className={`flex items-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-[1.02] ${
                   isActive
                     ? 'bg-indigo-50 text-indigo-700'
                     : 'text-gray-700 hover:bg-gray-50'
@@ -134,7 +134,7 @@ export default function StudentSidebar({ mobileOpen, setMobileOpen }) {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-all duration-200 hover:scale-105"
+            className="w-full flex items-center justify-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-all duration-200 hover:scale-[1.02]"
           >
             <LogOut className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
             <span className="text-xs sm:text-sm">Logout</span>

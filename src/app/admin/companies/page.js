@@ -106,9 +106,9 @@ export default function AdminCompaniesPage() {
 
           <Link
             href="/admin/companies/create"
-            className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-indigo-600 text-white hover:bg-indigo-700"
+            className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-indigo-600 text-white hover:bg-indigo-700"
           >
-            Create Company
+            + Create
           </Link>
         </div>
 

@@ -70,7 +70,7 @@ export default function FeaturesSection() {
           return (
             <div
               key={feature.title}
-              className="bg-white p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-scale-in"
+              className="bg-white p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] animate-scale-in"
               style={{ animationDelay: feature.delay }}
             >
               <div className={`h-12 w-12 sm:h-14 sm:w-14 ${feature.color} rounded-lg flex items-center justify-center mb-4 sm:mb-6`}>

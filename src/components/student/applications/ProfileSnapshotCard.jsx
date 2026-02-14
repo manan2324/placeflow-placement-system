@@ -7,7 +7,7 @@ export default function ProfileSnapshotCard({ snapshot }) {
     <Card className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h3 className="text-xl font-bold text-gray-900 mb-1">Your Profile Snapshot</h3>
+          <h3 className="text-xl font-bold text-gray-900 mb-1">Your Profile Details</h3>
           <p className="text-sm text-gray-600">Profile data at the time of application</p>
         </div>
         <User className="h-8 w-8 text-gray-700" />

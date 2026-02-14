@@ -17,9 +17,9 @@ export default function CompanyInfoCard({ company, formatCurrency }) {
 
       <div className="space-y-4">
         <div className="flex justify-between items-center py-3 border-b border-gray-100">
-          <span className="text-gray-600 font-medium inline-flex items-center gap-2"><IndianRupee className="w-4 h-4" /> Package (CTC)</span>
+          <span className="text-gray-600 font-medium inline-flex items-center gap-2"><IndianRupee className="w-4 h-4" /> Package (LPA)</span>
           <span className="text-xl font-bold text-indigo-600">
-            {formatCurrency(company.ctc)}
+            {company.ctc}
           </span>
         </div>
 

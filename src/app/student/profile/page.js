@@ -312,7 +312,7 @@ export default function ProfilePage() {
                         <span className={`inline-flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all ${
                           uploading 
                             ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
-                            : 'bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-lg hover:scale-105'
+                            : 'bg-indigo-600 text-white hover:bg-indigo-700 hover:shadow-lg hover:scale-[1.02]'
                         }`}>
                           {uploading ? (
                             <>

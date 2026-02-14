@@ -19,6 +19,7 @@ export default function AdminStudentsPage() {
 	const [password, setPassword] = useState("")
 	const [deleting, setDeleting] = useState(false)
 	const [error, setError] = useState("")
+	const [selectedBranch, setSelectedBranch] = useState("ALL")
 
 	useEffect(() => {
 		fetchStudents()
@@ -70,6 +71,14 @@ export default function AdminStudentsPage() {
 		setError("")
 	}
 
+	// Get unique branches from students
+	const branches = ["ALL", ...new Set(students.map(s => s.branch).filter(Boolean))]
+
+	// Filter students based on selected branch
+	const filteredStudents = selectedBranch === "ALL" 
+		? students 
+		: students.filter(s => s.branch === selectedBranch)
+
 	const columns = [
 		{ key: "name", label: "Name", render: (row) => row.user?.name || "—" },
 		{ key: "email", label: "Email", render: (row) => row.user?.email || "—" },
@@ -116,26 +125,59 @@ export default function AdminStudentsPage() {
 					</div>
 					<Button
 						variant="primary"
-						className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 active:scale-95 bg-indigo-600 text-white hover:bg-indigo-700"
+						className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 bg-indigo-600 text-white hover:bg-indigo-700"
 						onClick={fetchStudents}
 					>
 						Refresh
 					</Button>
 				</div>
 
-				<Card title="Student Directory" subtitle="All registered students">
+				{/* Branch Filter */}
+				<div className="flex flex-wrap items-center gap-2 bg-white p-4 rounded-lg border border-gray-200">
+					<span className="text-sm font-medium text-gray-700">Filter by Branch:</span>
+					{branches.map((branch) => (
+						<button
+							key={branch}
+							onClick={() => setSelectedBranch(branch)}
+							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+								selectedBranch === branch
+									? "bg-indigo-600 text-white shadow-md"
+									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
+							}`}
+						>
+							{branch}
+							{branch !== "ALL" && (
+								<span className="ml-2 text-xs opacity-75">
+									({students.filter(s => s.branch === branch).length})
+								</span>
+							)}
+							{branch === "ALL" && (
+								<span className="ml-2 text-xs opacity-75">
+									({students.length})
+								</span>
+							)}
+						</button>
+					))}
+				</div>
+
+				<Card 
+					title="Student Directory" 
+					subtitle={`${filteredStudents.length} student${filteredStudents.length !== 1 ? 's' : ''} ${selectedBranch !== "ALL" ? `in ${selectedBranch}` : 'registered'}`}
+				>
 					{/* Mobile view - Card list */}
 					<div className="block lg:hidden space-y-3">
 						{loading ? (
 							<div className="flex justify-center py-8">
 								<div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
 							</div>
-						) : students.length === 0 ? (
+						) : filteredStudents.length === 0 ? (
 							<div className="text-center py-8">
-								<p className="text-gray-500 text-sm">No students found</p>
+								<p className="text-gray-500 text-sm">
+									{selectedBranch === "ALL" ? "No students found" : `No students found in ${selectedBranch} branch`}
+								</p>
 							</div>
 						) : (
-							students.map((s) => (
+							filteredStudents.map((s) => (
 								<div key={s._id} className="border border-gray-200 rounded-lg p-3 sm:p-4 space-y-2">
 									<div className="flex items-start justify-between gap-2">
 										<div className="min-w-0 flex-1">
@@ -174,7 +216,7 @@ export default function AdminStudentsPage() {
 
 					{/* Desktop view - Table */}
 					<div className="hidden lg:block overflow-x-auto">
-						<Table columns={columns} data={students} loading={loading} />
+						<Table columns={columns} data={filteredStudents} loading={loading} />
 					</div>
 				</Card>
 			</div>

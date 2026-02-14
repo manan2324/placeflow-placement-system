@@ -26,7 +26,7 @@ export default function HomeNavbar() {
           </Link>
           <Link
             href="/auth/register"
-            className="text-sm md:text-base px-4 md:px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all hover:scale-105"
+            className="text-sm md:text-base px-4 md:px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all hover:scale-[1.02]"
           >
             Get Started
           </Link>

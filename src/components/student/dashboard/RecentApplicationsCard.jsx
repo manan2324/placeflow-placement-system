@@ -23,7 +23,7 @@ export default function RecentApplicationsCard({ applications, onBrowseCompanies
           <p className="text-gray-500 text-base sm:text-lg mb-3 sm:mb-4">No applications yet</p>
           <button
             onClick={onBrowseCompanies}
-            className="px-4 sm:px-6 py-2 bg-indigo-600 text-white text-sm sm:text-base rounded-lg hover:bg-indigo-700 transition-all hover:scale-105"
+            className="px-4 sm:px-6 py-2 bg-indigo-600 text-white text-sm sm:text-base rounded-lg hover:bg-indigo-700 transition-all hover:scale-[1.02]"
           >
             Browse Companies
           </button>
@@ -33,7 +33,7 @@ export default function RecentApplicationsCard({ applications, onBrowseCompanies
           {applications.map((app) => (
             <div
               key={app._id}
-              className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg hover:shadow-md transition-all duration-200 hover:scale-[1.02] cursor-pointer gap-3 sm:gap-0"
+              className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg hover:shadow-md transition-all duration-200 hover:scale-[1.002] cursor-pointer gap-3 sm:gap-0"
               onClick={() => onOpenApplication?.(app._id)}
             >
               <div className="flex-1 min-w-0">

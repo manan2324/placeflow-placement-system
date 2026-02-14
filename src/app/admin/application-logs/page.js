@@ -128,7 +128,7 @@ export default function ApplicationLogsPage() {
           </div>
           <Button
             variant="primary"
-            className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-105 active:scale-95 bg-indigo-600 text-white hover:bg-indigo-700"
+            className="px-4 py-2 rounded-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-95 bg-indigo-600 text-white hover:bg-indigo-700"
             onClick={fetchLogs}
           >
             Refresh

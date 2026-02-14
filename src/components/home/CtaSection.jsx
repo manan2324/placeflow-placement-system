@@ -15,13 +15,13 @@ export default function CtaSection() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4">
           <Link
             href="/auth/register"
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:scale-105 hover:shadow-xl text-sm sm:text-base"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-white text-indigo-600 rounded-lg font-semibold hover:bg-gray-100 transition-all hover:scale-[1.02] hover:shadow-xl text-sm sm:text-base"
           >
             Create Account
           </Link>
           <Link
             href="/auth/login"
-            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-indigo-700 text-white rounded-lg font-semibold hover:bg-indigo-800 transition-all hover:scale-105 border-2 border-white/20 text-sm sm:text-base"
+            className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-indigo-700 text-white rounded-lg font-semibold hover:bg-indigo-800 transition-all hover:scale-[1.02] border-2 border-white/20 text-sm sm:text-base"
           >
             Sign In
           </Link>
