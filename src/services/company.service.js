@@ -26,6 +26,23 @@ export async function listCompaniesForRequest(req) {
 
   const companies = await listCompanies(filter);
 
+  // Auto-close companies whose deadline has passed
+  const now = new Date();
+  const updatePromises = companies
+    .filter(company => company.status === "OPEN" && company.applicationDeadline <= now)
+    .map(company => updateCompanyStatus(company._id, "CLOSED"));
+  
+  if (updatePromises.length > 0) {
+    await Promise.all(updatePromises);
+    // Refetch companies if any were updated
+    const updatedCompanies = await listCompanies(filter);
+    return await processCompaniesForStudent(updatedCompanies, authResult, role);
+  }
+
+  return await processCompaniesForStudent(companies, authResult, role);
+}
+
+async function processCompaniesForStudent(companies, authResult, role) {
   // If student, check which companies they've already applied to
   if (role === "STUDENT" && authResult?.user?._id) {
     const studentProfile = await findStudentProfileByUserId(authResult.user._id);
@@ -60,9 +77,6 @@ export async function createCompanyAsAdmin(adminUserId, body) {
   if (Number.isNaN(deadline.getTime())) {
     throw badRequest("applicationDeadline is invalid", "INVALID_DEADLINE");
   }
-
-  // Set deadline to end of the selected day (23:59:59.999)
-  deadline.setHours(23, 59, 59, 999);
 
   if (deadline <= new Date()) {
     throw badRequest("Application deadline must be in the future", "DEADLINE_IN_PAST");

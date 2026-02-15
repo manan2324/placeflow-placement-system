@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "react-toastify/dist/ReactToastify.css";
 
+@theme {
+  --font-arial: Arial, Helvetica, sans-serif;
+}
+
+/* Apply Arial font globally */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 /* Custom Animations for Better UI */
 @keyframes fadeIn {
   from {

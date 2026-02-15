@@ -7,6 +7,8 @@ import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { getCompanies, applyToCompany } from '@/services/student.api'
+import { Building2, CheckCircle2, ArrowRight } from 'lucide-react'
+import { formatDateTime } from '@/utils/date'
 
 export default function CompaniesPage() {
   const router = useRouter()
@@ -37,11 +39,19 @@ export default function CompaniesPage() {
       fetchCompanies() // Refresh to update applied status
     } catch (error) {
       const errorMsg = error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to apply'
-      const errorCode = error.response?.data?.code || ''
-      toast.error(`${errorMsg}${errorCode ? ` (${errorCode})` : ''}`)
+      toast.error(errorMsg)
     } finally {
       setApplying(null)
     }
+  }
+
+  // Get effective status considering deadline
+  const getEffectiveStatus = (company) => {
+    if (company.status === 'CLOSED') return 'CLOSED'
+    if (company.applicationDeadline && new Date(company.applicationDeadline) <= new Date()) {
+      return 'CLOSED'
+    }
+    return company.status
   }
 
   if (loading) {
@@ -65,7 +75,7 @@ export default function CompaniesPage() {
         {companies.length === 0 ? (
           <Card>
             <div className="text-center py-8 sm:py-12">
-              <div className="text-4xl sm:text-6xl mb-3 sm:mb-4">🏢</div>
+              <Building2 className="h-12 w-12 sm:h-16 sm:w-16 mx-auto mb-3 sm:mb-4 text-gray-400" />
               <p className="text-gray-500 text-base sm:text-lg">No companies available</p>
             </div>
           </Card>
@@ -83,7 +93,7 @@ export default function CompaniesPage() {
                       <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">{company.name}</h3>
                       <p className="text-sm sm:text-base text-indigo-600 font-medium">{company.role}</p>
                     </div>
-                    {company.status === 'OPEN' ? (
+                    {getEffectiveStatus(company) === 'OPEN' ? (
                       <Badge variant="success" className="shrink-0">Open</Badge>
                     ) : (
                       <Badge variant="danger" className="shrink-0">Closed</Badge>
@@ -125,11 +135,7 @@ export default function CompaniesPage() {
                       <div className="flex items-center gap-2 pt-2 border-t border-gray-200">
                         <span className="font-semibold text-gray-700 min-w-22.5">Deadline:</span>
                         <span className="text-gray-900 font-medium">
-                          {new Date(company.applicationDeadline).toLocaleDateString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric'
-                          })}
+                          {formatDateTime(company.applicationDeadline)}
                         </span>
                       </div>
                     )}
@@ -138,7 +144,7 @@ export default function CompaniesPage() {
                   {/* Apply Button */}
                   <Button
                     onClick={() => handleApply(company._id)}
-                    disabled={company.status !== 'OPEN' || applying === company._id || company.hasApplied}
+                    disabled={getEffectiveStatus(company) !== 'OPEN' || applying === company._id || company.hasApplied}
                     className="w-full text-sm sm:text-base py-2.5 sm:py-3 font-semibold"
                   >
                     {applying === company._id ? (
@@ -147,9 +153,15 @@ export default function CompaniesPage() {
                         Applying...
                       </span>
                     ) : company.hasApplied ? (
-                      '✓ Already Applied'
+                      <span className="flex items-center justify-center gap-2">
+                        <CheckCircle2 className="w-4 h-4" />
+                        Already Applied
+                      </span>
                     ) : (
-                      'Apply Now →'
+                      <span className="flex items-center justify-center gap-2">
+                        Apply Now
+                        <ArrowRight className="w-4 h-4" />
+                      </span>
                     )}
                   </Button>
                 </div>

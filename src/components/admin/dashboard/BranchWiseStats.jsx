@@ -3,6 +3,7 @@
 import Card from "@/components/ui/Card";
 
 export default function BranchWiseStats({ branchWiseStats }) {
+  console.log(branchWiseStats);
   return (
     <Card title="Branch-wise Statistics">
       {branchWiseStats && branchWiseStats.length > 0 ? (
@@ -14,7 +15,7 @@ export default function BranchWiseStats({ branchWiseStats }) {
                 Applications: {item.totalApplications}
               </p>
               <p className="text-xs sm:text-sm text-green-600 font-medium">
-                Placed: {item.placed}
+                Selected: {item.placed}
               </p>
             </div>
           ))}

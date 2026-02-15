@@ -1,11 +1,12 @@
 "use client";
 
 import Card from "@/components/ui/Card";
+import { GraduationCap, Building2, FileText, CheckCircle2 } from 'lucide-react';
 
 export default function StatsGrid({ stats }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 animate-scale-in">
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Total Students</p>
@@ -14,12 +15,12 @@ export default function StatsGrid({ stats }) {
             </p>
           </div>
           <div className="h-10 w-10 sm:h-12 sm:w-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">🎓</span>
+            <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-blue-700" />
           </div>
         </div>
       </Card>
 
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Open Companies</p>
@@ -28,12 +29,12 @@ export default function StatsGrid({ stats }) {
             </p>
           </div>
           <div className="h-10 w-10 sm:h-12 sm:w-12 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">🏢</span>
+            <Building2 className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-700" />
           </div>
         </div>
       </Card>
 
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Total Applications</p>
@@ -42,12 +43,12 @@ export default function StatsGrid({ stats }) {
             </p>
           </div>
           <div className="h-10 w-10 sm:h-12 sm:w-12 bg-yellow-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">📝</span>
+            <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-700" />
           </div>
         </div>
       </Card>
 
-      <Card className="hover:scale-105 transition-transform duration-200">
+      <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Placed Students</p>
@@ -56,7 +57,7 @@ export default function StatsGrid({ stats }) {
             </p>
           </div>
           <div className="h-10 w-10 sm:h-12 sm:w-12 bg-green-100 rounded-lg flex items-center justify-center shrink-0 ml-2">
-            <span className="text-xl sm:text-2xl">✅</span>
+            <CheckCircle2 className="h-5 w-5 sm:h-6 sm:w-6 text-green-700" />
           </div>
         </div>
       </Card>

@@ -7,6 +7,7 @@ import Table from '@/components/ui/Table'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { getApplications, updateApplicationStatus } from '@/services/admin.service'
+import { formatDate } from '@/utils/date'
 
 export default function AdminApplicationsPage() {
   const [applications, setApplications] = useState([])
@@ -116,7 +117,7 @@ export default function AdminApplicationsPage() {
     { key: 'mobileNumber', label: 'Mobile Number', render: (row) => row.studentId?.mobileNumber || 'N/A' },
     { key: 'companyName', label: 'Company', render: (row) => row.companyId?.name || 'N/A' },
     { key: 'status', label: 'Status', render: (row) => <Badge variant={getStatusColor(row.status)}>{row.status}</Badge> },
-    { key: 'appliedAt', label: 'Applied Date', render: (row) => new Date(row.appliedAt).toLocaleDateString() },
+    { key: 'appliedAt', label: 'Applied Date', render: (row) => formatDate(row.appliedAt) },
     { 
       key: 'actions', 
       label: 'Actions', 
@@ -190,7 +191,7 @@ export default function AdminApplicationsPage() {
                     <Badge variant={getStatusColor(app.status)}>{app.status}</Badge>
                   </div>
                   <p className="text-xs text-gray-500">
-                    Applied: {new Date(app.appliedAt).toLocaleDateString()}
+                    Applied: {formatDate(app.appliedAt)}
                   </p>
                   <div className="flex gap-2 pt-1">
                     {app.status === 'APPLIED' && (

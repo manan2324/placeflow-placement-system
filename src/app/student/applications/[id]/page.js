@@ -12,6 +12,16 @@ import StatusMessageCard from '@/components/student/applications/StatusMessageCa
 import LoadingState from '@/components/student/applications/LoadingState'
 import ErrorState from '@/components/student/applications/ErrorState'
 import NotFoundState from '@/components/student/applications/NotFoundState'
+import { FileText, Clock3, ClipboardList, CheckCircle2, XCircle } from 'lucide-react'
+import { formatDateTime } from '@/utils/date'
+
+const STATUS_ICONS = {
+  APPLIED: FileText,
+  PENDING: Clock3,
+  SHORTLISTED: ClipboardList,
+  SELECTED: CheckCircle2,
+  REJECTED: XCircle,
+}
 
 export default function ApplicationDetailsPage({ params }) {
   const router = useRouter()
@@ -48,17 +58,6 @@ export default function ApplicationDetailsPage({ params }) {
     return colors[status] || 'default'
   }
 
-  const getStatusIcon = (status) => {
-    const icons = {
-      APPLIED: '📝',
-      PENDING: '⏳',
-      SHORTLISTED: '📋',
-      SELECTED: '✅',
-      REJECTED: '❌',
-    }
-    return icons[status] || '📄'
-  }
-
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('en-IN', {
       style: 'currency',
@@ -68,13 +67,7 @@ export default function ApplicationDetailsPage({ params }) {
   }
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+    return formatDateTime(date)
   }
 
   if (loading) return <LoadingState />
@@ -88,13 +81,13 @@ export default function ApplicationDetailsPage({ params }) {
           application={application}
           onBack={() => router.back()}
           getStatusColor={getStatusColor}
-          getStatusIcon={getStatusIcon}
+          statusIcons={STATUS_ICONS}
         />
 
         <ApplicationTimeline 
           application={application}
           formatDate={formatDate}
-          getStatusIcon={getStatusIcon}
+          statusIcons={STATUS_ICONS}
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

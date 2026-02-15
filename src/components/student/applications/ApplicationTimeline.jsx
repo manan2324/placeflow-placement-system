@@ -1,6 +1,9 @@
 import Card from '@/components/ui/Card'
+import { Check, FileText } from 'lucide-react'
 
-export default function ApplicationTimeline({ application, formatDate, getStatusIcon }) {
+export default function ApplicationTimeline({ application, formatDate, statusIcons }) {
+  const StatusIcon = statusIcons?.[application.status] || FileText
+
   return (
     <Card className="animate-scale-in">
       <div className="border-l-4 border-indigo-500 pl-6 py-4">
@@ -8,9 +11,7 @@ export default function ApplicationTimeline({ application, formatDate, getStatus
         <div className="space-y-4">
           <div className="flex items-start gap-4">
             <div className="shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <svg className="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
+              <Check className="w-5 h-5 text-green-600" />
             </div>
             <div className="flex-1">
               <p className="font-semibold text-gray-900">Application Submitted</p>
@@ -26,7 +27,7 @@ export default function ApplicationTimeline({ application, formatDate, getStatus
                 application.status === 'SHORTLISTED' ? 'bg-blue-100' :
                 'bg-yellow-100'
               }`}>
-                <span className="text-xl">{getStatusIcon(application.status)}</span>
+                <StatusIcon className="w-5 h-5 text-gray-700" />
               </div>
               <div className="flex-1">
                 <p className="font-semibold text-gray-900">Status Updated to {application.status}</p>

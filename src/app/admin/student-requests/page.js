@@ -5,7 +5,9 @@ import AdminLayout from '@/components/layouts/AdminLayout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
+import { Inbox } from 'lucide-react'
 import api from '@/lib/axios'
+import { formatDateTime } from '@/utils/date'
 
 export default function StudentRequestsPage() {
   const [requests, setRequests] = useState([])
@@ -157,19 +159,7 @@ export default function StudentRequestsPage() {
         {requests.length === 0 ? (
           <Card>
             <div className="text-center py-12">
-              <svg
-                className="mx-auto h-12 w-12 text-gray-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
-                />
-              </svg>
+              <Inbox className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-sm font-medium text-gray-900">No requests found</h3>
               <p className="mt-1 text-sm text-gray-500">
                 {filter === 'pending' 
@@ -193,13 +183,7 @@ export default function StudentRequestsPage() {
                         </h3>
                         <p className="text-sm text-gray-600">{request.studentId?.email}</p>
                         <p className="text-xs text-gray-500 mt-1">
-                          Requested on {new Date(request.createdAt).toLocaleString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          Requested on {formatDateTime(request.createdAt)}
                         </p>
                       </div>
                       <div>
@@ -251,13 +235,7 @@ export default function StudentRequestsPage() {
                           {request.reviewedBy?.name || 'Admin'}
                         </p>
                         <p className="text-xs text-gray-600 mt-1">
-                          {new Date(request.reviewedAt).toLocaleString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          Reviewed on {formatDateTime(request.reviewedAt)}
                         </p>
                         {request.rejectionReason && (
                           <p className="text-sm text-red-700 mt-2">

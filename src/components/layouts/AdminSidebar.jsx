@@ -1,8 +1,9 @@
 "use client"
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
+import { LayoutDashboard, GraduationCap, Building2, FileText, FilePenLine, ClipboardList, X, LogOut } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import axios from '@/lib/axios'
 
@@ -43,12 +44,12 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
   }
 
   const navigation = [
-    { name: 'Dashboard', href: '/admin/dashboard', icon: '📊' },
-    { name: 'Students', href: '/admin/students', icon: '🎓' },
-    { name: 'Companies', href: '/admin/companies', icon: '🏢' },
-    { name: 'Applications', href: '/admin/applications', icon: '📝' },
-    { name: 'Student Requests', href: '/admin/student-requests', icon: '✏️' },
-    { name: 'Logs', href: '/admin/application-logs', icon: '📋' },
+    { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Students', href: '/admin/students', icon: GraduationCap },
+    { name: 'Companies', href: '/admin/companies', icon: Building2 },
+    { name: 'Applications', href: '/admin/applications', icon: FileText },
+    { name: 'Student Requests', href: '/admin/student-requests', icon: FilePenLine },
+    { name: 'Logs', href: '/admin/application-logs', icon: ClipboardList },
   ]
 
   const handleLogout = async () => {
@@ -94,9 +95,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
             onClick={() => setMobileOpen(false)}
             className="lg:hidden p-2 rounded-lg hover:bg-gray-100"
           >
-            <svg className="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
+            <X className="h-5 w-5 text-gray-500" />
           </button>
         </div>
 
@@ -104,18 +103,19 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
         <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto">
           {navigation.map((item) => {
             const isActive = pathname === item.href
+            const Icon = item.icon
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={handleNavClick}
-                className={`flex items-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-105 ${
+                className={`flex items-center px-3 sm:px-4 py-2.5 sm:py-3 text-sm font-medium rounded-lg transition-all duration-200 hover:scale-[1.02] ${
                   isActive
                     ? 'bg-indigo-50 text-indigo-700'
                     : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
-                <span className="mr-2 sm:mr-3 text-base sm:text-lg">{item.icon}</span>
+                <Icon className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="text-sm sm:text-base">{item.name}</span>
               </Link>
             )
@@ -137,11 +137,9 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
           </div>
           <button
             onClick={handleLogout}
-            className="w-full flex items-center justify-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-all duration-200 hover:scale-105"
+            className="w-full flex items-center justify-center px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-all duration-200 hover:scale-[1.02]"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
+            <LogOut className="w-4 h-4 sm:w-5 sm:h-5 mr-1 sm:mr-2" />
             <span className="text-xs sm:text-sm">Logout</span>
           </button>
         </div>
