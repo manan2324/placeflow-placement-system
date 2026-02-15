@@ -10,6 +10,15 @@ import { getApplicationLogs } from "@/services/admin.service"
 export default function ApplicationLogsPage() {
   const [logs, setLogs] = useState([])
   const [loading, setLoading] = useState(true)
+  const [selectedBranch, setSelectedBranch] = useState("ALL")
+  const [selectedYear, setSelectedYear] = useState("ALL")
+
+  // Extract year from log's changedAt date
+  const getLogYear = (changedAt) => {
+    if (!changedAt) return null
+    const date = new Date(changedAt)
+    return date.getFullYear()
+  }
 
   useEffect(() => {
     fetchLogs()
@@ -25,6 +34,32 @@ export default function ApplicationLogsPage() {
       setLoading(false)
     }
   }
+
+  // Get unique branches from logs
+  const branches = ["ALL", ...new Set(
+    logs
+      .map(log => log.application?.student?.branch)
+      .filter(Boolean)
+  )]
+
+  // Get unique years from logs
+  const years = ["ALL", ...new Set(
+    logs
+      .map(log => getLogYear(log.changedAt))
+      .filter(year => year !== null)
+      .sort((a, b) => b - a) // Sort in descending order (newest first)
+  )]
+
+  // Filter logs based on selected branch and year
+  const filteredLogs = logs.filter(log => {
+    const logBranch = log.application?.student?.branch
+    const matchesBranch = selectedBranch === "ALL" || logBranch === selectedBranch
+    
+    const logYear = getLogYear(log.changedAt)
+    const matchesYear = selectedYear === "ALL" || logYear === parseInt(selectedYear, 10)
+    
+    return matchesBranch && matchesYear
+  })
 
   const statusVariant = (status) => {
     switch (status) {
@@ -59,7 +94,7 @@ export default function ApplicationLogsPage() {
             {row.application?.student?.enrollmentNumber || "—"}
           </div>
           <div className="text-xs text-gray-500">
-            {row.application?.student?.mobileNumber || "—"}
+            {row.application?.student?.branch || "—"} • {row.application?.student?.mobileNumber || "—"}
           </div>
         </div>
       )
@@ -135,19 +170,71 @@ export default function ApplicationLogsPage() {
           </Button>
         </div>
 
-        <Card title="Application Status History" subtitle="All status change records">
+        {/* Filters */}
+        <div className="bg-white p-4 rounded-lg border border-gray-200">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Branch Filter */}
+            <div className="space-y-2">
+              <label htmlFor="branch-filter" className="block text-sm font-medium text-gray-700">
+                Filter by Branch
+              </label>
+              <select
+                id="branch-filter"
+                value={selectedBranch}
+                onChange={(e) => setSelectedBranch(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+              >
+                {branches.map((branch) => (
+                  <option key={branch} value={branch}>
+                    {branch} ({branch === "ALL" ? logs.length : logs.filter(l => l.application?.student?.branch === branch).length})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Year Filter */}
+            <div className="space-y-2">
+              <label htmlFor="year-filter" className="block text-sm font-medium text-gray-700">
+                Filter by Year
+              </label>
+              <select
+                id="year-filter"
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+              >
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year} ({year === "ALL" ? logs.length : logs.filter(l => getLogYear(l.changedAt) === year).length})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <Card 
+          title="Application Status History" 
+          subtitle={`${filteredLogs.length} log${filteredLogs.length !== 1 ? 's' : ''} ${
+            selectedBranch !== "ALL" || selectedYear !== "ALL" 
+              ? `(${selectedBranch !== "ALL" ? selectedBranch : 'All Branches'}${selectedYear !== "ALL" ? `, ${selectedYear}` : ''})` 
+              : 'found'
+          }`}
+        >
           {/* Mobile view - Card list */}
           <div className="block lg:hidden space-y-3">
             {loading ? (
               <div className="flex justify-center py-8">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
               </div>
-            ) : logs.length === 0 ? (
+            ) : filteredLogs.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500 text-sm">No application logs found</p>
+                <p className="text-gray-500 text-sm">
+                  No application logs found with the selected filters
+                </p>
               </div>
             ) : (
-              logs.map((log) => (
+              filteredLogs.map((log) => (
                 <div key={log._id} className="border border-gray-200 rounded-lg p-3 sm:p-4 space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
@@ -155,7 +242,7 @@ export default function ApplicationLogsPage() {
                         {log.application?.student?.user?.name || "—"}
                       </h3>
                       <p className="text-xs text-gray-600 mt-0.5">
-                        {log.application?.student?.enrollmentNumber || "—"}
+                        {log.application?.student?.enrollmentNumber || "—"} • {log.application?.student?.branch || "—"}
                       </p>
                       <p className="text-xs text-gray-600 mt-0.5">
                         {log.application?.student?.mobileNumber || "—"}
@@ -202,7 +289,7 @@ export default function ApplicationLogsPage() {
 
           {/* Desktop view - Table */}
           <div className="hidden lg:block overflow-x-auto">
-            <Table columns={columns} data={logs} loading={loading} />
+            <Table columns={columns} data={filteredLogs} loading={loading} />
           </div>
         </Card>
       </div>

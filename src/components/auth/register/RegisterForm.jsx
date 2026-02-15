@@ -118,7 +118,7 @@ export default function RegisterForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrors({ general: data.error || "Registration failed" });
+        setErrors({ general: data.message || "Registration failed" });
         return;
       }
 
@@ -133,7 +133,7 @@ export default function RegisterForm() {
       const loginData = await loginResponse.json();
 
       if (!loginResponse.ok) {
-        setErrors({ general: loginData.error || "Login failed after registration. Please sign in." });
+        setErrors({ general: loginData.message || "Login failed after registration. Please sign in." });
         return;
       }
 

@@ -44,6 +44,15 @@ export default function AdminCompaniesPage() {
 
   const statusVariant = (status) => (status === 'OPEN' ? 'success' : 'danger')
 
+  // Get effective status considering deadline
+  const getEffectiveStatus = (company) => {
+    if (company.status === 'CLOSED') return 'CLOSED'
+    if (company.applicationDeadline && new Date(company.applicationDeadline) <= new Date()) {
+      return 'CLOSED'
+    }
+    return company.status
+  }
+
   const columns = [
     { key: 'name', label: 'Company Name' },
     { 
@@ -73,11 +82,14 @@ export default function AdminCompaniesPage() {
     {
       key: 'status',
       label: 'Status',
-      render: (row) => (
-        <Badge variant={statusVariant(row.status)}>
-          {row.status || '—'}
-        </Badge>
-      )
+      render: (row) => {
+        const effectiveStatus = getEffectiveStatus(row)
+        return (
+          <Badge variant={statusVariant(effectiveStatus)}>
+            {effectiveStatus || '—'}
+          </Badge>
+        )
+      }
     },
     { 
       key: 'actions', 
@@ -87,9 +99,9 @@ export default function AdminCompaniesPage() {
           variant="danger"
           className="text-xs py-1 px-2"
           onClick={() => handleCloseCompany(row._id)}
-          disabled={updating === row._id || row.status !== 'OPEN' || (row.applicationDeadline && new Date(row.applicationDeadline) <= new Date())}
+          disabled={updating === row._id || getEffectiveStatus(row) !== 'OPEN'}
         >
-          {row.status === 'OPEN' ? 'Close' : 'Closed'}
+          {getEffectiveStatus(row) === 'OPEN' ? 'Close' : 'Closed'}
         </Button>
       )
     }
@@ -131,8 +143,8 @@ export default function AdminCompaniesPage() {
                       <h3 className="font-semibold text-gray-900 text-sm">{company.name}</h3>
                       <p className="text-xs text-gray-600 mt-0.5">Role: {company.role}</p>
                     </div>
-                    <Badge variant={statusVariant(company.status)}>
-                      {company.status}
+                    <Badge variant={statusVariant(getEffectiveStatus(company))}>
+                      {getEffectiveStatus(company)}
                     </Badge>
                   </div>
                   <p className="text-xs text-gray-700">CTC: {typeof company.ctc === 'number' ? `₹${company.ctc} LPA` : 'N/A'}</p>
@@ -143,9 +155,9 @@ export default function AdminCompaniesPage() {
                     variant="danger"
                     className="text-xs py-1.5 w-full"
                     onClick={() => handleCloseCompany(company._id)}
-                    disabled={updating === company._id || company.status !== 'OPEN' || (company.applicationDeadline && new Date(company.applicationDeadline) <= new Date())}
+                    disabled={updating === company._id || getEffectiveStatus(company) !== 'OPEN'}
                   >
-                    {company.status === 'OPEN' ? 'Close' : 'Closed'}
+                    {getEffectiveStatus(company) === 'OPEN' ? 'Close' : 'Closed'}
                   </Button>
                 </div>
               ))

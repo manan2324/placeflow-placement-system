@@ -38,11 +38,19 @@ export default function CompaniesPage() {
       fetchCompanies() // Refresh to update applied status
     } catch (error) {
       const errorMsg = error.response?.data?.error || error.response?.data?.message || error.message || 'Failed to apply'
-      const errorCode = error.response?.data?.code || ''
-      toast.error(`${errorMsg}${errorCode ? ` (${errorCode})` : ''}`)
+      toast.error(errorMsg)
     } finally {
       setApplying(null)
     }
+  }
+
+  // Get effective status considering deadline
+  const getEffectiveStatus = (company) => {
+    if (company.status === 'CLOSED') return 'CLOSED'
+    if (company.applicationDeadline && new Date(company.applicationDeadline) <= new Date()) {
+      return 'CLOSED'
+    }
+    return company.status
   }
 
   if (loading) {
@@ -84,7 +92,7 @@ export default function CompaniesPage() {
                       <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">{company.name}</h3>
                       <p className="text-sm sm:text-base text-indigo-600 font-medium">{company.role}</p>
                     </div>
-                    {company.status === 'OPEN' ? (
+                    {getEffectiveStatus(company) === 'OPEN' ? (
                       <Badge variant="success" className="shrink-0">Open</Badge>
                     ) : (
                       <Badge variant="danger" className="shrink-0">Closed</Badge>
@@ -126,10 +134,12 @@ export default function CompaniesPage() {
                       <div className="flex items-center gap-2 pt-2 border-t border-gray-200">
                         <span className="font-semibold text-gray-700 min-w-22.5">Deadline:</span>
                         <span className="text-gray-900 font-medium">
-                          {new Date(company.applicationDeadline).toLocaleDateString('en-IN', {
+                          {new Date(company.applicationDeadline).toLocaleString('en-IN', {
                             day: 'numeric',
                             month: 'short',
-                            year: 'numeric'
+                            year: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit'
                           })}
                         </span>
                       </div>
@@ -139,7 +149,7 @@ export default function CompaniesPage() {
                   {/* Apply Button */}
                   <Button
                     onClick={() => handleApply(company._id)}
-                    disabled={company.status !== 'OPEN' || applying === company._id || company.hasApplied}
+                    disabled={getEffectiveStatus(company) !== 'OPEN' || applying === company._id || company.hasApplied}
                     className="w-full text-sm sm:text-base py-2.5 sm:py-3 font-semibold"
                   >
                     {applying === company._id ? (

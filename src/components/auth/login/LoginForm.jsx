@@ -63,7 +63,7 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrors({ general: data.error || "Email or Password is incorrect" });
+        setErrors({ general: data.message || "Email or Password is incorrect" });
         return;
       }
 

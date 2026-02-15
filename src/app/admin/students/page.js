@@ -7,7 +7,6 @@ import Table from "@/components/ui/Table"
 import Badge from "@/components/ui/Badge"
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
-import Link from "next/link"
 import ResumeViewer from "@/components/student/ResumeViewer"
 import { getStudents, deleteStudent } from "@/services/admin.service"
 import { TriangleAlert } from "lucide-react"
@@ -20,6 +19,14 @@ export default function AdminStudentsPage() {
 	const [deleting, setDeleting] = useState(false)
 	const [error, setError] = useState("")
 	const [selectedBranch, setSelectedBranch] = useState("ALL")
+	const [selectedYear, setSelectedYear] = useState("ALL")
+
+	// Extract registration year from createdAt date
+	const getRegistrationYear = (createdAt) => {
+		if (!createdAt) return null
+		const date = new Date(createdAt)
+		return date.getFullYear()
+	}
 
 	useEffect(() => {
 		fetchStudents()
@@ -74,15 +81,27 @@ export default function AdminStudentsPage() {
 	// Get unique branches from students
 	const branches = ["ALL", ...new Set(students.map(s => s.branch).filter(Boolean))]
 
-	// Filter students based on selected branch
-	const filteredStudents = selectedBranch === "ALL" 
-		? students 
-		: students.filter(s => s.branch === selectedBranch)
+	// Get unique registration years from students
+	const years = ["ALL", ...new Set(
+		students
+			.map(s => getRegistrationYear(s.createdAt))
+			.filter(year => year !== null)
+			.sort((a, b) => b - a) // Sort in descending order (newest first)
+	)]
+
+	// Filter students based on selected branch and year
+	const filteredStudents = students.filter(s => {
+		const matchesBranch = selectedBranch === "ALL" || s.branch === selectedBranch
+		const studentYear = getRegistrationYear(s.createdAt)
+		const matchesYear = selectedYear === "ALL" || studentYear === parseInt(selectedYear, 10)
+		return matchesBranch && matchesYear
+	})
 
 	const columns = [
 		{ key: "name", label: "Name", render: (row) => row.user?.name || "—" },
 		{ key: "email", label: "Email", render: (row) => row.user?.email || "—" },
 		{ key: "enrollmentNumber", label: "Enrollment" },
+		{ key: "year", label: "Year", render: (row) => getRegistrationYear(row.createdAt) || "—" },
 		{ key: "branch", label: "Branch" },
 		{ key: "mobileNumber", label: "Mobile Number", render: (row) => row.mobileNumber || "—" },
 		{ key: "cgpa", label: "CGPA", render: (row) => typeof row.cgpa === "number" ? row.cgpa.toFixed(2) : "—" },
@@ -132,37 +151,56 @@ export default function AdminStudentsPage() {
 					</Button>
 				</div>
 
-				{/* Branch Filter */}
-				<div className="flex flex-wrap items-center gap-2 bg-white p-4 rounded-lg border border-gray-200">
-					<span className="text-sm font-medium text-gray-700">Filter by Branch:</span>
-					{branches.map((branch) => (
-						<button
-							key={branch}
-							onClick={() => setSelectedBranch(branch)}
-							className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-								selectedBranch === branch
-									? "bg-indigo-600 text-white shadow-md"
-									: "bg-gray-100 text-gray-700 hover:bg-gray-200"
-							}`}
-						>
-							{branch}
-							{branch !== "ALL" && (
-								<span className="ml-2 text-xs opacity-75">
-									({students.filter(s => s.branch === branch).length})
-								</span>
-							)}
-							{branch === "ALL" && (
-								<span className="ml-2 text-xs opacity-75">
-									({students.length})
-								</span>
-							)}
-						</button>
-					))}
+				{/* Filters */}
+				<div className="bg-white p-4 rounded-lg border border-gray-200">
+					<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+						{/* Branch Filter */}
+						<div className="space-y-2">
+							<label htmlFor="branch-filter" className="block text-sm font-medium text-gray-700">
+								Filter by Branch
+							</label>
+							<select
+								id="branch-filter"
+								value={selectedBranch}
+								onChange={(e) => setSelectedBranch(e.target.value)}
+								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+							>
+								{branches.map((branch) => (
+									<option key={branch} value={branch}>
+										{branch} ({branch === "ALL" ? students.length : students.filter(s => s.branch === branch).length})
+									</option>
+								))}
+							</select>
+						</div>
+
+						{/* Year Filter */}
+						<div className="space-y-2">
+							<label htmlFor="year-filter" className="block text-sm font-medium text-gray-700">
+								Filter by Year
+							</label>
+							<select
+								id="year-filter"
+								value={selectedYear}
+								onChange={(e) => setSelectedYear(e.target.value)}
+								className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm bg-white"
+							>
+								{years.map((year) => (
+									<option key={year} value={year}>
+										{year} ({year === "ALL" ? students.length : students.filter(s => getRegistrationYear(s.createdAt) === year).length})
+									</option>
+								))}
+							</select>
+						</div>
+					</div>
 				</div>
 
 				<Card 
 					title="Student Directory" 
-					subtitle={`${filteredStudents.length} student${filteredStudents.length !== 1 ? 's' : ''} ${selectedBranch !== "ALL" ? `in ${selectedBranch}` : 'registered'}`}
+					subtitle={`${filteredStudents.length} student${filteredStudents.length !== 1 ? 's' : ''} ${
+						selectedBranch !== "ALL" || selectedYear !== "ALL" 
+							? `(${selectedBranch !== "ALL" ? selectedBranch : 'All Branches'}${selectedYear !== "ALL" ? `, ${selectedYear}` : ''})` 
+							: 'registered'
+					}`}
 				>
 					{/* Mobile view - Card list */}
 					<div className="block lg:hidden space-y-3">
@@ -173,7 +211,7 @@ export default function AdminStudentsPage() {
 						) : filteredStudents.length === 0 ? (
 							<div className="text-center py-8">
 								<p className="text-gray-500 text-sm">
-									{selectedBranch === "ALL" ? "No students found" : `No students found in ${selectedBranch} branch`}
+									No students found with the selected filters
 								</p>
 							</div>
 						) : (
@@ -190,6 +228,7 @@ export default function AdminStudentsPage() {
 									</div>
 									<div className="grid grid-cols-2 gap-2 text-xs text-gray-700">
 										<p>Enroll: {s.enrollmentNumber}</p>
+									<p>Year: {getRegistrationYear(s.createdAt) || "—"}</p>
 										<p>Branch: {s.branch}</p>
 										<p>Mobile: {s.mobileNumber || "—"}</p>
 										<p>CGPA: {typeof s.cgpa === "number" ? s.cgpa.toFixed(2) : "—"}</p>
