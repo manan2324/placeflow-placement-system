@@ -8,6 +8,7 @@ import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import { getCompanies, applyToCompany } from '@/services/student.api'
 import { Building2, CheckCircle2, ArrowRight } from 'lucide-react'
+import { formatDateTime } from '@/utils/date'
 
 export default function CompaniesPage() {
   const router = useRouter()
@@ -134,13 +135,7 @@ export default function CompaniesPage() {
                       <div className="flex items-center gap-2 pt-2 border-t border-gray-200">
                         <span className="font-semibold text-gray-700 min-w-22.5">Deadline:</span>
                         <span className="text-gray-900 font-medium">
-                          {new Date(company.applicationDeadline).toLocaleString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          {formatDateTime(company.applicationDeadline)}
                         </span>
                       </div>
                     )}

@@ -5,6 +5,7 @@ import Card from '@/components/ui/Card'
 import Table from '@/components/ui/Table'
 import Badge from '@/components/ui/Badge'
 import { getStudentApplications } from '@/services/student.api'
+import { formatDate } from '@/utils/date'
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([])
@@ -38,7 +39,7 @@ export default function ApplicationsPage() {
   const columns = [
     { key: 'companyName', label: 'Company' },
     { key: 'status', label: 'Status', render: (row) => <Badge variant={getStatusColor(row.status)}>{row.status}</Badge> },
-    { key: 'appliedAt', label: 'Applied Date', render: (row) => new Date(row.createdAt).toLocaleDateString() },
+    { key: 'appliedAt', label: 'Applied Date', render: (row) => formatDate(row.createdAt) },
     { key: 'actions', label: 'Actions', render: (row) => (
       <a href={`/student/applications/${row._id}`} className="text-indigo-600 hover:text-indigo-700 font-medium text-sm sm:text-base">
         View Details
@@ -73,7 +74,7 @@ export default function ApplicationsPage() {
                     <Badge variant={getStatusColor(app.status)}>{app.status}</Badge>
                   </div>
                   <p className="text-xs text-gray-600">
-                    Applied: {new Date(app.createdAt).toLocaleDateString()}
+                    Applied: {formatDate(app.createdAt)}
                   </p>
                   <a 
                     href={`/student/applications/${app._id}`} 

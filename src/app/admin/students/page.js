@@ -10,6 +10,7 @@ import Input from "@/components/ui/Input"
 import ResumeViewer from "@/components/student/ResumeViewer"
 import { getStudents, deleteStudent } from "@/services/admin.service"
 import { TriangleAlert } from "lucide-react"
+import { formatDateTime, formatDate } from "@/utils/date"
 
 export default function AdminStudentsPage() {
 	const [students, setStudents] = useState([])
@@ -118,10 +119,10 @@ export default function AdminStudentsPage() {
 			)
 		) },
 		{ key: "resumeUpdatedAt", label: "Resume Updated", render: (row) => (
-			row.resumeUpdatedAt ? new Date(row.resumeUpdatedAt).toLocaleString() : "—"
+			formatDateTime(row.resumeUpdatedAt)
 		) },
 		{ key: "createdAt", label: "Created", render: (row) => (
-			row.createdAt ? new Date(row.createdAt).toLocaleDateString() : "—"
+			formatDate(row.createdAt)
 		) },
 		{ key: "actions", label: "Actions", render: (row) => (
 			<Button
@@ -232,7 +233,7 @@ export default function AdminStudentsPage() {
 										<p>Branch: {s.branch}</p>
 										<p>Mobile: {s.mobileNumber || "—"}</p>
 										<p>CGPA: {typeof s.cgpa === "number" ? s.cgpa.toFixed(2) : "—"}</p>
-										<p>Created: {s.createdAt ? new Date(s.createdAt).toLocaleDateString() : "—"}</p>
+										<p>Created: {formatDate(s.createdAt)}</p>
 									</div>
 									<div className="pt-1 flex items-center justify-between">
 										{s.resumeUrl ? (

@@ -7,6 +7,7 @@ import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import { Inbox } from 'lucide-react'
 import api from '@/lib/axios'
+import { formatDateTime } from '@/utils/date'
 
 export default function StudentRequestsPage() {
   const [requests, setRequests] = useState([])
@@ -182,13 +183,7 @@ export default function StudentRequestsPage() {
                         </h3>
                         <p className="text-sm text-gray-600">{request.studentId?.email}</p>
                         <p className="text-xs text-gray-500 mt-1">
-                          Requested on {new Date(request.createdAt).toLocaleString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          Requested on {formatDateTime(request.createdAt)}
                         </p>
                       </div>
                       <div>
@@ -240,13 +235,7 @@ export default function StudentRequestsPage() {
                           {request.reviewedBy?.name || 'Admin'}
                         </p>
                         <p className="text-xs text-gray-600 mt-1">
-                          {new Date(request.reviewedAt).toLocaleString('en-IN', {
-                            day: 'numeric',
-                            month: 'short',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          })}
+                          Reviewed on {formatDateTime(request.reviewedAt)}
                         </p>
                         {request.rejectionReason && (
                           <p className="text-sm text-red-700 mt-2">

@@ -9,6 +9,7 @@ import Badge from '@/components/ui/Badge'
 import ResumeViewer from '@/components/student/ResumeViewer'
 import { getStudentProfile, uploadResume } from '@/services/student.api'
 import { PencilLine, BookOpen, IdCard, Building2, BarChart3, TriangleAlert, User, Mail, Phone, FileText, CheckCircle2, Upload, Info, Loader2 } from 'lucide-react'
+import { formatDate } from '@/utils/date'
 
 export default function ProfilePage() {
   const router = useRouter()
@@ -232,9 +233,7 @@ export default function ProfilePage() {
                       <div className="flex-1">
                         <h4 className="text-sm font-semibold text-gray-900">Resume Active</h4>
                         <p className="text-xs text-gray-600 mt-1">
-                          Updated {profile.resumeUpdatedAt 
-                            ? new Date(profile.resumeUpdatedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-                            : 'recently'}
+                          Updated {formatDate(profile.resumeUpdatedAt) || 'recently'}
                         </p>
                       </div>
                     </div>

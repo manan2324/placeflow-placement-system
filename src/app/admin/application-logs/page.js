@@ -6,6 +6,7 @@ import Table from "@/components/ui/Table"
 import Badge from "@/components/ui/Badge"
 import Button from "@/components/ui/Button"
 import { getApplicationLogs } from "@/services/admin.service"
+import { formatDateTime, formatDate } from "@/utils/date"
 
 export default function ApplicationLogsPage() {
   const [logs, setLogs] = useState([])
@@ -80,7 +81,7 @@ export default function ApplicationLogsPage() {
     {
       key: "changedAt",
       label: "Date & Time",
-      render: (row) => row.changedAt ? new Date(row.changedAt).toLocaleString() : "—"
+      render: (row) => formatDateTime(row.changedAt)
     },
     {
       key: "student",
@@ -249,7 +250,7 @@ export default function ApplicationLogsPage() {
                       </p>
                     </div>
                     <span className="text-xs text-gray-500 whitespace-nowrap">
-                      {log.changedAt ? new Date(log.changedAt).toLocaleDateString() : "—"}
+                      {formatDate(log.changedAt)}
                     </span>
                   </div>
                   

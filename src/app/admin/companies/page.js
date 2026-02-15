@@ -8,6 +8,7 @@ import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
 import Link from 'next/link'
 import { getCompanies, updateCompanyStatus } from '@/services/admin.service'
+import { formatDateTime } from '@/utils/date'
 
 export default function AdminCompaniesPage() {
   const [companies, setCompanies] = useState([])
@@ -77,7 +78,7 @@ export default function AdminCompaniesPage() {
     {
       key: 'applicationDeadline',
       label: 'Deadline',
-      render: (row) => row.applicationDeadline ? new Date(row.applicationDeadline).toLocaleString() : '—'
+      render: (row) => formatDateTime(row.applicationDeadline)
     },
     {
       key: 'status',
@@ -150,7 +151,7 @@ export default function AdminCompaniesPage() {
                   <p className="text-xs text-gray-700">CTC: {typeof company.ctc === 'number' ? `₹${company.ctc} LPA` : 'N/A'}</p>
                   <p className="text-xs text-gray-700">Min CGPA: {typeof company.minCgpa === 'number' ? company.minCgpa.toFixed(2) : '—'}</p>
                   <p className="text-xs text-gray-700">Branches: {Array.isArray(company.eligibleBranches) ? company.eligibleBranches.join(', ') : '—'}</p>
-                  <p className="text-xs text-gray-500">Deadline: {company.applicationDeadline ? new Date(company.applicationDeadline).toLocaleString() : '—'}</p>
+                  <p className="text-xs text-gray-500">Deadline: {formatDateTime(company.applicationDeadline)}</p>
                   <Button
                     variant="danger"
                     className="text-xs py-1.5 w-full"

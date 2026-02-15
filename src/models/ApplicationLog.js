@@ -30,7 +30,7 @@ const ApplicationLogSchema = new mongoose.Schema(
 
         changedAt: {
             type: Date,
-            default: Date.now(),
+            default: Date.now,
         },
 
         remark: {

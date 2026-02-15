@@ -13,6 +13,7 @@ import LoadingState from '@/components/student/applications/LoadingState'
 import ErrorState from '@/components/student/applications/ErrorState'
 import NotFoundState from '@/components/student/applications/NotFoundState'
 import { FileText, Clock3, ClipboardList, CheckCircle2, XCircle } from 'lucide-react'
+import { formatDateTime } from '@/utils/date'
 
 const STATUS_ICONS = {
   APPLIED: FileText,
@@ -66,13 +67,7 @@ export default function ApplicationDetailsPage({ params }) {
   }
 
   const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+    return formatDateTime(date)
   }
 
   if (loading) return <LoadingState />
