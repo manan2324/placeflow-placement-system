@@ -12,6 +12,16 @@ export default function AdminLayout({ children }) {
       
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Desktop Header */}
+        <header className="hidden lg:flex bg-white border-b border-gray-200 px-6 py-4 items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center space-x-3">
+            <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">PF</span>
+            </div>
+            <span className="text-xl font-bold text-gray-900">PlaceFlow</span>
+          </div>
+        </header>
+
         {/* Mobile Header */}
         <header className="lg:hidden bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between sticky top-0 z-30">
           <button
