@@ -110,7 +110,7 @@ export default function StudentFiltersPanel({
   };
 
   return (
-    <Card title="Student Filters" subtitle="Filter applications by student and company">
+    <Card>
       <StudentFiltersForm
         filters={filters}
         companies={companies}

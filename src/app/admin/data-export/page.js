@@ -1,37 +1,19 @@
 "use client"
 import { useState, useEffect } from 'react'
 import AdminLayout from '@/components/layouts/AdminLayout'
-import StatsGrid from '@/components/admin/dashboard/StatsGrid'
-import BranchWiseStats from '@/components/admin/dashboard/BranchWiseStats'
-import StatusOverview from '@/components/admin/dashboard/StatusOverview'
-import CompanyApplicantsTable from '@/components/admin/dashboard/CompanyApplicantsTable'
 import StudentFiltersPanel from '@/components/admin/dashboard/StudentFiltersPanel'
-import { exportApplications, exportFilteredApplications, getAdminDashboard, getApplications, getCompanies } from '@/services/admin.service'
+import { exportApplications, exportFilteredApplications, getApplications, getCompanies } from '@/services/admin.service'
 
-export default function AdminDashboard() {
-  const [stats, setStats] = useState(null)
-  const [loading, setLoading] = useState(true)
+export default function DataExport() {
   const [companies, setCompanies] = useState([])
   const [applications, setApplications] = useState([])
   const [appsLoading, setAppsLoading] = useState(true)
   const branches = ['CSE', 'ECE', 'ME', 'CE', 'EE', 'IT', 'CHE']
 
   useEffect(() => {
-    fetchDashboard()
     fetchCompanies()
     fetchApplications()
   }, [])
-
-  const fetchDashboard = async () => {
-    try {
-      const res = await getAdminDashboard()
-      setStats(res.data.data)
-    } catch (error) {
-      console.error('Failed to fetch dashboard:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const fetchCompanies = async () => {
     try {
@@ -108,40 +90,22 @@ export default function AdminDashboard() {
     }
   }
 
-  if (loading) {
-    return (
-      <AdminLayout>
-        <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
-      </AdminLayout>
-    )
-  }
-
   return (
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <div className="animate-slide-up">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Overview of placement statistics</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Data Export</h1>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">Export application data with filters</p>
         </div>
 
-        <StatsGrid stats={stats} />
-
-        <BranchWiseStats branchWiseStats={stats?.branchWiseStats} />
-
-        <StatusOverview statusCounts={stats?.statusCounts} />
-
-        {/* <CompanyApplicantsTable companyStats={stats?.companyStats} onExport={handleExport} /> */}
-
-        {/* <StudentFiltersPanel
+        <StudentFiltersPanel
           applications={applications}
           companies={companies}
           branches={branches}
           loading={appsLoading}
           onExport={handleExport}
           onFilteredExport={handleFilteredExport}
-        /> */}
+        />
       </div>
     </AdminLayout>
   )
