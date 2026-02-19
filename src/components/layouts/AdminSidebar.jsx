@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
-import { LayoutDashboard, GraduationCap, Building2, FileText, FilePenLine, ClipboardList, X, LogOut } from 'lucide-react'
+import { LayoutDashboard, GraduationCap, Building2, FileText, FilePenLine, ClipboardList, X, LogOut, Download } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import axios from '@/lib/axios'
 
@@ -50,6 +50,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
     { name: 'Applications', href: '/admin/applications', icon: FileText },
     { name: 'Student Requests', href: '/admin/student-requests', icon: FilePenLine },
     { name: 'Logs', href: '/admin/application-logs', icon: ClipboardList },
+    { name: 'Data Export', href: '/admin/data-export', icon: Download },
   ]
 
   const handleLogout = async () => {
