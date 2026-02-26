@@ -134,17 +134,17 @@ export default function StudentRequestsPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Student Profile Update Requests</h1>
-          <p className="text-gray-600 mt-1">Review and manage student profile change requests</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Student Profile Update Requests</h1>
+          <p className="text-xs sm:text-base text-gray-600 mt-1">Review and manage student profile change requests</p>
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex gap-2 border-b border-gray-200">
+        <div className="flex gap-1 sm:gap-2 border-b border-gray-200 overflow-x-auto no-scrollbar">
           {['all', 'pending', 'approved', 'rejected'].map((status) => (
             <button
               key={status}
               onClick={() => setFilter(status)}
-              className={`px-4 py-2 font-medium text-sm capitalize transition-colors ${
+              className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm capitalize transition-colors whitespace-nowrap ${
                 filter === status
                   ? 'border-b-2 border-indigo-600 text-indigo-600'
                   : 'text-gray-600 hover:text-gray-900'
@@ -176,17 +176,17 @@ export default function StudentRequestsPage() {
                 <Card key={request._id}>
                   <div className="space-y-4">
                     {/* Header */}
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="min-w-0 flex-1">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                           {request.studentId?.name || 'Unknown Student'}
                         </h3>
-                        <p className="text-sm text-gray-600">{request.studentId?.email}</p>
+                        <p className="text-xs sm:text-sm text-gray-600 truncate">{request.studentId?.email}</p>
                         <p className="text-xs text-gray-500 mt-1">
                           Requested on {formatDateTime(request.createdAt)}
                         </p>
                       </div>
-                      <div>
+                      <div className="shrink-0">
                         {getStatusBadge(request.status)}
                       </div>
                     </div>
@@ -196,27 +196,27 @@ export default function StudentRequestsPage() {
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                            <th className="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
                               Field
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Current Value
+                            <th className="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              Current
                             </th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                              Requested Value
+                            <th className="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                              Requested
                             </th>
                           </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                           {changes.map((change, idx) => (
                             <tr key={idx}>
-                              <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                              <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-medium text-gray-900">
                                 {change.field}
                               </td>
-                              <td className="px-4 py-3 text-sm text-gray-600">
+                              <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-gray-600">
                                 {change.from}
                               </td>
-                              <td className="px-4 py-3 text-sm font-semibold text-indigo-600">
+                              <td className="px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-indigo-600">
                                 {change.to}
                               </td>
                             </tr>

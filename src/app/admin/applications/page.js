@@ -137,31 +137,33 @@ export default function AdminApplicationsPage() {
           </div>
           
           {/* Branch Filter */}
-          <div className="flex items-center gap-3 bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm">
-            <label htmlFor="branchFilter" className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              Filter by Branch:
-            </label>
-            <select
-              id="branchFilter"
-              value={branchFilter}
-              onChange={(e) => setBranchFilter(e.target.value)}
-              className="flex-1 sm:flex-initial sm:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-white"
-            >
-              <option value="ALL">All Branches</option>
-              {branches.map((branch) => (
-                <option key={branch} value={branch}>{branch}</option>
-              ))}
-            </select>
-            {branchFilter !== 'ALL' && (
-              <button
-                onClick={() => setBranchFilter('ALL')}
-                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap"
+          <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm space-y-2 sm:space-y-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <label htmlFor="branchFilter" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                Filter by Branch:
+              </label>
+              <select
+                id="branchFilter"
+                value={branchFilter}
+                onChange={(e) => setBranchFilter(e.target.value)}
+                className="flex-1 min-w-0 sm:flex-initial sm:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-white"
               >
-                Clear Filter
-              </button>
-            )}
-            <div className="ml-auto text-xs sm:text-sm text-gray-600 whitespace-nowrap">
-              {filteredApplications.length} application{filteredApplications.length !== 1 ? 's' : ''}
+                <option value="ALL">All Branches</option>
+                {branches.map((branch) => (
+                  <option key={branch} value={branch}>{branch}</option>
+                ))}
+              </select>
+              {branchFilter !== 'ALL' && (
+                <button
+                  onClick={() => setBranchFilter('ALL')}
+                  className="text-sm text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap"
+                >
+                  Clear
+                </button>
+              )}
+              <span className="ml-auto text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                {filteredApplications.length} application{filteredApplications.length !== 1 ? 's' : ''}
+              </span>
             </div>
           </div>
         </div>

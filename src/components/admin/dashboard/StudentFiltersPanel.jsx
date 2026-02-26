@@ -122,7 +122,7 @@ export default function StudentFiltersPanel({
         onExport={() => onFilteredExport?.(filters)}
       />
 
-      <div className="mt-4">
+      <div className="mt-4 overflow-x-auto">
         <StudentApplicationsTable data={filteredApplications} loading={loading} />
       </div>
     </Card>
