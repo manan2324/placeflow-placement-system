@@ -1,10 +1,16 @@
 "use client"
-import { useState } from 'react'
+import { useState, memo } from 'react'
+import dynamic from 'next/dynamic'
 import { Menu } from 'lucide-react'
 import StudentSidebar from '@/components/layouts/StudentSidebar'
-import NotificationDropdown from '@/components/student/NotificationDropdown'
 
-export default function StudentLayout({ children }) {
+// NotificationDropdown polls the API every 30 s – load it after initial render
+const NotificationDropdown = dynamic(
+  () => import('@/components/student/NotificationDropdown'),
+  { ssr: false }
+)
+
+function StudentLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
@@ -53,3 +59,5 @@ export default function StudentLayout({ children }) {
     </div>
   )
 }
+
+export default memo(StudentLayout);

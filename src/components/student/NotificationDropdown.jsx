@@ -37,9 +37,30 @@ export default function NotificationDropdown() {
   // Fetch notifications on component mount for unread count
   useEffect(() => {
     fetchNotifications();
-    // Poll for new notifications every 30 seconds
-    const interval = setInterval(fetchNotifications, 30000);
-    return () => clearInterval(interval);
+    // Poll for new notifications every 30 seconds, but only when the tab is visible.
+    // Using the Page Visibility API avoids keeping live timers that block bfcache.
+    let interval = null;
+
+    const startPolling = () => {
+      if (!interval) interval = setInterval(fetchNotifications, 30000);
+    };
+
+    const stopPolling = () => {
+      if (interval) { clearInterval(interval); interval = null; }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') startPolling();
+      else stopPolling();
+    };
+
+    startPolling();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      stopPolling();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
   }, []);
 
   const fetchNotifications = async () => {

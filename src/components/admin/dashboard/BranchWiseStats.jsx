@@ -1,9 +1,8 @@
 "use client";
-
+import { memo } from "react";
 import Card from "@/components/ui/Card";
 
-export default function BranchWiseStats({ branchWiseStats }) {
-  console.log(branchWiseStats);
+function BranchWiseStats({ branchWiseStats }) {
   return (
     <Card title="Branch-wise Statistics">
       {branchWiseStats && branchWiseStats.length > 0 ? (
@@ -26,3 +25,5 @@ export default function BranchWiseStats({ branchWiseStats }) {
     </Card>
   );
 }
+
+export default memo(BranchWiseStats);

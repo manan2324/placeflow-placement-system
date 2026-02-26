@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "react-toastify/dist/ReactToastify.css";
 
 @theme {
   --font-arial: Arial, Helvetica, sans-serif;
@@ -99,3 +98,13 @@ body {
   scrollbar-width: none;
 }
 
+/* Respect OS-level "reduce motion" preference – improves TBT on low-end devices */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

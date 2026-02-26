@@ -1,8 +1,8 @@
 "use client";
-
+import { memo } from "react";
 import Card from "@/components/ui/Card";
 
-export default function StatusOverview({ statusCounts }) {
+function StatusOverview({ statusCounts }) {
   const counts = statusCounts || {};
 
   return (
@@ -28,3 +28,5 @@ export default function StatusOverview({ statusCounts }) {
     </Card>
   );
 }
+
+export default memo(StatusOverview);

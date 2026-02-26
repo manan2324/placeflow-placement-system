@@ -1,10 +1,10 @@
 "use client";
-
+import { memo } from "react";
 import Card from "@/components/ui/Card";
 import Badge from "@/components/ui/Badge";
 import { Inbox } from 'lucide-react';
 
-export default function RecentApplicationsCard({ applications, onBrowseCompanies, onOpenApplication, onViewAll }) {
+function RecentApplicationsCard({ applications, onBrowseCompanies, onOpenApplication, onViewAll }) {
   const getStatusColor = (status) => {
     const colors = {
       PENDING: "warning",
@@ -57,3 +57,5 @@ export default function RecentApplicationsCard({ applications, onBrowseCompanies
     </Card>
   );
 }
+
+export default memo(RecentApplicationsCard);

@@ -1,9 +1,9 @@
 "use client";
-
+import { memo } from "react";
 import Card from "@/components/ui/Card";
 import { FileText, Clock3, Target, CheckCircle2 } from 'lucide-react';
 
-export default function StudentStatsGrid({ stats }) {
+function StudentStatsGrid({ stats }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 animate-scale-in">
       <Card className="hover:shadow-lg transition-shadow duration-200">
@@ -64,3 +64,4 @@ export default function StudentStatsGrid({ stats }) {
     </div>
   );
 }
+export default memo(StudentStatsGrid);

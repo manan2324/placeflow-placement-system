@@ -5,6 +5,7 @@ import AdminLayout from '@/components/layouts/AdminLayout'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
+import { TablePageSkeleton } from '@/components/ui/Skeleton'
 import { Inbox } from 'lucide-react'
 import api from '@/lib/axios'
 import { formatDateTime } from '@/utils/date'
@@ -123,9 +124,7 @@ export default function StudentRequestsPage() {
   if (loading) {
     return (
       <AdminLayout>
-        <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
+        <TablePageSkeleton rows={6} />
       </AdminLayout>
     )
   }

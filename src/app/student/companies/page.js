@@ -6,6 +6,7 @@ import StudentLayout from '@/components/layouts/StudentLayout'
 import Card from '@/components/ui/Card'
 import Badge from '@/components/ui/Badge'
 import Button from '@/components/ui/Button'
+import { TablePageSkeleton } from '@/components/ui/Skeleton'
 import { getCompanies, applyToCompany } from '@/services/student.api'
 import { Building2, CheckCircle2, ArrowRight } from 'lucide-react'
 import { formatDateTime } from '@/utils/date'
@@ -57,9 +58,7 @@ export default function CompaniesPage() {
   if (loading) {
     return (
       <StudentLayout>
-        <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
+        <TablePageSkeleton rows={5} />
       </StudentLayout>
     )
   }

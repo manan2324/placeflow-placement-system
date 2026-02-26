@@ -1,9 +1,12 @@
 "use client"
-import HomeNavbar from '@/components/home/HomeNavbar'
-import HeroSection from '@/components/home/HeroSection'
-import FeaturesSection from '@/components/home/FeaturesSection'
-import CtaSection from '@/components/home/CtaSection'
-import SiteFooter from '@/components/home/SiteFooter'
+import dynamic from "next/dynamic";
+import HomeNavbar from "@/components/home/HomeNavbar";
+import HeroSection from "@/components/home/HeroSection";
+
+// Lazy-load below-the-fold sections to reduce initial JS bundle
+const FeaturesSection = dynamic(() => import("@/components/home/FeaturesSection"), { ssr: false });
+const CtaSection = dynamic(() => import("@/components/home/CtaSection"), { ssr: false });
+const SiteFooter = dynamic(() => import("@/components/home/SiteFooter"), { ssr: false });
 
 export default function Home() {
   return (
@@ -14,6 +17,6 @@ export default function Home() {
       <CtaSection />
       <SiteFooter />
     </div>
-  )
+  );
 }
 

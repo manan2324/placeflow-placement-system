@@ -1,9 +1,9 @@
 "use client"
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { Menu } from 'lucide-react'
 import AdminSidebar from '@/components/layouts/AdminSidebar'
 
-export default function AdminLayout({ children }) {
+function AdminLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
@@ -49,3 +49,5 @@ export default function AdminLayout({ children }) {
     </div>
   )
 }
+
+export default memo(AdminLayout);

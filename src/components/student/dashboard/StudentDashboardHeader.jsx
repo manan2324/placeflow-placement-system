@@ -1,6 +1,7 @@
 "use client";
+import { memo } from "react";
 
-export default function StudentDashboardHeader() {
+function StudentDashboardHeader() {
   return (
     <div className="animate-slide-up">
       <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Dashboard</h1>
@@ -10,3 +11,5 @@ export default function StudentDashboardHeader() {
     </div>
   );
 }
+
+export default memo(StudentDashboardHeader);

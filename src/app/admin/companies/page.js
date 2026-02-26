@@ -129,8 +129,14 @@ export default function AdminCompaniesPage() {
           {/* Mobile view - Card list */}
           <div className="block lg:hidden space-y-3">
             {loading ? (
-              <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+              <div className="space-y-2 py-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="animate-pulse border border-gray-100 rounded-lg p-3 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                    <div className="h-3 bg-gray-200 rounded w-1/3" />
+                    <div className="h-3 bg-gray-200 rounded w-2/3" />
+                  </div>
+                ))}
               </div>
             ) : companies.length === 0 ? (
               <div className="text-center py-8">
