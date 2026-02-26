@@ -1,9 +1,13 @@
 // components/ui/Table.jsx
+import { SkeletonRow } from '@/components/ui/Skeleton'
+
 export default function Table({ columns, data, loading }) {
   if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="space-y-2 py-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <SkeletonRow key={i} cols={columns?.length || 4} />
+        ))}
       </div>
     );
   }
@@ -24,7 +28,7 @@ export default function Table({ columns, data, loading }) {
             {columns.map((column) => (
               <th
                 key={column.key}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-3 sm:px-6 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 {column.label}
               </th>
@@ -35,7 +39,7 @@ export default function Table({ columns, data, loading }) {
           {data.map((row, rowIndex) => (
             <tr key={rowIndex} className="hover:bg-gray-50 transition-colors">
               {columns.map((column) => (
-                <td key={column.key} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                <td key={column.key} className="px-3 sm:px-6 py-2.5 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-900">
                   {column.render ? column.render(row) : row[column.key]}
                 </td>
               ))}

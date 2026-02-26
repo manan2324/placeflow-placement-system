@@ -1,16 +1,16 @@
 "use client";
-
+import { memo } from "react";
 import Card from "@/components/ui/Card";
 import { GraduationCap, Building2, FileText, CheckCircle2 } from 'lucide-react';
 
-export default function StatsGrid({ stats }) {
+function StatsGrid({ stats }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 animate-scale-in">
       <Card className="hover:shadow-lg transition-shadow duration-200">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Total Students</p>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
               {stats?.totalStudents || 0}
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function StatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Open Companies</p>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
               {stats?.openCompanies || 0}
             </p>
           </div>
@@ -38,7 +38,7 @@ export default function StatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Total Applications</p>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
               {stats?.totalApplications || 0}
             </p>
           </div>
@@ -52,7 +52,7 @@ export default function StatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Placed Students</p>
-            <p className="text-2xl sm:text-3xl font-bold text-green-600 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-green-600 mt-1 sm:mt-2">
               {stats?.placedStudents || 0}
             </p>
           </div>
@@ -64,3 +64,5 @@ export default function StatsGrid({ stats }) {
     </div>
   );
 }
+
+export default memo(StatsGrid);

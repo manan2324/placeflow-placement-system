@@ -14,7 +14,7 @@ export default function HomeNavbar() {
           <div className="h-8 w-8 sm:h-10 sm:w-10 bg-indigo-600 rounded-lg flex items-center justify-center">
             <span className="text-white font-bold text-lg sm:text-xl">PF</span>
           </div>
-          <span className="text-xl sm:text-2xl font-bold text-gray-900">PlaceFlow</span>
+          <span className="text-lg sm:text-2xl font-bold text-gray-900">PlaceFlow</span>
         </div>
 
         <div className="hidden sm:flex items-center space-x-3 md:space-x-4">

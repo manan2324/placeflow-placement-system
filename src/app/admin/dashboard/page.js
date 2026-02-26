@@ -1,25 +1,21 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import dynamic from 'next/dynamic'
 import AdminLayout from '@/components/layouts/AdminLayout'
 import StatsGrid from '@/components/admin/dashboard/StatsGrid'
-import BranchWiseStats from '@/components/admin/dashboard/BranchWiseStats'
-import StatusOverview from '@/components/admin/dashboard/StatusOverview'
-import CompanyApplicantsTable from '@/components/admin/dashboard/CompanyApplicantsTable'
-import StudentFiltersPanel from '@/components/admin/dashboard/StudentFiltersPanel'
+import { AdminDashboardSkeleton } from '@/components/ui/Skeleton'
 import { exportApplications, exportFilteredApplications, getAdminDashboard, getApplications, getCompanies } from '@/services/admin.service'
+
+// Lazy-load heavier chart / table panels to reduce initial JS parse time
+const BranchWiseStats = dynamic(() => import('@/components/admin/dashboard/BranchWiseStats'), { ssr: false })
+const StatusOverview = dynamic(() => import('@/components/admin/dashboard/StatusOverview'), { ssr: false })
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [companies, setCompanies] = useState([])
-  const [applications, setApplications] = useState([])
-  const [appsLoading, setAppsLoading] = useState(true)
-  const branches = ['CSE', 'ECE', 'ME', 'CE', 'EE', 'IT', 'CHE']
 
   useEffect(() => {
     fetchDashboard()
-    fetchCompanies()
-    fetchApplications()
   }, [])
 
   const fetchDashboard = async () => {
@@ -33,28 +29,7 @@ export default function AdminDashboard() {
     }
   }
 
-  const fetchCompanies = async () => {
-    try {
-      const res = await getCompanies()
-      setCompanies(res.data)
-    } catch (error) {
-      console.error('Failed to fetch companies:', error)
-    }
-  }
-
-  const fetchApplications = async () => {
-    setAppsLoading(true)
-    try {
-      const res = await getApplications()
-      setApplications(res.data)
-    } catch (error) {
-      console.error('Failed to fetch applications:', error)
-    } finally {
-      setAppsLoading(false)
-    }
-  }
-
-  const handleExport = async (companyId) => {
+  const handleExport = useCallback(async (companyId) => {
     if (!companyId) return
     try {
       const res = await exportApplications(companyId)
@@ -70,35 +45,25 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Failed to export CSV:', error)
     }
-  }
+  }, [])
 
-  const handleFilteredExport = async (filters) => {
+  const handleFilteredExport = useCallback(async (filters) => {
     try {
       const res = await exportFilteredApplications(filters)
       const blob = new Blob([res.data], { type: 'text/csv' })
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      
-      // Generate filename based on filters
+
       let filenameParts = []
-      if (filters.branch && filters.branch.length > 0) {
-        filenameParts.push(filters.branch.join('-'))
-      }
-      if (filters.status) {
-        filenameParts.push(filters.status)
-      }
-      if (filters.yearOfSelection) {
-        filenameParts.push(`year${filters.yearOfSelection}`)
-      }
-      if (filters.companyId) {
-        filenameParts.push('company')
-      }
-      const filename = filenameParts.length > 0 
+      if (filters.branch && filters.branch.length > 0) filenameParts.push(filters.branch.join('-'))
+      if (filters.status) filenameParts.push(filters.status)
+      if (filters.yearOfSelection) filenameParts.push(`year${filters.yearOfSelection}`)
+      if (filters.companyId) filenameParts.push('company')
+
+      link.download = filenameParts.length > 0
         ? `${filenameParts.join('_')}_applications.csv`
         : 'filtered_applications.csv'
-      
-      link.download = filename
       document.body.appendChild(link)
       link.click()
       link.remove()
@@ -106,14 +71,12 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Failed to export filtered CSV:', error)
     }
-  }
+  }, [])
 
   if (loading) {
     return (
       <AdminLayout>
-        <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
+        <AdminDashboardSkeleton />
       </AdminLayout>
     )
   }
@@ -122,8 +85,8 @@ export default function AdminDashboard() {
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <div className="animate-slide-up">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Overview of placement statistics</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-xs sm:text-base text-gray-600 mt-1">Overview of placement statistics</p>
         </div>
 
         <StatsGrid stats={stats} />
@@ -131,17 +94,6 @@ export default function AdminDashboard() {
         <BranchWiseStats branchWiseStats={stats?.branchWiseStats} />
 
         <StatusOverview statusCounts={stats?.statusCounts} />
-
-        {/* <CompanyApplicantsTable companyStats={stats?.companyStats} onExport={handleExport} /> */}
-
-        {/* <StudentFiltersPanel
-          applications={applications}
-          companies={companies}
-          branches={branches}
-          loading={appsLoading}
-          onExport={handleExport}
-          onFilteredExport={handleFilteredExport}
-        /> */}
       </div>
     </AdminLayout>
   )

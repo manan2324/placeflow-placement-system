@@ -1,11 +1,11 @@
 "use client"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import StudentLayout from '@/components/layouts/StudentLayout'
 import StudentDashboardHeader from '@/components/student/dashboard/StudentDashboardHeader'
 import StudentStatsGrid from '@/components/student/dashboard/StudentStatsGrid'
 import RecentApplicationsCard from '@/components/student/dashboard/RecentApplicationsCard'
-import QuickActionsCard from '@/components/student/dashboard/QuickActionsCard'
+import { StudentDashboardSkeleton } from '@/components/ui/Skeleton'
 import { getStudentDashboard, getStudentApplications } from '@/services/student.api'
 import { useAuthStore } from '@/store/authStore'
 
@@ -16,26 +16,22 @@ export default function StudentDashboard() {
   const [applications, setApplications] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchDashboardData()
-  }, [])
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true)
       const [dashboardRes, applicationsRes] = await Promise.all([
         getStudentDashboard(),
         getStudentApplications()
       ])
-      
+
       setStats(dashboardRes.data.data)
       setApplications(applicationsRes.data.slice(0, 5)) // Show latest 5
-      
+
       // Update auth store if user data is present
       if (dashboardRes.data.data?.user) {
-        setAuth({ 
-          user: dashboardRes.data.data.user, 
-          role: 'STUDENT' 
+        setAuth({
+          user: dashboardRes.data.data.user,
+          role: 'STUDENT'
         })
       }
     } catch (error) {
@@ -46,14 +42,21 @@ export default function StudentDashboard() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [router, setAuth])
+
+  useEffect(() => {
+    fetchDashboardData()
+  }, [fetchDashboardData])
+
+  // Stable navigation callbacks – prevent unnecessary child re-renders
+  const handleBrowseCompanies = useCallback(() => router.push('/student/companies'), [router])
+  const handleOpenApplication = useCallback((id) => router.push(`/student/applications/${id}`), [router])
+  const handleViewAll = useCallback(() => router.push('/student/applications'), [router])
 
   if (loading) {
     return (
       <StudentLayout>
-        <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
+        <StudentDashboardSkeleton />
       </StudentLayout>
     )
   }
@@ -67,16 +70,10 @@ export default function StudentDashboard() {
 
         <RecentApplicationsCard
           applications={applications}
-          onBrowseCompanies={() => router.push('/student/companies')}
-          onOpenApplication={(id) => router.push(`/student/applications/${id}`)}
-          onViewAll={() => router.push('/student/applications')}
+          onBrowseCompanies={handleBrowseCompanies}
+          onOpenApplication={handleOpenApplication}
+          onViewAll={handleViewAll}
         />
-
-        {/* <QuickActionsCard
-          onBrowseCompanies={() => router.push('/student/companies')}
-          onUpdateProfile={() => router.push('/student/profile')}
-          onViewApplications={() => router.push('/student/applications')}
-        /> */}
       </div>
     </StudentLayout>
   )

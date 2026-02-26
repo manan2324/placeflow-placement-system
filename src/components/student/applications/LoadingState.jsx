@@ -1,11 +1,10 @@
 import StudentLayout from '@/components/layouts/StudentLayout'
+import { TablePageSkeleton } from '@/components/ui/Skeleton'
 
 export default function LoadingState() {
   return (
     <StudentLayout>
-      <div className="flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-      </div>
+      <TablePageSkeleton rows={5} />
     </StudentLayout>
   )
 }

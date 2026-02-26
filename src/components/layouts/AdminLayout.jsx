@@ -1,9 +1,9 @@
 "use client"
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { Menu } from 'lucide-react'
 import AdminSidebar from '@/components/layouts/AdminSidebar'
 
-export default function AdminLayout({ children }) {
+function AdminLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   return (
@@ -34,7 +34,7 @@ export default function AdminLayout({ children }) {
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">PF</span>
             </div>
-            <span className="text-lg font-bold text-gray-900">PlaceFlow</span>
+            <span className="text-base font-bold text-gray-900">PlaceFlow</span>
           </div>
           <div className="w-10" /> {/* Spacer for centering */}
         </header>
@@ -49,3 +49,5 @@ export default function AdminLayout({ children }) {
     </div>
   )
 }
+
+export default memo(AdminLayout);

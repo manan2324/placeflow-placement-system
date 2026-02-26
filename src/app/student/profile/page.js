@@ -7,6 +7,7 @@ import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
 import ResumeViewer from '@/components/student/ResumeViewer'
+import { TablePageSkeleton } from '@/components/ui/Skeleton'
 import { getStudentProfile, uploadResume } from '@/services/student.api'
 import { PencilLine, BookOpen, IdCard, Building2, BarChart3, TriangleAlert, User, Mail, Phone, FileText, CheckCircle2, Upload, Info, Loader2 } from 'lucide-react'
 import { formatDate } from '@/utils/date'
@@ -73,9 +74,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <StudentLayout>
-        <div className="flex justify-center items-center h-96">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-        </div>
+        <TablePageSkeleton rows={6} />
       </StudentLayout>
     )
   }

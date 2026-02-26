@@ -131,37 +131,39 @@ export default function AdminApplicationsPage() {
         <div className="animate-slide-up">
           <div className="flex justify-between items-start sm:items-center mb-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Applications</h1>
-              <p className="text-sm sm:text-base text-gray-600 mt-1">Manage student applications</p>
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Applications</h1>
+              <p className="text-xs sm:text-base text-gray-600 mt-1">Manage student applications</p>
             </div>
           </div>
           
           {/* Branch Filter */}
-          <div className="flex items-center gap-3 bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm">
-            <label htmlFor="branchFilter" className="text-sm font-medium text-gray-700 whitespace-nowrap">
-              Filter by Branch:
-            </label>
-            <select
-              id="branchFilter"
-              value={branchFilter}
-              onChange={(e) => setBranchFilter(e.target.value)}
-              className="flex-1 sm:flex-initial sm:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-white"
-            >
-              <option value="ALL">All Branches</option>
-              {branches.map((branch) => (
-                <option key={branch} value={branch}>{branch}</option>
-              ))}
-            </select>
-            {branchFilter !== 'ALL' && (
-              <button
-                onClick={() => setBranchFilter('ALL')}
-                className="text-sm text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap"
+          <div className="bg-white p-3 sm:p-4 rounded-lg border border-gray-200 shadow-sm space-y-2 sm:space-y-0">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+              <label htmlFor="branchFilter" className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                Filter by Branch:
+              </label>
+              <select
+                id="branchFilter"
+                value={branchFilter}
+                onChange={(e) => setBranchFilter(e.target.value)}
+                className="flex-1 min-w-0 sm:flex-initial sm:w-48 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all duration-200 text-sm bg-white"
               >
-                Clear Filter
-              </button>
-            )}
-            <div className="ml-auto text-xs sm:text-sm text-gray-600 whitespace-nowrap">
-              {filteredApplications.length} application{filteredApplications.length !== 1 ? 's' : ''}
+                <option value="ALL">All Branches</option>
+                {branches.map((branch) => (
+                  <option key={branch} value={branch}>{branch}</option>
+                ))}
+              </select>
+              {branchFilter !== 'ALL' && (
+                <button
+                  onClick={() => setBranchFilter('ALL')}
+                  className="text-sm text-indigo-600 hover:text-indigo-700 font-medium whitespace-nowrap"
+                >
+                  Clear
+                </button>
+              )}
+              <span className="ml-auto text-xs sm:text-sm text-gray-600 whitespace-nowrap">
+                {filteredApplications.length} application{filteredApplications.length !== 1 ? 's' : ''}
+              </span>
             </div>
           </div>
         </div>
@@ -170,8 +172,13 @@ export default function AdminApplicationsPage() {
           {/* Mobile view - Card list */}
           <div className="block lg:hidden space-y-3">
             {loading ? (
-              <div className="flex justify-center py-8">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
+              <div className="space-y-2 py-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="animate-pulse border border-gray-100 rounded-lg p-3 space-y-2">
+                    <div className="h-4 bg-gray-200 rounded w-1/2" />
+                    <div className="h-3 bg-gray-200 rounded w-1/3" />
+                  </div>
+                ))}
               </div>
             ) : filteredApplications.length === 0 ? (
               <div className="text-center py-8">

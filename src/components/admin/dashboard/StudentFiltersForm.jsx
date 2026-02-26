@@ -147,13 +147,13 @@ export default function StudentFiltersForm({
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-4">
-        <div className="text-sm text-gray-600">Showing {totalCount} applications</div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mt-4 gap-3">
+        <div className="text-xs sm:text-sm text-gray-600">Showing {totalCount} application{totalCount !== 1 ? 's' : ''}</div>
         <div className="flex gap-2">
-          <Button variant="secondary" onClick={onReset}>
+          <Button variant="secondary" onClick={onReset} className="flex-1 sm:flex-none text-xs sm:text-sm py-2">
             Reset Filters
           </Button>
-          <Button variant="primary" onClick={onExport} disabled={totalCount === 0}>
+          <Button variant="primary" onClick={onExport} disabled={totalCount === 0} className="flex-1 sm:flex-none text-xs sm:text-sm py-2">
             Export CSV
           </Button>
         </div>
