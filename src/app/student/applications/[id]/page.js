@@ -101,11 +101,11 @@ export default function ApplicationDetailsPage({ params }) {
           />
         </div>
 
-        <StatusMessageCard 
+        {/* <StatusMessageCard 
           status={application.status}
           companyName={application.company.name}
           onExploreMore={() => router.push('/student/companies')}
-        />
+        /> */}
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Button 
