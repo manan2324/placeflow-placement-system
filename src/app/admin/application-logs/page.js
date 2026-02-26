@@ -159,8 +159,8 @@ export default function ApplicationLogsPage() {
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <div className="animate-slide-up flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Application Logs</h1>
-            <p className="text-sm sm:text-base text-gray-600 mt-1">Track all application status changes</p>
+            <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Application Logs</h1>
+            <p className="text-xs sm:text-base text-gray-600 mt-1">Track all application status changes</p>
           </div>
           <Button
             variant="primary"

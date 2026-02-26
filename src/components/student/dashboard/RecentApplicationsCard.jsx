@@ -42,7 +42,7 @@ export default function RecentApplicationsCard({ applications, onBrowseCompanies
                   Applied on {new Date(app.createdAt).toLocaleDateString()}
                 </p>
               </div>
-              <Badge variant={getStatusColor(app.status)}>{app.status}</Badge>
+              <Badge variant={getStatusColor(app.status)} className="self-start sm:self-auto">{app.status}</Badge>
             </div>
           ))}
 

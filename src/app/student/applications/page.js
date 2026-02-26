@@ -51,8 +51,8 @@ export default function ApplicationsPage() {
     <StudentLayout>
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <div className="animate-slide-up">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Applications</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Track all your job applications</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">My Applications</h1>
+          <p className="text-xs sm:text-base text-gray-600 mt-1">Track all your job applications</p>
         </div>
 
         <Card>

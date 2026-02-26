@@ -122,8 +122,8 @@ export default function AdminDashboard() {
     <AdminLayout>
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <div className="animate-slide-up">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Overview of placement statistics</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="text-xs sm:text-base text-gray-600 mt-1">Overview of placement statistics</p>
         </div>
 
         <StatsGrid stats={stats} />

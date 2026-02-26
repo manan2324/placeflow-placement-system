@@ -68,8 +68,8 @@ export default function CompaniesPage() {
     <StudentLayout>
       <div className="space-y-4 sm:space-y-6 animate-fade-in">
         <div className="animate-slide-up">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Companies</h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">Browse and apply to available companies</p>
+          <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Companies</h1>
+          <p className="text-xs sm:text-base text-gray-600 mt-1">Browse and apply to available companies</p>
         </div>
 
         {companies.length === 0 ? (
@@ -90,8 +90,8 @@ export default function CompaniesPage() {
                   {/* Header Section */}
                   <div className="flex items-start justify-between gap-2 pb-3 border-b border-gray-200">
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">{company.name}</h3>
-                      <p className="text-sm sm:text-base text-indigo-600 font-medium">{company.role}</p>
+                      <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-1">{company.name}</h3>
+                      <p className="text-xs sm:text-base text-indigo-600 font-medium">{company.role}</p>
                     </div>
                     {getEffectiveStatus(company) === 'OPEN' ? (
                       <Badge variant="success" className="shrink-0">Open</Badge>
@@ -103,7 +103,7 @@ export default function CompaniesPage() {
                   {/* CTC Section */}
                   <div className="bg-linear-to-r from-indigo-50 to-purple-50 rounded-lg p-3">
                     <p className="text-xs sm:text-sm text-gray-600 mb-1">Annual CTC</p>
-                    <p className="text-xl sm:text-2xl font-bold text-indigo-700">₹{company.ctc} LPA</p>
+                    <p className="text-lg sm:text-2xl font-bold text-indigo-700">₹{company.ctc} LPA</p>
                   </div>
 
                   {/* Eligibility Criteria */}

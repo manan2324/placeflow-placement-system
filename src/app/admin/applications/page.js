@@ -131,8 +131,8 @@ export default function AdminApplicationsPage() {
         <div className="animate-slide-up">
           <div className="flex justify-between items-start sm:items-center mb-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Applications</h1>
-              <p className="text-sm sm:text-base text-gray-600 mt-1">Manage student applications</p>
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Applications</h1>
+              <p className="text-xs sm:text-base text-gray-600 mt-1">Manage student applications</p>
             </div>
           </div>
           

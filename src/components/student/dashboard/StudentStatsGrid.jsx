@@ -10,7 +10,7 @@ export default function StudentStatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Total Applications</p>
-            <p className="text-2xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-gray-900 mt-1 sm:mt-2">
               {stats?.totalApplications || 0}
             </p>
           </div>
@@ -24,7 +24,7 @@ export default function StudentStatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Pending</p>
-            <p className="text-2xl sm:text-3xl font-bold text-yellow-600 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-yellow-600 mt-1 sm:mt-2">
               {stats?.pendingCount || 0}
             </p>
           </div>
@@ -38,7 +38,7 @@ export default function StudentStatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Shortlisted</p>
-            <p className="text-2xl sm:text-3xl font-bold text-blue-600 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-blue-600 mt-1 sm:mt-2">
               {stats?.shortlistedCount || 0}
             </p>
           </div>
@@ -52,7 +52,7 @@ export default function StudentStatsGrid({ stats }) {
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
             <p className="text-xs sm:text-sm font-medium text-gray-600">Selected</p>
-            <p className="text-2xl sm:text-3xl font-bold text-green-600 mt-1 sm:mt-2">
+            <p className="text-xl sm:text-3xl font-bold text-green-600 mt-1 sm:mt-2">
               {stats?.selectedCount || 0}
             </p>
           </div>

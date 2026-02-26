@@ -34,7 +34,7 @@ export default function AdminLayout({ children }) {
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">PF</span>
             </div>
-            <span className="text-lg font-bold text-gray-900">PlaceFlow</span>
+            <span className="text-base font-bold text-gray-900">PlaceFlow</span>
           </div>
           <div className="w-10" /> {/* Spacer for centering */}
         </header>

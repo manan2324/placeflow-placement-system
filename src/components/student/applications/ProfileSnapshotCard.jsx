@@ -7,7 +7,7 @@ export default function ProfileSnapshotCard({ snapshot }) {
     <Card className="animate-slide-up" style={{ animationDelay: '0.2s' }}>
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h3 className="text-xl font-bold text-gray-900 mb-1">Your Profile Details</h3>
+          <h3 className="text-base sm:text-xl font-bold text-gray-900 mb-1">Your Profile Details</h3>
           <p className="text-sm text-gray-600">Profile data at the time of application</p>
         </div>
         <User className="h-8 w-8 text-gray-700" />
@@ -17,7 +17,7 @@ export default function ProfileSnapshotCard({ snapshot }) {
         <div className="bg-linear-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border-2 border-indigo-100">
           <div className="flex justify-between items-center mb-4">
             <span className="text-gray-700 font-semibold inline-flex items-center gap-2"><GraduationCap className="w-4 h-4" /> Branch</span>
-            <Badge variant="primary" className="text-base px-4 py-1">
+            <Badge variant="primary" className="text-xs sm:text-base px-2 sm:px-4 py-0.5 sm:py-1">
               {snapshot.branch}
             </Badge>
           </div>
@@ -25,7 +25,7 @@ export default function ProfileSnapshotCard({ snapshot }) {
           <div className="flex justify-between items-center mb-4">
             <span className="text-gray-700 font-semibold inline-flex items-center gap-2"><BarChart3 className="w-4 h-4" /> CGPA</span>
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-indigo-600">
+              <span className="text-xl sm:text-2xl font-bold text-indigo-600">
                 {snapshot.cgpa.toFixed(2)}
               </span>
               <span className="text-sm text-gray-600">/ 10.0</span>
@@ -35,7 +35,7 @@ export default function ProfileSnapshotCard({ snapshot }) {
           <div className="flex justify-between items-center">
             <span className="text-gray-700 font-semibold inline-flex items-center gap-2"><TriangleAlert className="w-4 h-4" /> Backlogs</span>
             <div className="flex items-center gap-2">
-              <span className={`text-2xl font-bold ${
+              <span className={`text-xl sm:text-2xl font-bold ${
                 snapshot.backlogCount === 0 ? 'text-green-600' :
                 snapshot.backlogCount <= 2 ? 'text-yellow-600' :
                 'text-red-600'

@@ -16,12 +16,12 @@ export default function HeroSection() {
           </span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight px-4 sm:px-0">
+        <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight px-4 sm:px-0">
           Streamline Your
           <span className="text-indigo-600"> Campus Placements</span>
         </h1>
 
-        <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4 sm:px-6">
+        <p className="text-sm sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto px-4 sm:px-6">
           A comprehensive platform for managing student placements, company registrations,
           and application tracking. Everything you need in one place.
         </p>

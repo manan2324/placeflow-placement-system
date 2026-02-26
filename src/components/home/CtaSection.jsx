@@ -6,10 +6,10 @@ export default function CtaSection() {
   return (
     <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
       <div className="bg-linear-to-r from-indigo-600 to-purple-600 rounded-2xl sm:rounded-3xl p-6 sm:p-8 lg:p-12 text-center text-white animate-scale-in">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-4">
+        <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4 px-4">
           Ready to Get Started?
         </h2>
-        <p className="text-base sm:text-lg lg:text-xl text-indigo-100 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
+        <p className="text-sm sm:text-lg lg:text-xl text-indigo-100 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
           Join hundreds of students and streamline your campus placement journey today.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-4">

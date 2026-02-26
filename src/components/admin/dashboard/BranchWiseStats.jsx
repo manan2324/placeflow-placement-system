@@ -10,7 +10,7 @@ export default function BranchWiseStats({ branchWiseStats }) {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           {branchWiseStats.map((item) => (
             <div key={item.branch} className="p-3 sm:p-4 bg-gray-50 rounded-lg">
-              <h4 className="font-semibold text-base sm:text-lg text-gray-900">{item.branch}</h4>
+              <h4 className="font-semibold text-sm sm:text-lg text-gray-900">{item.branch}</h4>
               <p className="text-xs sm:text-sm text-gray-600 mt-1">
                 Applications: {item.totalApplications}
               </p>
