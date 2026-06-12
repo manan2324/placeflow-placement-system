@@ -23,16 +23,24 @@ const nextConfig = {
 
   // Long-lived caching for immutable static assets + security headers
   async headers() {
+    const isProd = process.env.NODE_ENV === 'production';
     return [
-      {
-        source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
+      // Only set Cache-Control on static assets in production.
+      // In development Next.js manages this header itself; overriding it
+      // breaks HMR and triggers a warning.
+      ...(isProd
+        ? [
+            {
+              source: '/_next/static/(.*)',
+              headers: [
+                {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=31536000, immutable',
+                },
+              ],
+            },
+          ]
+        : []),
       {
         source: '/(.*)',
         headers: [
