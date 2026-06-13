@@ -19,3 +19,11 @@ export async function createUser(userData, { session } = {}) {
   }
   return User.create(userData);
 }
+
+export async function updatePasswordByEmail(email, passwordHash) {
+  return User.findOneAndUpdate(
+    { email },
+    { passwordHash },
+    { new: true }
+  );
+}

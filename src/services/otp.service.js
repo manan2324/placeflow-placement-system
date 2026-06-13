@@ -56,8 +56,6 @@ export async function requestRegistrationOtp(payload) {
   const plainOtp = generateOtp();
   const hashedOtp = await bcrypt.hash(plainOtp, 10);
 
-  await deleteOtpsByEmail(payload.email);
-
   const passwordHash = await bcrypt.hash(payload.password, 12);
 
   await createOtp({

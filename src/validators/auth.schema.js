@@ -20,3 +20,13 @@ export const verifyOtpSchema = z.object({
   email: z.email(),
   otp: z.string().length(4, "OTP must be 4 digits"),
 });
+
+export const forgotPasswordSendOtpSchema = z.object({
+  email: z.email(),
+});
+
+export const resetPasswordSchema = z.object({
+  email: z.email(),
+  resetToken: z.string().min(1),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});

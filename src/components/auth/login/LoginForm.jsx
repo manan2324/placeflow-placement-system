@@ -198,6 +198,14 @@ export default function LoginForm() {
             </button>
           </div>
           {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+          <div className="flex justify-end mt-1">
+            <Link
+              href="/auth/forgot-password"
+              className="text-sm text-indigo-600 hover:text-indigo-500 hover:underline transition-all duration-200"
+            >
+              Forgot Password?
+            </Link>
+          </div>
         </div>
 
         <button

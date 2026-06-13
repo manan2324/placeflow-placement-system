@@ -14,12 +14,14 @@ const OtpSchema = new mongoose.Schema({
   },
   purpose: {
     type: String,
-    enum: ["REGISTRATION"],
+    enum: ["REGISTRATION", "RESET_PASSWORD"],
     default: "REGISTRATION",
   },
   payload: {
     type: mongoose.Schema.Types.Mixed,
-    required: true,
+  },
+  resetToken: {
+    type: String,
   },
   attempts: {
     type: Number,

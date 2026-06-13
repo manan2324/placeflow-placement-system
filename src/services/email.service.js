@@ -85,3 +85,51 @@ export async function sendOtpEmail(to, otp) {
 
   return info;
 }
+
+export async function sendPasswordResetOtpEmail(to, otp) {
+  const transport = await getTransporter();
+
+  const from = process.env.EMAIL_FROM || '"PlaceFlow" <noreply@placeflow.com>';
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <h1 style="color: #4f46e5; font-size: 24px; margin: 0;">PlaceFlow</h1>
+        <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Placement Monitoring System</p>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 24px;">
+        <p style="color: rgba(255,255,255,0.85); font-size: 14px; margin: 0 0 12px 0;">Your password reset code is</p>
+        <div style="font-size: 40px; font-weight: 700; letter-spacing: 12px; color: #ffffff; font-family: 'Courier New', monospace;">
+          ${otp}
+        </div>
+      </div>
+
+      <p style="color: #374151; font-size: 14px; line-height: 1.6; text-align: center;">
+        Enter this code to reset your password.
+        This code will expire in <strong>5 minutes</strong>.
+      </p>
+
+      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+
+      <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+        If you didn't request a password reset, you can safely ignore this email.
+        Your password will remain unchanged.
+      </p>
+    </div>
+  `;
+
+  const info = await transport.sendMail({
+    from,
+    to,
+    subject: "Reset Your PlaceFlow Password",
+    html,
+  });
+
+  const previewUrl = nodemailer.getTestMessageUrl(info);
+  if (previewUrl) {
+    console.log("[Email] Preview URL:", previewUrl);
+  }
+
+  return info;
+}
