@@ -1,5 +1,11 @@
 import "./globals.css";
 import ToastProvider from "@/components/ui/ToastProvider";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata = {
   title: "PlaceFlow - Campus Placement Management System",
@@ -16,8 +22,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className="font-arial antialiased">
+    <html lang="en" className={inter.className}>
+      <body className="antialiased bg-gray-50 text-gray-900">
         <ToastProvider />
         {children}
       </body>

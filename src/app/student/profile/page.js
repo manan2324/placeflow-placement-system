@@ -57,16 +57,16 @@ export default function ProfilePage() {
   }
 
   const InfoItem = ({ icon, label, value, badge = null }) => (
-    <div className="flex items-start gap-3 rounded-xl border border-gray-100 bg-white p-4 transition-colors hover:bg-gray-50">
-      <div className="shrink-0 w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center">
+    <div className="group flex items-start gap-3 rounded-xl border border-gray-100 bg-white p-4 transition-all hover:bg-gray-50 hover:shadow-md hover:border-indigo-200">
+      <div className="shrink-0 w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center transition-colors group-hover:bg-indigo-100">
         {icon}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">{label}</p>
-        <p className="text-sm sm:text-base font-semibold text-gray-900 wrap-break-word flex items-center gap-2">
-          {value || 'N/A'}
-          {badge && badge}
-        </p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">{label}</p>
+        <div className="flex flex-wrap items-center gap-2 text-sm sm:text-base font-semibold text-gray-900">
+          <span className="break-all">{value || 'N/A'}</span>
+          {badge && <span className="inline-flex shrink-0">{badge}</span>}
+        </div>
       </div>
     </div>
   )
@@ -87,17 +87,14 @@ export default function ProfilePage() {
           <div className="absolute -bottom-20 right-0 h-56 w-56 rounded-full bg-white/10 blur-2xl" />
 
           <div className="relative flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-4 min-w-0">
-              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 text-2xl font-bold backdrop-blur-sm sm:h-20 sm:w-20 sm:text-3xl">
+            <div className="flex flex-col sm:flex-row items-center gap-4 min-w-0 text-center sm:text-left w-full sm:w-auto">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-white/20 text-2xl font-bold backdrop-blur-sm sm:h-20 sm:w-20 sm:text-3xl">
                 {profile?.userId?.name?.charAt(0).toUpperCase() || 'S'}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 w-full">
                 <h1 className="truncate text-2xl font-bold sm:text-3xl">{profile?.userId?.name || 'Student'}</h1>
                 <p className="mt-1 truncate text-sm text-indigo-100 sm:text-base">{profile?.userId?.email}</p>
-                <div className="mt-3 flex flex-wrap items-center gap-2">
-                  {/* <Badge variant="success" className="bg-white/20 text-white border border-white/30">
-                    Active
-                  </Badge> */}  
+                <div className="mt-3 flex flex-wrap justify-center sm:justify-start items-center gap-2">
                   {profile?.resumeUrl && (
                     <Badge variant="success" className="bg-green-500/90 text-white">
                       Resume Uploaded
@@ -110,10 +107,10 @@ export default function ProfilePage() {
             <Button
               variant="outline"
               onClick={() => router.push('/student/profile/edit')}
-              className="w-full shrink-0 border-white/40 bg-white/10 text-white hover:bg-white/20 sm:w-auto inline-flex items-center justify-center gap-2"
+              className="w-full shrink-0 border-white/40 bg-white/10 text-white hover:bg-white/20 sm:w-auto inline-flex items-center justify-center gap-2 transition-all duration-200"
             >
               <PencilLine className="h-4 w-4" />
-              Edit
+              Edit Profile
             </Button>
           </div>
         </div>
