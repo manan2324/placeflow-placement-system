@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { useAuthStore } from "@/store/authStore";
-import { Eye, EyeOff, Loader2, Mail, ShieldCheck, ArrowLeft, RefreshCw } from "lucide-react";
+import { Eye, EyeOff, Loader2, Mail, ShieldCheck, ArrowLeft, RefreshCw, CheckCircle, Clock } from "lucide-react";
 
 const OTP_LENGTH = 4;
 const OTP_EXPIRY_SECONDS = 5 * 60; // 5 minutes
@@ -271,6 +271,7 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showOtpModal, setShowOtpModal] = useState(false);
+  const [showPendingApproval, setShowPendingApproval] = useState(false);
 
   const branches = ["CSE", "ECE", "ME", "CE", "EE", "IT", "CHE"];
 
@@ -384,6 +385,12 @@ export default function RegisterForm() {
   };
 
   const handleOtpVerified = (data) => {
+    if (data.pendingApproval) {
+      setShowOtpModal(false);
+      setShowPendingApproval(true);
+      return;
+    }
+
     if (data.token) {
       localStorage.setItem("token", data.token);
     }
@@ -400,6 +407,30 @@ export default function RegisterForm() {
   const handleResendOtp = async () => {
     await sendOtp();
   };
+
+  if (showPendingApproval) {
+    return (
+      <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
+        <div className="mx-auto w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+          <CheckCircle className="w-8 h-8 text-green-600" />
+        </div>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">Email Verified Successfully</h2>
+        <div className="mx-auto w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center my-4">
+          <Clock className="w-6 h-6 text-amber-600" />
+        </div>
+        <p className="text-gray-700 font-medium mb-2">Your account is pending admin approval</p>
+        <p className="text-sm text-gray-500 mb-6">
+          We will notify you via email once your account has been approved by the admin. After approval, you can log in with your credentials.
+        </p>
+        <Link
+          href="/auth/login"
+          className="inline-block bg-indigo-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-indigo-700 transition"
+        >
+          Go to Login
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <>

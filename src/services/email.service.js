@@ -133,3 +133,130 @@ export async function sendPasswordResetOtpEmail(to, otp) {
 
   return info;
 }
+
+/**
+ * Send an approval notification email after admin approves a student account.
+ * @param {string} to - recipient email
+ * @param {string} studentName - the student's name
+ */
+export async function sendApprovalEmail(to, studentName) {
+  const transport = await getTransporter();
+
+  const from = process.env.EMAIL_FROM || '"PlaceFlow" <noreply@placeflow.com>';
+
+  const loginUrl = process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/auth/login`
+    : "http://localhost:3000/auth/login";
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <h1 style="color: #4f46e5; font-size: 24px; margin: 0;">PlaceFlow</h1>
+        <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Placement Monitoring System</p>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #059669 0%, #047857 100%); border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 24px;">
+        <div style="font-size: 40px; margin-bottom: 8px;">&#10003;</div>
+        <p style="color: #ffffff; font-size: 18px; font-weight: 600; margin: 0;">Account Approved</p>
+      </div>
+
+      <p style="color: #374151; font-size: 14px; line-height: 1.6; text-align: center;">
+        Hi <strong>${studentName}</strong>,
+      </p>
+      <p style="color: #374151; font-size: 14px; line-height: 1.6; text-align: center;">
+        Your PlaceFlow account has been approved by the admin. You can now log in and access all features of the placement monitoring system.
+      </p>
+
+      <div style="text-align: center; margin: 24px 0;">
+        <a href="${loginUrl}" style="display: inline-block; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600;">
+          Log In to PlaceFlow
+        </a>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+
+      <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+        If you did not create an account on PlaceFlow, please ignore this email.
+      </p>
+    </div>
+  `;
+
+  const info = await transport.sendMail({
+    from,
+    to,
+    subject: "Your PlaceFlow Account Has Been Approved",
+    html,
+  });
+
+  const previewUrl = nodemailer.getTestMessageUrl(info);
+  if (previewUrl) {
+    console.log("[Email] Preview URL:", previewUrl);
+  }
+
+  return info;
+}
+
+/**
+ * Send a rejection notification email after admin rejects a student account.
+ * @param {string} to - recipient email
+ * @param {string} studentName - the student's name
+ */
+export async function sendRejectionEmail(to, studentName) {
+  const transport = await getTransporter();
+
+  const from = process.env.EMAIL_FROM || '"PlaceFlow" <noreply@placeflow.com>';
+
+  const registerUrl = process.env.NEXT_PUBLIC_APP_URL
+    ? `${process.env.NEXT_PUBLIC_APP_URL}/auth/register`
+    : "http://localhost:3000/auth/register";
+
+  const html = `
+    <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px; background: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb;">
+      <div style="text-align: center; margin-bottom: 24px;">
+        <h1 style="color: #4f46e5; font-size: 24px; margin: 0;">PlaceFlow</h1>
+        <p style="color: #6b7280; font-size: 14px; margin-top: 4px;">Placement Monitoring System</p>
+      </div>
+
+      <div style="background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-radius: 12px; padding: 32px; text-align: center; margin-bottom: 24px;">
+        <div style="font-size: 40px; margin-bottom: 8px; color: #ffffff;">&#10007;</div>
+        <p style="color: #ffffff; font-size: 18px; font-weight: 600; margin: 0;">Account Rejected</p>
+      </div>
+
+      <p style="color: #374151; font-size: 14px; line-height: 1.6; text-align: center;">
+        Hi <strong>${studentName}</strong>,
+      </p>
+      <p style="color: #374151; font-size: 14px; line-height: 1.6; text-align: center;">
+        Unfortunately, your PlaceFlow account registration has been rejected by the admin. This may be due to incorrect or incomplete information provided during registration.
+      </p>
+      <p style="color: #374151; font-size: 14px; line-height: 1.6; text-align: center;">
+        You are welcome to register again with the correct details.
+      </p>
+
+      <div style="text-align: center; margin: 24px 0;">
+        <a href="${registerUrl}" style="display: inline-block; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #ffffff; text-decoration: none; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600;">
+          Register Again
+        </a>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;" />
+
+      <p style="color: #9ca3af; font-size: 12px; text-align: center;">
+        If you have any questions, please contact your placement cell.
+      </p>
+    </div>
+  `;
+
+  const info = await transport.sendMail({
+    from,
+    to,
+    subject: "Your PlaceFlow Account Registration Has Been Rejected",
+    html,
+  });
+
+  const previewUrl = nodemailer.getTestMessageUrl(info);
+  if (previewUrl) {
+    console.log("[Email] Preview URL:", previewUrl);
+  }
+
+  return info;
+}

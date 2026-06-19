@@ -16,6 +16,13 @@ export async function login({ email, password }) {
 
   if (!user.isActive) throw forbidden("Account is inactive", "ACCOUNT_INACTIVE");
 
+  if (user.role === "STUDENT" && user.isApproved === false) {
+    throw forbidden(
+      "Your account is pending admin approval. We will notify you via email once approved.",
+      "ACCOUNT_PENDING_APPROVAL"
+    );
+  }
+
   const isValid = await bcrypt.compare(password, user.passwordHash);
   if (!isValid) throw unauthorized("Invalid email or password", "INVALID_CREDENTIALS");
 

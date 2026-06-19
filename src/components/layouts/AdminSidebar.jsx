@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
-import { LayoutDashboard, GraduationCap, Building2, FileText, FilePenLine, ClipboardList, X, LogOut, Download } from 'lucide-react'
+import { LayoutDashboard, GraduationCap, Building2, FileText, FilePenLine, ClipboardList, X, LogOut, Download, UserCheck } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import axios from '@/lib/axios'
 
@@ -45,6 +45,7 @@ export default function AdminSidebar({ mobileOpen, setMobileOpen }) {
 
   const navigation = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Student Verifications', href: '/admin/student-verifications', icon: UserCheck },
     { name: 'Students', href: '/admin/students', icon: GraduationCap },
     { name: 'Companies', href: '/admin/companies', icon: Building2 },
     { name: 'Applications', href: '/admin/applications', icon: FileText },

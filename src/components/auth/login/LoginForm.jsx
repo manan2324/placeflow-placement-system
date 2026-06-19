@@ -63,7 +63,11 @@ export default function LoginForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        setErrors({ general: data.message || "Email or Password is incorrect" });
+        if (data.code === "ACCOUNT_PENDING_APPROVAL" || data.errorCode === "ACCOUNT_PENDING_APPROVAL") {
+          setErrors({ pendingApproval: data.message || "Your account is pending admin approval. We will notify you via email once approved." });
+        } else {
+          setErrors({ general: data.message || "Email or Password is incorrect" });
+        }
         return;
       }
 
@@ -146,6 +150,13 @@ export default function LoginForm() {
         {errors.general && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm animate-shake">
             {errors.general}
+          </div>
+        )}
+
+        {errors.pendingApproval && (
+          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-lg text-sm">
+            <p className="font-medium mb-1">Account Pending Approval</p>
+            <p>{errors.pendingApproval}</p>
           </div>
         )}
 
