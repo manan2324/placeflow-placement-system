@@ -2,7 +2,6 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
 import connectDB from "@/lib/mongodb";
-import { generateToken } from "@/lib/jwt";
 import { sendOtpEmail } from "@/services/email.service";
 import { findUserByEmail, createUser } from "@/repositories/user.repo";
 import {
@@ -44,7 +43,7 @@ export async function requestRegistrationOtp(payload) {
 
   if (!payload.password) throw badRequest("Missing required fields", "MISSING_FIELDS");
 
-  // Rate limit: max N OTPs per email per hour  
+  // Rate limit
   const recentCount = await countRecentOtps(payload.email);
   if (recentCount >= MAX_OTPS_PER_HOUR) {
     throw badRequest(
@@ -137,11 +136,8 @@ export async function verifyRegistrationOtp({ email, otp }) {
 
   await deleteOtpsByEmail(email);
 
-  const token = generateToken(user);
-
   return {
-    token,
-    role: user.role,
+    pendingApproval: true,
     name: user.name,
   };
 }

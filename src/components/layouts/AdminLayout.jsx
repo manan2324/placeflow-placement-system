@@ -1,5 +1,6 @@
 "use client"
 import { useState, memo } from 'react'
+import Link from 'next/link'
 import { Menu } from 'lucide-react'
 import AdminSidebar from '@/components/layouts/AdminSidebar'
 
@@ -14,12 +15,12 @@ function AdminLayout({ children }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Desktop Header */}
         <header className="hidden lg:flex bg-white border-b border-gray-200 px-6 py-4 items-center justify-between sticky top-0 z-30">
-          <div className="flex items-center space-x-3">
+          <Link href="/admin/dashboard" className="flex items-center space-x-3">
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">PF</span>
             </div>
             <span className="text-xl font-bold text-gray-900">PlaceFlow</span>
-          </div>
+          </Link>
         </header>
 
         {/* Mobile Header */}
@@ -30,12 +31,12 @@ function AdminLayout({ children }) {
           >
             <Menu className="h-6 w-6 text-gray-700" />
           </button>
-          <div className="flex items-center space-x-2">
+          <Link href="/admin/dashboard" className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-indigo-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">PF</span>
             </div>
             <span className="text-base font-bold text-gray-900">PlaceFlow</span>
-          </div>
+          </Link>
           <div className="w-10" /> {/* Spacer for centering */}
         </header>
 

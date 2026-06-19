@@ -64,3 +64,14 @@ export const approveStudentRequest = (requestId) =>
 // Admin: Reject student profile update request
 export const rejectStudentRequest = (requestId, rejectionReason) =>
   api.put(`/admin/student-requests/${requestId}`, { action: 'reject', rejectionReason });
+
+export const getStudentVerifications = (status) => {
+  const params = status && status !== 'all' ? { status } : {};
+  return api.get("/admin/student-verifications", { params });
+};
+
+export const approveStudentVerification = (id) =>
+  api.patch(`/admin/student-verifications/${id}`, { action: 'approve' });
+
+export const rejectStudentVerification = (id) =>
+  api.patch(`/admin/student-verifications/${id}`, { action: 'reject' });

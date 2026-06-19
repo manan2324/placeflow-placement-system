@@ -114,7 +114,7 @@ export default function EditProfilePage() {
 
   return (
     <StudentLayout>
-      <div className="space-y-4 sm:space-y-6 animate-fade-in max-w-3xl">
+      <div className="mx-auto max-w-3xl space-y-6 px-4 pb-8 sm:px-6 lg:px-8 animate-fade-in">
         <div className="animate-slide-up">
           <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Edit Profile</h1>
           <p className="text-xs sm:text-base text-gray-600 mt-1">
@@ -166,7 +166,7 @@ export default function EditProfilePage() {
                   value={formData.branch}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent focus:scale-[1.01] outline-none transition-all duration-200 bg-white"
                 >
                   <option value="">Select Branch</option>
                   <option value="CSE">CSE (Computer Science)</option>
