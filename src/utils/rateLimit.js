@@ -10,47 +10,48 @@ function createRedisClient() {
     return new Redis({ url, token });
   }
 
-  // Local development fallback
-  console.warn(
-    "[rateLimit] UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN not set. " +
-      "Using ephemeral in-memory store (fine for local dev, NOT for production)."
-  );
-  return undefined;
+  return null;
 }
 
-const limiters = new Map();
+const upstashLimiters = new Map();
 
-/**
- * Create (or retrieve) an Upstash rate-limiter for the given prefix.
- *
- * @param {string}  keyPrefix  – logical group, e.g. "auth:login"
- * @param {number}  limit      – max requests per window
- * @param {number}  windowMs   – window size in milliseconds
- */
-function getLimiter(keyPrefix, limit, windowMs) {
+function getUpstashLimiter(keyPrefix, limit, windowMs, redis) {
   const cacheKey = `${keyPrefix}:${limit}:${windowMs}`;
 
-  if (!limiters.has(cacheKey)) {
-    const redis = createRedisClient();
-
+  if (!upstashLimiters.has(cacheKey)) {
     const windowSeconds = Math.max(1, Math.ceil(windowMs / 1000));
     const duration = `${windowSeconds} s`;
 
-    const options = {
-      limiter: Ratelimit.slidingWindow(limit, duration),
-      prefix: `ratelimit:${keyPrefix}`,
-    };
-
-    if (redis) {
-      options.redis = redis;
-    } else {
-      options.ephemeralCache = new Map();
-    }
-
-    limiters.set(cacheKey, new Ratelimit(options));
+    upstashLimiters.set(
+      cacheKey,
+      new Ratelimit({
+        redis,
+        limiter: Ratelimit.slidingWindow(limit, duration),
+        prefix: `ratelimit:${keyPrefix}`,
+      })
+    );
   }
 
-  return limiters.get(cacheKey);
+  return upstashLimiters.get(cacheKey);
+}
+
+const buckets = new Map();
+
+function inMemoryLimit(identifier, limit, windowMs) {
+  const now = Date.now();
+  const existing = buckets.get(identifier);
+
+  if (!existing || now >= existing.resetAt) {
+    buckets.set(identifier, { count: 1, resetAt: now + windowMs });
+    return { success: true };
+  }
+
+  if (existing.count >= limit) {
+    return { success: false };
+  }
+
+  existing.count += 1;
+  return { success: true };
 }
 
 /**
@@ -75,8 +76,15 @@ export async function rateLimit(req, { keyPrefix, limit, windowMs }) {
   const ip = getClientIp(req);
   const identifier = `${keyPrefix}:${ip}`;
 
-  const limiter = getLimiter(keyPrefix, limit, windowMs);
-  const { success } = await limiter.limit(identifier);
+  const redis = createRedisClient();
+  let success;
+
+  if (redis) {
+    const limiter = getUpstashLimiter(keyPrefix, limit, windowMs, redis);
+    ({ success } = await limiter.limit(identifier));
+  } else {
+    ({ success } = inMemoryLimit(identifier, limit, windowMs));
+  }
 
   if (!success) {
     return errorResponse("Too many requests", {
