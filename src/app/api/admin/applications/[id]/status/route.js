@@ -7,7 +7,7 @@ import { updateApplicationStatus } from "@/services/application.service";
 import { rateLimit } from "@/utils/rateLimit";
 
 export const PATCH = withErrorHandling(async (req, { params }) => {
-    const rl = rateLimit(req, { keyPrefix: "admin:application-status", limit: 60, windowMs: 60 * 1000 });
+    const rl = await rateLimit(req, { keyPrefix: "admin:application-status", limit: 60, windowMs: 60 * 1000 });
     if (rl) return rl;
 
     const authResult = await requireAuth(req);

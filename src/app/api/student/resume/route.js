@@ -19,7 +19,7 @@ function isPdfMagic(buffer) {
 }
 
 export const POST = withErrorHandling(async (req) => {
-  const rl = rateLimit(req, { keyPrefix: "student:resume-upload", limit: 10, windowMs: 10 * 60 * 1000 });
+  const rl = await rateLimit(req, { keyPrefix: "student:resume-upload", limit: 10, windowMs: 10 * 60 * 1000 });
   if (rl) return rl;
 
   const authResult = await requireAuth(req);
