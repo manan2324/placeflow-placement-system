@@ -4,7 +4,7 @@ import { applyToCompany } from "@/services/application.service";
 import { rateLimit } from "@/utils/rateLimit";
 
 export const POST = withErrorHandling(async (req, { params }) => {
-    const rl = rateLimit(req, { keyPrefix: "student:apply", limit: 30, windowMs: 10 * 60 * 1000 });
+    const rl = await rateLimit(req, { keyPrefix: "student:apply", limit: 30, windowMs: 10 * 60 * 1000 });
     if (rl) return rl;
 
     // auth

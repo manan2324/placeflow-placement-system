@@ -6,7 +6,7 @@ import { login } from "@/services/auth.service";
 import { rateLimit } from "@/utils/rateLimit";
 
 export const POST = withErrorHandling(async (req) => {
-    const rl = rateLimit(req, { keyPrefix: "auth:login", limit: 10, windowMs: 10 * 60 * 1000 });
+    const rl = await rateLimit(req, { keyPrefix: "auth:login", limit: 10, windowMs: 10 * 60 * 1000 });
     if (rl) return rl;
 
     const body = await parseJson(req);

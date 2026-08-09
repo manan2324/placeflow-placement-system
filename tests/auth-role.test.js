@@ -47,10 +47,11 @@ describe('Auth & Role Tests (security)', () => {
     const passwordHash = await bcrypt.hash('correct-password', 4);
     await User.create({
       name: 'Student One',
-      email: 'student1@example.com',
+      email: 'student1@example.com', 
       passwordHash,
       role: 'STUDENT',
       isActive: true,
+      isApproved: true,
     });
 
     const req = makeRequest('http://localhost/api/auth/login', {

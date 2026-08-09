@@ -47,36 +47,41 @@ export async function registerStudent(payload) {
 
   const passwordHash = await bcrypt.hash(payload.password, 12);
 
-  let user = null;
+  // transaction
+  const session = await mongoose.startSession();
 
   try {
-    // Create user first
-    user = await createUser({
-      name: payload.name,
-      email: payload.email,
-      passwordHash,
-      role: "STUDENT",
-    });
+    session.startTransaction();
 
-    // Then create student profile
-    await createStudentProfile({
-      userId: user._id,
-      enrollmentNumber: payload.enrollmentNumber,
-      branch: payload.branch,
-      cgpa: payload.cgpa,
-      backlogCount: payload.backlogCount,
-      mobileNumber: payload.mobileNumber,
-    });
+    const user = await createUser(
+      {
+        name: payload.name,
+        email: payload.email,
+        passwordHash,
+        role: "STUDENT",
+      },
+      { session }
+    );
+
+    await createStudentProfile(
+      {
+        userId: user._id,
+        enrollmentNumber: payload.enrollmentNumber,
+        branch: payload.branch,
+        cgpa: payload.cgpa,
+        backlogCount: payload.backlogCount,
+        mobileNumber: payload.mobileNumber,
+      },
+      { session }
+    );
+
+    await session.commitTransaction();
 
     return { userId: user._id };
   } catch (error) {
-    // If student profile creation fails, delete the user to maintain consistency
-    if (user && user._id) {
-      const User = mongoose.model('User');
-      await User.findByIdAndDelete(user._id).catch(() => {
-        // Ignore cleanup errors
-      });
-    }
+    await session.abortTransaction();
     throw error;
+  } finally {
+    session.endSession();
   }
 }
