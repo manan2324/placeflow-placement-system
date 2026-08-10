@@ -1,4 +1,5 @@
 import connectDB from "@/lib/mongodb";
+import { withCache, invalidateCache, CACHE_KEYS } from "@/lib/cache";
 
 import { buildCsv, csvEscape } from "@/utils/csv";
 import { badRequest, conflict, forbidden, notFound } from "@/utils/errors";
@@ -102,6 +103,15 @@ export async function applyToCompany({ userId, companyId }) {
       message: `You have successfully applied to ${company.name}.`,
     });
 
+    // Invalidate caches affected by a new application
+    await invalidateCache(
+      CACHE_KEYS.STUDENT_DASHBOARD(userId),
+      CACHE_KEYS.STUDENT_APPLICATIONS(userId),
+      CACHE_KEYS.ADMIN_DASHBOARD,
+      CACHE_KEYS.ADMIN_STUDENTS,
+      "cache:admin:apps:*"
+    );
+
     return { applicationId: application._id };
   } catch (err) {
     if (err?.code === 11000) {
@@ -112,30 +122,32 @@ export async function applyToCompany({ userId, companyId }) {
 }
 
 export async function listStudentApplications({ userId }) {
-  await connectDB();
+  return withCache(CACHE_KEYS.STUDENT_APPLICATIONS(userId), 120, async () => {
+    await connectDB();
 
-  const studentProfile = await findStudentProfileByUserId(userId);
-  if (!studentProfile)
-    throw notFound("Student profile not found", "PROFILE_NOT_FOUND");
+    const studentProfile = await findStudentProfileByUserId(userId);
+    if (!studentProfile)
+      throw notFound("Student profile not found", "PROFILE_NOT_FOUND");
 
-  const applications = await listApplicationsByStudent(studentProfile._id);
+    const applications = await listApplicationsByStudent(studentProfile._id);
 
-  return applications.map((app) => ({
-    _id: app._id,
-    applicationId: app._id,
-    status: app.status,
-    appliedAt: app.appliedAt,
-    createdAt: app.appliedAt,
-    companyName: app.companyId.name,
-    company: {
-      id: app.companyId._id,
-      name: app.companyId.name,
-      role: app.companyId.role,
-      ctc: app.companyId.ctc,
-      status: app.companyId.status,
-      applicationDeadline: app.companyId.applicationDeadline,
-    },
-  }));
+    return applications.map((app) => ({
+      _id: app._id,
+      applicationId: app._id,
+      status: app.status,
+      appliedAt: app.appliedAt,
+      createdAt: app.appliedAt,
+      companyName: app.companyId.name,
+      company: {
+        id: app.companyId._id,
+        name: app.companyId.name,
+        role: app.companyId.role,
+        ctc: app.companyId.ctc,
+        status: app.companyId.status,
+        applicationDeadline: app.companyId.applicationDeadline,
+      },
+    }));
+  });
 }
 
 export async function getStudentApplicationDetails({ userId, applicationId }) {
@@ -181,18 +193,20 @@ export async function getStudentApplicationDetails({ userId, applicationId }) {
 }
 
 export async function listCompanyApplications({ companyId, status }) {
-  await connectDB();
+  return withCache(CACHE_KEYS.ADMIN_APPLICATIONS(companyId, status), 120, async () => {
+    await connectDB();
 
-  const filter = {};
+    const filter = {};
 
-  if (companyId) {
-    assertObjectId(companyId, { name: "companyId", code: "BAD_ID" });
-    filter.companyId = companyId;
-  }
+    if (companyId) {
+      assertObjectId(companyId, { name: "companyId", code: "BAD_ID" });
+      filter.companyId = companyId;
+    }
 
-  if (status) filter.status = status;
+    if (status) filter.status = status;
 
-  return listApplicationsByCompany(filter);
+    return listApplicationsByCompany(filter);
+  });
 }
 
 export async function updateApplicationStatus({
@@ -250,6 +264,22 @@ export async function updateApplicationStatus({
       title: "Application Status Updated",
       message: `Your application for ${application.companyId.name} is now ${newStatus}.`,
     });
+
+    // Invalidate caches affected by status change
+    await invalidateCache(
+      CACHE_KEYS.STUDENT_DASHBOARD(targetUserId),
+      CACHE_KEYS.STUDENT_APPLICATIONS(targetUserId),
+      CACHE_KEYS.ADMIN_DASHBOARD,
+      CACHE_KEYS.ADMIN_STUDENTS,
+      "cache:admin:apps:*"
+    );
+  } else {
+    // Invalidate admin-side caches even if student user is unknown
+    await invalidateCache(
+      CACHE_KEYS.ADMIN_DASHBOARD,
+      CACHE_KEYS.ADMIN_STUDENTS,
+      "cache:admin:apps:*"
+    );
   }
 
   return { message: "Application status updated successfully" };
