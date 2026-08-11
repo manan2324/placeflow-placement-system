@@ -28,20 +28,20 @@ export const CACHE_KEYS = {
  * @returns {Promise<*>}
  */
 export async function withCache(key, ttlSeconds, fetcher) {
-    const redis = getRedis();
-
     try {
+        const redis = getRedis();
         const cached = await redis.get(key);
         if (cached !== null && cached !== undefined) {
             return cached; // Upstash auto-deserialises JSON
         }
     } catch {
-        // Redis read failed — fall through to fetcher
+        // Redis unavailable or read failed — fall through to fetcher
     }
 
     const freshData = await fetcher();
 
     try {
+        const redis = getRedis();
         await redis.set(key, JSON.stringify(freshData), { ex: ttlSeconds });
     } catch {
         // Redis write failed — non-critical, data is still returned
@@ -61,9 +61,9 @@ export async function withCache(key, ttlSeconds, fetcher) {
  * @param {...string} keys  Cache keys or glob patterns to invalidate
  */
 export async function invalidateCache(...keys) {
-    const redis = getRedis();
-
     try {
+        const redis = getRedis();
+
         const exactKeys = [];
         const patterns = [];
 
@@ -93,6 +93,6 @@ export async function invalidateCache(...keys) {
             } while (cursor !== 0);
         }
     } catch {
-        // Invalidation failure is non-critical
+        // Redis unavailable or invalidation failed — non-critical
     }
 }
