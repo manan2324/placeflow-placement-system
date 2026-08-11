@@ -1,0 +1,59 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# CI Pipeline — Lint, Test, Build
+# Runs on every push to main and on all PRs targeting main.
+# ──────────────────────────────────────────────────────────────────────────────
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Lint → Test → Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      # ── Checkout ──────────────────────────────────────────────────────────
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ── Node.js setup + npm cache ─────────────────────────────────────────
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # ── Install dependencies ──────────────────────────────────────────────
+      - name: Install dependencies
+        run: npm ci
+
+      # ── Lint ──────────────────────────────────────────────────────────────
+      - name: Lint
+        run: npm run lint
+
+      # ── Test ──────────────────────────────────────────────────────────────
+      - name: Run tests
+        run: npm test
+        env:
+          JWT_SECRET: ci-test-secret
+          NODE_ENV: test
+
+      # ── Build ─────────────────────────────────────────────────────────────
+      - name: Build
+        run: npm run build
+        env:
+          # Dummy env vars so next build doesn't fail on missing secrets.
+          # Actual values are set in Vercel for the real deployment.
+          MONGODB_URI: mongodb://localhost:27017/ci-placeholder
+          JWT_SECRET: ci-build-secret
+          UPSTASH_REDIS_REST_URL: https://placeholder.upstash.io
+          UPSTASH_REDIS_REST_TOKEN: placeholder-token
