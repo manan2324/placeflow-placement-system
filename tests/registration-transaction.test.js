@@ -12,6 +12,10 @@ describe('Registration Transaction Atomicity', () => {
 
     const { default: connectDB } = await import('@/lib/mongodb');
     await connectDB();
+    await import('@/models/User');
+    await import('@/models/StudentProfile');
+    const { syncIndexes } = require('./helpers/mongo');
+    await syncIndexes();
   });
 
   afterAll(async () => {

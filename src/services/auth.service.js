@@ -79,9 +79,11 @@ export async function registerStudent(payload) {
 
     return { userId: user._id };
   } catch (error) {
-    await session.abortTransaction();
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     throw error;
   } finally {
-    session.endSession();
+    await session.endSession();
   }
 }

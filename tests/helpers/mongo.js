@@ -30,6 +30,13 @@ async function stopInMemoryMongo() {
   }
 }
 
+async function syncIndexes() {
+  const models = mongoose.models;
+  for (const name of Object.keys(models)) {
+    await models[name].init();
+  }
+}
+
 async function clearDatabase() {
   const conn = mongoose.connection;
   if (!conn?.db) return;
@@ -45,4 +52,5 @@ module.exports = {
   stopInMemoryMongo,
   clearDatabase,
   resetMongooseConnection,
+  syncIndexes,
 };
