@@ -1,4 +1,5 @@
 import connectDB from "@/lib/mongodb";
+import { invalidateCache, CACHE_KEYS } from "@/lib/cache";
 import { requireAuth } from "@/lib/auth";
 import { createCompanySchema } from "@/validators/company.schema";
 import { validate } from "@/utils/validate";
@@ -87,7 +88,7 @@ export async function createCompanyAsAdmin(adminUserId, body) {
     throw conflict("An open company with this name already exists", "COMPANY_EXISTS");
   }
 
-  return createCompany({
+  const company = await createCompany({
     name: payload.name,
     role: payload.role,
     ctc: payload.ctc,
@@ -97,6 +98,15 @@ export async function createCompanyAsAdmin(adminUserId, body) {
     applicationDeadline: deadline,
     createdBy: adminUserId,
   });
+
+  // New company affects dashboard counts and student eligibility
+  await invalidateCache(
+    CACHE_KEYS.ADMIN_DASHBOARD,
+    CACHE_KEYS.ADMIN_STUDENTS,
+    "cache:student:dashboard:*"
+  );
+
+  return company;
 }
 
 export async function closeCompanyAsAdmin(companyId) {
@@ -116,5 +126,13 @@ export async function closeCompanyAsAdmin(companyId) {
   }
 
   await updateCompanyStatus(company._id, "CLOSED");
+
+  // Closing a company affects dashboard counts and student eligibility
+  await invalidateCache(
+    CACHE_KEYS.ADMIN_DASHBOARD,
+    CACHE_KEYS.ADMIN_STUDENTS,
+    "cache:student:dashboard:*"
+  );
+
   return { message: "Company closed successfully" };
 }
